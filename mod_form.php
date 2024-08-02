@@ -42,56 +42,21 @@ class mod_coursework_mod_form extends moodleform_mod {
     /**
      */
     public function definition() {
-
-        global $PAGE, $CFG;
-
-        $PAGE->requires->jquery();
-
-        $module = array(
-            'name' => 'mod_coursework',
-            'fullpath' => '/mod/coursework/mod_form.js',
-            'requires' => array(
-                'node',
-                'ajax'
-            ));
-
-        $PAGE->requires->js_init_call('M.mod_coursework.init', array(), true, $module);
+        self::require_form_js();
 
         $this->set_form_attributes();
 
         $this->add_general_header();
 
-        $this->add_name_field();
-        $this->standard_intro_elements(get_string('description', 'coursework'));
-
-
-        $this->add_availability_header();
-
-        $this->add_start_date_field();
-        $this->add_submission_deadline_field();
-        $this->add_personal_deadline_field();
-
+        // CTP-3652 these are public static methods so that they can be called by Activity Creation Wizard.
+        self::add_name_field($this->_form);
+        self::add_intro_elements($this->_form,
+            $this->context,
+            $this->_features->showdescription,
+            $this->courseformat->has_view_page()
+        );
+        self::add_availability_fields($this->_form);
         
-       // if (coursework_is_ulcc_digest_coursework_plugin_installed()) {
-            $this->add_marking_deadline_field();
-            $this->add_initial_marking_deadline_field();
-            $this->add_agreed_grade_marking_deadline_field();
-            $this->add_relative_initial_marking_deadline_field();
-            $this->add_relative_agreed_grade_marking_deadline_field();
-       // }
-
-        $this->add_allow_early_finalisation_field();
-        $this->add_allow_late_submissions_field();
-
-
-        if (coursework_is_ulcc_digest_coursework_plugin_installed()) {
-            $this->add_digest_header();
-            $this->add_marking_reminder_warning();
-            $this->add_marking_reminder_field();
-
-        }
-
-
         $this->add_submissions_header();
 
         $this->add_turnitin_files_settings_waring();
@@ -151,6 +116,105 @@ class mod_coursework_mod_form extends moodleform_mod {
 
     }
 
+    /**
+     * This function is public static so that it can be called from outside of this plugin by another plugin.
+     * The other plugin wants a more limited version of this form but cannot inherit from it.
+     */
+    public static function require_form_js() {
+        global $PAGE;
+        $PAGE->requires->jquery();
+        $module = array(
+            'name' => 'mod_coursework',
+            'fullpath' => '/mod/coursework/mod_form.js',
+            'requires' => array(
+                'node',
+                'ajax'
+            ));
+
+        $PAGE->requires->js_init_call('M.mod_coursework.init', array(), true, $module);
+    }
+
+    /**
+     * This function is public static so that it can be called from outside of this plugin by another plugin.
+     * The other plugin wants a more limited version of this form but cannot inherit from it.
+     * @param $mform
+     * @return void
+     * @throws coding_exception
+     */
+    public static function add_availability_fields($mform) {
+
+        self::add_availability_header($mform);
+
+        self::add_start_date_field($mform);
+        self::add_submission_deadline_field($mform);
+        self::add_personal_deadline_field($mform);
+
+
+        // if (coursework_is_ulcc_digest_coursework_plugin_installed()) {
+            self::add_marking_deadline_field($mform);
+            self::add_initial_marking_deadline_field($mform);
+            self::add_agreed_grade_marking_deadline_field($mform);
+            self::add_relative_initial_marking_deadline_field($mform);
+            self::add_relative_agreed_grade_marking_deadline_field($mform);
+        //}
+        self::add_allow_early_finalisation_field($mform);
+        self::add_allow_late_submissions_field($mform);
+
+
+        if (coursework_is_ulcc_digest_coursework_plugin_installed()) {
+            self::add_digest_header($mform);
+            self::add_marking_reminder_warning($mform);
+            self::add_marking_reminder_field($mform);
+
+        }
+    }
+
+    /**
+     * Add an editor for an activity's introduction field.
+     *
+     * @param null $customlabel Override default label for editor
+     * @throws coding_exception
+     */
+    protected function standard_intro_elements($customlabel=null) {
+        self::add_intro_elements(
+            $this->_form,
+            $this->context,
+            $this->_features->showdescription,
+            $this->courseformat->has_view_page(),
+        );
+    }
+
+    /**
+     * This function exists so that it can be called from outside of this plugin by another plugin.
+     * The other plugin wants a more limited version of this form but cannot inherit from it.
+     * @param $mform
+     * @param $context
+     * @param $showdescription
+     * @param $hasviewpage
+     * @return void
+     * @throws coding_exception
+     */
+    public static function add_intro_elements($mform, $context, $showdescription, $hasviewpage) {
+        global $CFG;
+
+        $required = $CFG->requiremodintro;
+
+        $label = get_string('description', 'coursework');
+
+        $mform->addElement('editor', 'introeditor', $label, array('rows' => 10), array('maxfiles' => EDITOR_UNLIMITED_FILES,
+            'noclean' => true, 'context' => $context, 'subdirs' => true));
+        $mform->setType('introeditor', PARAM_RAW); // no XSS prevention here, users must be trusted
+        if ($required) {
+            $mform->addRule('introeditor', get_string('required'), 'required', null, 'client');
+        }
+
+        // If the 'show description' feature is enabled, this checkbox appears below the intro.
+        // We want to hide that when using the singleactivity course format because it is confusing.
+        if ($showdescription && $hasviewpage) {
+            $mform->addElement('advcheckbox', 'showdescription', get_string('showdescription'));
+            $mform->addHelpButton('showdescription', 'showdescription');
+        }
+    }
 
     /**
      * Adds all default data to the form elements.
@@ -242,7 +306,7 @@ class mod_coursework_mod_form extends moodleform_mod {
         }
 
 
-        $courseworkid = $this->get_coursework_id();
+        $courseworkid = self::get_coursework_id();
         if ($courseworkid) {
             $coursework = mod_coursework\models\coursework::find($courseworkid);
             if ($coursework->has_samples() && isset($data['samplingenabled']) && $data['samplingenabled'] == 0){
@@ -299,21 +363,22 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_availability_header() {
-        $moodle_form =& $this->_form;
-
+    protected static function add_availability_header($moodle_form) {
         $moodle_form->addElement('header', 'availability', get_string('availability', 'mod_coursework'));
         // We want it expanded by default
         $moodle_form->setExpanded('availability');
     }
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_name_field() {
-        $moodle_form =& $this->_form;
+    public static function add_name_field($moodle_form) {
 
         $moodle_form->addElement('text',
                                  'name',
@@ -329,12 +394,12 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_submission_deadline_field() {
+    protected static function add_submission_deadline_field($moodle_form) {
         global $CFG;
-
-        $moodle_form =& $this->_form;
 
         $default_timestamp   =   strtotime('+2 weeks');
         $disabled   =   true;
@@ -353,7 +418,7 @@ class mod_coursework_mod_form extends moodleform_mod {
         }
 
         $optional = true;
-        $courseworkid = $this->get_coursework_id();
+        $courseworkid = self::get_coursework_id();
         if ($courseworkid){
             $coursework =  mod_coursework\models\coursework::find($courseworkid);
             if($coursework->extension_exists()){
@@ -382,14 +447,14 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_personal_deadline_field(){
-
-        $moodle_form =& $this->_form;
+    protected static function add_personal_deadline_field($moodle_form){
         $options = array(0 => get_string('no'), 1 => get_string('yes'));
 
-        $courseworkid = $this->get_coursework_id();
+        $courseworkid = self::get_coursework_id();
         $disabled = array();
         if (coursework_personal_deadline_passed($courseworkid)){
             $moodle_form->disabledIf('personaldeadlineenabled', 'deadline[enabled]', 'notchecked');
@@ -408,12 +473,12 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
+     *  CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_start_date_field() {
+    protected static function add_start_date_field($moodle_form) {
         global $CFG;
-
-        $moodle_form =& $this->_form;
 
         $default_timestamp  =   strtotime('+2 weeks');
         $disabled   =   true;
@@ -435,11 +500,14 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
 
-
-
-    private function add_marking_deadline_field()   {
+    /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
+     * @return void
+     * @throws coding_exception
+     */
+    private static function add_marking_deadline_field($moodle_form)   {
         global $CFG;
-        $moodle_form =& $this->_form;
         $options = array(0 => get_string('no'), 1 => get_string('yes'));
         $moodle_form->addElement('select',
             'markingdeadlineenabled',
@@ -451,12 +519,12 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_initial_marking_deadline_field() {
+    protected static function add_initial_marking_deadline_field($moodle_form) {
         global $CFG;
-
-        $moodle_form =& $this->_form;
 
         $default_timestamp   =strtotime('today');
         $disabled   =   true;
@@ -506,12 +574,12 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_agreed_grade_marking_deadline_field() {
+    protected static function add_agreed_grade_marking_deadline_field($moodle_form) {
         global $CFG;
-
-        $moodle_form =& $this->_form;
 
         $default_timestamp   =strtotime('today');
         $disabled   =   true;
@@ -559,11 +627,11 @@ class mod_coursework_mod_form extends moodleform_mod {
 
     /********
      *  Adds the relative initial marking deadline fields to the settings
+     *  CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      */
-    protected function add_relative_initial_marking_deadline_field()    {
+    protected static function add_relative_initial_marking_deadline_field($moodle_form)    {
         global $CFG;
-
-        $moodle_form    =&  $this->_form;
 
         $options    =   array('0'=>get_string('disabled', 'mod_coursework'));
         $options['7']      = get_string('oneweekoption', 'mod_coursework');
@@ -587,11 +655,11 @@ class mod_coursework_mod_form extends moodleform_mod {
 
     /********
      *  Adds the relative agreed grade marking deadline fields to the settings
+     *  CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      */
-    protected function add_relative_agreed_grade_marking_deadline_field()    {
+    protected static function add_relative_agreed_grade_marking_deadline_field($moodle_form)    {
         global $CFG;
-
-        $moodle_form    =&  $this->_form;
 
         $options    =   array('0'=>get_string('disabled', 'mod_coursework'));
         $options['7']      = get_string('oneweekoption', 'mod_coursework');
@@ -611,20 +679,25 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_digest_header() {
-        $moodle_form =& $this->_form;
-
+    protected static function add_digest_header($moodle_form) {
         $moodle_form->addElement('header', 'digest', get_string('digest', 'mod_coursework'));
         // We want it expanded by default
         $moodle_form->setExpanded('digest');
     }
 
 
-    private function add_marking_reminder_field() {
+    /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
+     * @return void
+     * @throws coding_exception
+     */
+    private static function add_marking_reminder_field($moodle_form) {
         global $CFG;
-        $moodle_form =& $this->_form;
         $options = array(0 => get_string('no'), 1 => get_string('yes'));
         $moodle_form->addElement('select',
             'markingreminderenabled',
@@ -636,19 +709,26 @@ class mod_coursework_mod_form extends moodleform_mod {
 
     }
 
-    protected function add_marking_reminder_warning() {
-        $this->_form->addElement('html', '<div class ="notification_tii">');
-        $this->_form->addElement('html',
+    /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
+     * @return void
+     * @throws coding_exception
+     */
+    protected static function add_marking_reminder_warning($moodle_form) {
+        $moodle_form->addElement('html', '<div class ="notification_tii">');
+        $moodle_form->addElement('html',
             get_string('relativedeadlinesreminder', 'mod_coursework'));
-        $this->_form->addElement('html', '</div>');
+        $moodle_form->addElement('html', '</div>');
     }
 
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
-    protected function add_allow_early_finalisation_field() {
-        $moodle_form =& $this->_form;
+    protected static function add_allow_early_finalisation_field($moodle_form) {
         $options = array( 0 => get_string('no'), 1 => get_string('yes'));
         $moodle_form->addElement('select',
                                  'allowearlyfinalisation',
@@ -798,7 +878,7 @@ class mod_coursework_mod_form extends moodleform_mod {
         $moodle_form =& $this->_form;
 
         $choices    =   array('0'=>get_string('no'),'1'=>get_string('yes'));
-        $courseworkid   =   $this->get_coursework_id();
+        $courseworkid   =   self::get_coursework_id();
         $courseworkhassubmissions   =   (!empty($courseworkid)) ?
             $courseworkhassubmissions = $DB->get_records('coursework_submissions', array('courseworkid' => $courseworkid))
             : false;
@@ -858,7 +938,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     protected function add_number_of_initial_assessors_field() {
 
         $moodle_form =& $this->_form;
-        $courseworkid = $this->get_coursework_id();
+        $courseworkid = self::get_coursework_id();
 
         $multi_options = array(
             // Don't want to give the option for 0!
@@ -900,10 +980,11 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
+     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
      * @return int
      * @throws coding_exception
      */
-    protected function get_coursework_id() {
+    protected static function get_coursework_id() {
         $upcmid = optional_param('update', -1, PARAM_INT);
         $cm = get_coursemodule_from_id('coursework', $upcmid);
         $courseworkid = 0;
@@ -997,7 +1078,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
         $submission_exists = 0;
         // disable the setting if at least one submission exists
-        $courseworkid = $this->get_coursework_id();
+        $courseworkid = self::get_coursework_id();
         if ($courseworkid && mod_coursework\models\coursework::find($courseworkid)->has_any_submission()) {
             $submission_exists = 1;
         }
@@ -1148,7 +1229,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
         $feedbackexists = 0;
         // disable the setting if at least one feedback exists
-        $courseworkid = $this->get_coursework_id();
+        $courseworkid = self::get_coursework_id();
         if ($courseworkid && mod_coursework\models\coursework::find($courseworkid)->has_any_final_feedback()) {
             $feedbackexists = 1;
         }
@@ -1187,9 +1268,8 @@ class mod_coursework_mod_form extends moodleform_mod {
         $this->_form->addElement('html', '</div>');
     }
 
-    private function add_allow_late_submissions_field() {
+    private static function add_allow_late_submissions_field($moodle_form) {
         global $CFG;
-        $moodle_form =& $this->_form;
         $options = array( 0 => get_string('no'), 1 => get_string('yes'));
         $moodle_form->addElement('select',
                                  'allowlatesubmissions',
@@ -1224,7 +1304,7 @@ class mod_coursework_mod_form extends moodleform_mod {
         $moodle_form->addHelpButton('samplingenabled', 'samplingenabled', 'mod_coursework');
 
 
-        $courseworkid = $this->get_coursework_id();
+        $courseworkid = self::get_coursework_id();
         if (!$courseworkid ||  ($courseworkid && !mod_coursework\models\coursework::find($courseworkid)->has_samples()) ) {
             $moodle_form->disabledIf('samplingenabled', 'numberofmarkers', 'eq', 1);
 

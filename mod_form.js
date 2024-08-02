@@ -1,40 +1,30 @@
 M.mod_coursework = {}
 
 M.mod_coursework.init   =   function()      {
-
-    M.mod_coursework.elementEnable();
-
-    $('#id_deadline_enabled').on('change',function () {
-
+    $(document).ready(function () {
         M.mod_coursework.elementEnable();
-    });
 
-    $('#id_personaldeadlineenabled').on('change',function () {
+        $('#id_deadline_enabled').on('change',function () {
+            M.mod_coursework.elementEnable();
+        });
 
-        M.mod_coursework.elementEnable();
-    });
+        $('#id_personaldeadlineenabled').on('change',function () {
+            M.mod_coursework.elementEnable();
+        });
 
+        $('#id_markingdeadlineenabled').on('change',function () {
+            M.mod_coursework.elementEnable();
+        });
 
-
-    $('#id_markingdeadlineenabled').on('change',function () {
-
-        M.mod_coursework.elementEnable();
-    });
-
-
-    $('#id_numberofmarkers').on('change',function () {
-
-        M.mod_coursework.elementEnable();
-    });
+        $('#id_numberofmarkers').on('change',function () {
+            M.mod_coursework.elementEnable();
+        });
+    })
 }
 
 
 M.mod_coursework.elementEnable      =   function()      {
-
     console.log($('#id_deadline_enabled').is(':checked'));
-
-
-
     if ($('#id_deadline_enabled').is(':checked') == false) {
 
         M.mod_coursework.initialGradeDisable(true);
