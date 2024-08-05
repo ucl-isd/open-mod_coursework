@@ -195,26 +195,32 @@ function coursework_add_instance($formdata) {
     // Get all the other data e.g. coursemodule.
     $coursework = coursework::find($returnid);
 
+    // August 2024 - Behat tests were failing because of the call to The format_module_intro().
+    // Since MDL-68645 in 2020 this has been the case - see commit f883c681.
+    // Mod_assign does not use format and strips out pluginfiles so we do the same.
+    $calandardescription = $coursemodule->showdescription
+        ? [ 'text' => strip_pluginfile_content($coursework->intro),
+            'format' => $coursework->introformat
+        ]
+        : '';
     //create event for coursework deadline [due]
     if ($coursework && $coursework->deadline) {
-        $event = coursework_event($coursework, format_module_intro('coursework', $coursework,
-            $coursemodule->id), $returnid, 'due', $coursework->deadline);
-
+        $event = coursework_event($coursework, $calandardescription, $returnid, 'due', $coursework->deadline);
         calendar_event::create($event);
     }
-
     //create event for coursework initialmarking deadline [initialgradingdue]
     if ($coursework && $coursework->marking_deadline_enabled() && $coursework->initialmarkingdeadline) {
-        $event = coursework_event($coursework, format_module_intro('coursework', $coursework,
-            $coursemodule->id), $returnid, 'initialgradingdue', $coursework->initialmarkingdeadline);
-
+        $event = coursework_event(
+            $coursework, $calandardescription, $returnid, 'initialgradingdue', $coursework->initialmarkingdeadline
+        );
         calendar_event::create($event);
     }
 
     //create event for coursework agreedgrademarking deadline [agreedgradingdue]
     if ($coursework && $coursework->marking_deadline_enabled() && $coursework->agreedgrademarkingdeadline && $coursework->has_multiple_markers()) {
-        $event = coursework_event($coursework, format_module_intro('coursework', $coursework,
-            $coursemodule->id), $returnid, 'agreedgradingdue', $coursework->agreedgrademarkingdeadline);
+        $event = coursework_event(
+            $coursework, $calandardescription, $returnid, 'agreedgradingdue', $coursework->agreedgrademarkingdeadline
+        );
         calendar_event::create($event);
     }
 
