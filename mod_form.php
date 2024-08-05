@@ -123,13 +123,13 @@ class mod_coursework_mod_form extends moodleform_mod {
     public static function require_form_js() {
         global $PAGE;
         $PAGE->requires->jquery();
-        $module = array(
+        $module = [
             'name' => 'mod_coursework',
             'fullpath' => '/mod/coursework/mod_form.js',
-            'requires' => array(
+            'requires' => [
                 'node',
                 'ajax'
-            ));
+            ]];
 
         $PAGE->requires->js_init_call('M.mod_coursework.init', array(), true, $module);
     }
