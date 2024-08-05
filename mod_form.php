@@ -173,7 +173,6 @@ class mod_coursework_mod_form extends moodleform_mod {
      * Add an editor for an activity's introduction field.
      *
      * @param null $customlabel Override default label for editor
-     * @throws coding_exception
      */
     protected function standard_intro_elements($customlabel=null) {
         self::add_intro_elements(
@@ -192,7 +191,6 @@ class mod_coursework_mod_form extends moodleform_mod {
      * @param $showdescription
      * @param $hasviewpage
      * @return void
-     * @throws coding_exception
      */
     public static function add_intro_elements($mform, $context, $showdescription, $hasviewpage) {
         global $CFG;
@@ -504,7 +502,6 @@ class mod_coursework_mod_form extends moodleform_mod {
      * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @return void
-     * @throws coding_exception
      */
     private static function add_marking_deadline_field($moodle_form)   {
         global $CFG;
@@ -694,7 +691,6 @@ class mod_coursework_mod_form extends moodleform_mod {
      * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @return void
-     * @throws coding_exception
      */
     private static function add_marking_reminder_field($moodle_form) {
         global $CFG;
@@ -713,7 +709,6 @@ class mod_coursework_mod_form extends moodleform_mod {
      * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @return void
-     * @throws coding_exception
      */
     protected static function add_marking_reminder_warning($moodle_form) {
         $moodle_form->addElement('html', '<div class ="notification_tii">');
