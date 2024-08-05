@@ -204,10 +204,11 @@ class behat_mod_coursework extends behat_base {
     }
 
     /**
-     * @Then /^I should( not)? see( the)? (.*)'s name on the page$/
+     * @Then /^I (should|should not) see (the|another)? (.*)'s name on the page$/
      * @param bool $negate
      */
-    public function iShouldSeeTheStudentSNameOnThePage($negate = false,$negate2=false,$studentrole) {
+    public function iShouldSeeTheStudentSNameOnThePage($should, $another, $studentrole) {
+        $negate = $should == 'should not';
         $page = $this->get_page('coursework page');
 
         $student    =   ($studentrole == "another student") ? $this->other_student : $this->student;
@@ -905,15 +906,17 @@ class behat_mod_coursework extends behat_base {
     }
 
     /**
-     * @Given /^I (de)?select (a|another) student as a part of the sample for the second stage$/
+     * @Given /^I (deselect|select) (a|another) student as a part of the sample for the second stage$/
      */
-    public function iSelectTheStudentAsAPartOfTheSample($negate = false,$other)
+    public function iSelectTheStudentAsAPartOfTheSample($select,$other)
     {
         /**
          * @var mod_coursework_behat_allocations_page $page
          */
         $other = ($other == 'another');
         $student = $other ? 'other_student' : 'student';
+
+        $negate = $select == 'deselect';
 
         $page = $this->get_page('allocations page');
         if ($negate){
