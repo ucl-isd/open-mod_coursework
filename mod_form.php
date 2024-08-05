@@ -48,7 +48,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
         $this->add_general_header();
 
-        // CTP-3652 these are public static methods so that they can be called by Activity Creation Wizard.
+        // These are public static methods so that they can be called by Activity Creation Wizard.
         self::add_name_field($this->_form);
         self::add_intro_elements($this->_form,
             $this->context,
@@ -363,7 +363,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -374,7 +374,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -394,7 +394,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -447,7 +447,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -473,7 +473,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
-     *  CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     *  This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -501,7 +501,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @return void
      * @throws coding_exception
@@ -519,7 +519,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -574,7 +574,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -627,7 +627,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
     /********
      *  Adds the relative initial marking deadline fields to the settings
-     *  CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     *  This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      */
     protected static function add_relative_initial_marking_deadline_field($moodle_form)    {
@@ -655,7 +655,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
     /********
      *  Adds the relative agreed grade marking deadline fields to the settings
-     *  CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     *  This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      */
     protected static function add_relative_agreed_grade_marking_deadline_field($moodle_form)    {
@@ -679,7 +679,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -691,7 +691,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @return void
      * @throws coding_exception
@@ -710,7 +710,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @return void
      * @throws coding_exception
@@ -724,7 +724,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @param MoodleQuickForm $moodle_form
      * @throws coding_exception
      */
@@ -980,7 +980,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
 
     /**
-     * CTP-3652 this is a static method so that it be called by Activity Creation Wizard.
+     * This is a static method so that it be called by Activity Creation Wizard.
      * @return int
      * @throws coding_exception
      */
