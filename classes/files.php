@@ -80,7 +80,7 @@ abstract class files implements countable {
      * @return int
      */
     public function count(): int {
-        return count($this->files) ?? 0;
+        return is_countable($this->files) ? count($this->files) : 0;
     }
 
 }
