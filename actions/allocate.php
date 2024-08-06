@@ -18,14 +18,13 @@
  * Page that prints a table of all students and all markers so that first marker, second marker, moderators
  * etc can be allocated manually or automatically.
  *
- * @package    mod
- * @subpackage coursework
+ * @package    mod_coursework
  * @copyright  2011 University of London Computer Centre {@link ulcc.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use \mod_coursework\models\coursework;
-use \mod_coursework\allocation\widget;
+use mod_coursework\models\coursework;
+use mod_coursework\allocation\widget;
 
 require_once(dirname(__FILE__).'/../../../config.php');
 
@@ -35,8 +34,8 @@ require_once($CFG->dirroot.'/mod/coursework/lib.php');
 
 $coursemoduleid = required_param('id', PARAM_INT);
 $coursemodule = get_coursemodule_from_id('coursework', $coursemoduleid, 0, false, MUST_EXIST);
-$course = $DB->get_record('course', array('id' => $coursemodule->course), '*', MUST_EXIST);
-$coursework = $DB->get_record('coursework', array('id' => $coursemodule->instance), '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $coursemodule->course], '*', MUST_EXIST);
+$coursework = $DB->get_record('coursework', ['id' => $coursemodule->instance], '*', MUST_EXIST);
 $coursework = coursework::find($coursework);
 $formsavebutton = optional_param('save', 0, PARAM_BOOL);
 $samplingformsavebutton = optional_param('save_sampling', 0, PARAM_BOOL);
@@ -46,12 +45,13 @@ $allocatenonallocatedbutton = optional_param('auto-allocate-non-allocated', 0, P
 $assessorallocationstrategy = optional_param('assessorallocationstrategy', false, PARAM_TEXT);
 
 $moderationruletype = optional_param('addmodsetruletype', 0, PARAM_ALPHAEXT);
-$deletemodsetrule = optional_param('delete-mod-set-rule', array(), PARAM_RAW) ;
+$deletemodsetrule = optional_param('delete-mod-set-rule', [], PARAM_RAW);
 
-// options used for pagination
+// Options used for pagination.
 // If a session variable holding page preference for the specific coursework is not set, set default value (0).
-if (isset($SESSION->allocate_perpage[$coursemoduleid]) && (isset($SESSION->perpage[$coursemoduleid]) && optional_param('per_page', 0, PARAM_INT) != $SESSION->perpage[$coursemoduleid])
-    && optional_param('per_page', 0, PARAM_INT) != 0){ // prevent blank pages if not in correct page
+if (isset($SESSION->allocate_perpage[$coursemoduleid]) && (isset($SESSION->perpage[$coursemoduleid])
+        && optional_param('per_page', 0, PARAM_INT) != $SESSION->perpage[$coursemoduleid])
+        && optional_param('per_page', 0, PARAM_INT) != 0) { // Prevent blank pages if not in correct page.
     $page = 0;
     $SESSION->allocate_page[$coursemoduleid] = $page;
 } else if (!(isset($SESSION->allocate_page[$coursemoduleid]))) {
@@ -74,17 +74,18 @@ if (!(isset($SESSION->allocate_perpage[$coursemoduleid]))) {
 // SQL sort for allocation table.
 $sortby = optional_param('sortby', '', PARAM_ALPHA);
 $sorthow = optional_param('sorthow', '', PARAM_ALPHA);
-$options = compact('sortby', 'sorthow','perpage','page');
+$options = compact('sortby', 'sorthow', 'perpage', 'page');
 
-// $_POST['allocatables'] comes as array of arrays which is not supported by optional_param_array, however we clean this later in process_data() function
-$formdataarray = isset($_POST['allocatables']) ? $_POST['allocatables'] : array();
+// POST['allocatables'] comes as array of arrays which is not supported by optional_param_array.
+// However we clean this later in process_data() function.
+$formdataarray = isset($_POST['allocatables']) ? $_POST['allocatables'] : [];
 
 require_login($course, true, $coursemodule);
 
 require_capability('mod/coursework:allocate', $PAGE->context, null, true, "Can't allocate here - permission denied.");
 
 $url = '/mod/coursework/actions/allocate.php';
-$link = new \moodle_url($url, array('id' => $coursemoduleid));
+$link = new \moodle_url($url, ['id' => $coursemoduleid]);
 $PAGE->set_url($link);
 $title = get_string('allocatefor', 'mod_coursework', $coursework->name);
 $PAGE->set_title($title);
@@ -95,25 +96,24 @@ $PAGE->requires->jquery();
 $PAGE->requires->js('/mod/coursework/loadingoverlay.min.js');
 
 // Will set off the function that adds listeners for onclick/onchange etc.
-$jsmodule = array(
+$jsmodule = [
     'name' => 'mod_coursework',
     'fullpath' => '/mod/coursework/module.js',
-    'requires' => array('base',
-                        'node-base')
+    'requires' => ['base', 'node-base'],
+];
+$PAGE->requires->js_init_call(
+    'M.mod_coursework.init_allocate_page',
+    ['wwwroot' => $CFG->wwwroot, 'coursemoduleid' => $coursemoduleid],
+    false,
+    $jsmodule
 );
-$PAGE->requires->js_init_call('M.mod_coursework.init_allocate_page',
-                              array('wwwroot'=>$CFG->wwwroot,'coursemoduleid'=>$coursemoduleid),
-                              false,
-                              $jsmodule);
 
 $PAGE->requires->string_for_js('sameassessorerror', 'coursework');
-
-
 
 $allocationsmanager = $coursework->get_allocation_manager();
 $allocationtable = new mod_coursework\allocation\table\builder($coursework, $options);
 $allocationtable = new mod_coursework_allocation_table($allocationtable);
-$pageurl    =   $PAGE->url;
+$pageurl = $PAGE->url;
 
 // 1. Save the rules and settings from the config bits.
 
@@ -129,8 +129,7 @@ if ($formsavebutton) {
     $coursework->save();
 }
 
-
-if ($samplingformsavebutton)    {
+if ($samplingformsavebutton) {
     if ($coursework->sampling_enabled()) {
         $allocationsmanager->save_sample();
     }
@@ -142,15 +141,12 @@ if ($deletemodsetrule) {
         reset($deletemodsetrule);
         $deleteruleid = key($deletemodsetrule); // Only one button can be clicked.
         if (is_numeric($deleteruleid)) {
-            $DB->delete_records('coursework_mod_set_rules', array('id' => $deleteruleid));
+            $DB->delete_records('coursework_mod_set_rules', ['id' => $deleteruleid]);
         }
     }
 }
 
-
-
 // 2. Process the manual allocations
-
 // Did we just get the form submitted to us?
 if ($formsavebutton) {
     $processor = new \mod_coursework\allocation\table\processor($coursework);
@@ -159,103 +155,69 @@ if ($formsavebutton) {
     $allocationsmanager->auto_generate_sample_set();
 }
 
-
 // 3. Process the auto allocations to fill in the gaps.
-
-
-
-
-
 // Get the data to render as a moderation set widget.
 $allocationwidget = new widget($coursework);
 $allocationwidget = new \mod_coursework_allocation_widget($allocationwidget);
 
-/**
- * @var mod_coursework_object_renderer $object_renderer
- */
-$object_renderer = $PAGE->get_renderer('mod_coursework', 'object');
-/**
- * @var mod_coursework_page_renderer $page_renderer
- */
-$page_renderer = $PAGE->get_renderer('mod_coursework', 'page');
 
+// Var mod_coursework_object_renderer $objectrenderer.
+$objectrenderer = $PAGE->get_renderer('mod_coursework', 'object');
+// Var mod_coursework_page_renderer $pagerenderer.
+$pagerenderer = $PAGE->get_renderer('mod_coursework', 'page');
 
 $warnings = new \mod_coursework\warnings($coursework);
-
-$percentage_allocation_not_complete = $warnings->percentage_allocations_not_complete();
-$manual_allocation_not_complete = '';
-$students_in_multiple_groups = '';
-if ($coursework->allocation_enabled()){
-    $manual_allocation_not_complete = $warnings->manual_allocation_not_completed();
+$percentageallocationnotcomplete = $warnings->percentage_allocations_not_complete();
+$manualallocationnotcomplete = '';
+$studentsinmultiplegroups = '';
+if ($coursework->allocation_enabled()) {
+    $manualallocationnotcomplete = $warnings->manual_allocation_not_completed();
     if ($coursework->use_groups == 1 || $coursework->assessorallocationstrategy == 'group_assessor') {
-        $students_in_multiple_groups = $warnings->students_in_mutiple_grouos();
+        $studentsinmultiplegroups = $warnings->students_in_mutiple_grouos();
     }
 }
 
-if ($formsavebutton && $percentage_allocation_not_complete == '' && $manual_allocation_not_complete == ''){
-    redirect($CFG->wwwroot.'/mod/coursework/view.php?id='.$coursemoduleid, get_string('changessaved','mod_coursework'));
-} elseif ($formsavebutton) {
+if ($formsavebutton && $percentageallocationnotcomplete == '' && $manualallocationnotcomplete == '') {
+    redirect("$CFG->wwwroot/mod/coursework/view.php?id=$coursemoduleid", get_string('changessaved', 'mod_coursework'));
+} else if ($formsavebutton) {
     redirect($PAGE->url);
 }
 
 echo $OUTPUT->header();
-echo $percentage_allocation_not_complete;
+echo $percentageallocationnotcomplete;
 if ($coursework->allocation_enabled()) {
-    echo $manual_allocation_not_complete;
-    echo $students_in_multiple_groups;
+    echo $manualallocationnotcomplete;
+    echo $studentsinmultiplegroups;
 }
 
 // Add coursework id etc.
 echo \html_writer::input_hidden_params($PAGE->url);
 
-
-
-if ($coursework->sampling_enabled()) { //  Do not delete yet - refactoring...
-    echo \html_writer::start_tag('form', array('id' => 'sampling_form',
-        'method' => 'post'));
+if ($coursework->sampling_enabled()) { // Do not delete yet - refactoring...
+    echo \html_writer::start_tag('form', ['id' => 'sampling_form', 'method' => 'post']);
     $samplesetwidget = $allocationsmanager->get_sampling_set_widget();
-    echo $object_renderer->render($samplesetwidget);
+    echo $objectrenderer->render($samplesetwidget);
     echo html_writer::end_tag('form');
 }
 
-
-
-
-
 // Start form. The page has now been broken into two forms sampling section and allocation section
 // Open form tag.
-echo \html_writer::start_tag('form', array('id' => 'allocation_form',
-    'method' => 'post'));
-
-
+echo \html_writer::start_tag('form', ['id' => 'allocation_form',
+    'method' => 'post']);
 if ($coursework->allocation_enabled()) {
-    echo $object_renderer->render($allocationwidget);
+    echo $objectrenderer->render($allocationwidget);
 }
 
 // Spacer so that we can float the headers next to each other.
-$attributes = array(
-    'class' => 'coursework_spacer'
-);
+$attributes = ['class' => 'coursework_spacer'];
 echo html_writer::start_tag('div', $attributes);
 echo html_writer::end_tag('div');
 
-
 echo html_writer::tag('h3', get_string('assessormoderatorgrades', 'mod_coursework'));
-echo html_writer::tag('div', get_string('pininfo', 'mod_coursework'), array('class'=>'pininfo'));
+echo html_writer::tag('div', get_string('pininfo', 'mod_coursework'), ['class' => 'pininfo']);
 
 // Start the form with save button.
-/*
-$attributes = array('name' => 'save',
-                    'type' => 'submit',
-                    'id' => 'save_manual_allocations_1',
-                    'value' => get_string('saveeverything', 'mod_coursework'));
-echo html_writer::empty_tag('input', $attributes);
-echo $OUTPUT->help_icon('savemanualallocations', 'mod_coursework');
-*/
-echo $object_renderer->render($allocationtable);
+echo $objectrenderer->render($allocationtable);
 
 echo html_writer::end_tag('form');
-
-
-
 echo $OUTPUT->footer();

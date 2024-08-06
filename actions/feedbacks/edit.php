@@ -15,23 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    mod
- * @subpackage coursework
+ * Edit a feedback instance.
+ * @package    mod_coursework
  * @copyright  2014 University of London Computer Centre {@link ulcc.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(dirname(__FILE__) . '/../../../../config.php');
-
+require_login();
 global $CFG, $USER;
-
 
 $feedbackid = optional_param('feedbackid', 0, PARAM_INT);
 $ajax = optional_param('ajax', 0, PARAM_INT);
 
-$params = array(
-    'feedbackid' => $feedbackid,
-    'ajax' => $ajax
-);
+$params = ['feedbackid' => $feedbackid, 'ajax' => $ajax];
 $controller = new mod_coursework\controllers\feedback_controller($params);
 $controller->edit_feedback();

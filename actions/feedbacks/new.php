@@ -15,13 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    mod
- * @subpackage coursework
+ * New feedback.
+ * @package    mod_coursework
  * @copyright  2011 University of London Computer Centre {@link ulcc.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(dirname(__FILE__) . '/../../../../config.php');
+require_login();
 
 global $CFG, $USER;
 
@@ -29,16 +30,16 @@ $submissionid = required_param('submissionid', PARAM_INT);
 $cmid = optional_param('cmid', 0, PARAM_INT);
 $feedbackid = optional_param('feedbackid', 0, PARAM_INT);
 $assessorid = optional_param('assessorid', $USER->id, PARAM_INT);
-$stage_identifier = optional_param('stage_identifier', 'uh-oh',  PARAM_RAW);
+$stageidentifier = optional_param('stage_identifier', 'uh-oh',  PARAM_RAW);
 $ajax = optional_param('ajax', 0,  PARAM_INT);
 
-$params = array(
+$params = [
     'submissionid' => $submissionid,
     'cmid' => $cmid,
     'feedbackid' => $feedbackid,
     'assessorid' => $assessorid,
-    'stage_identifier' => $stage_identifier,
+    'stage_identifier' => $stageidentifier,
     'ajax' => $ajax,
-);
+];
 $controller = new mod_coursework\controllers\feedback_controller($params);
 $controller->new_feedback();
