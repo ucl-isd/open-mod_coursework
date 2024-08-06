@@ -1,6 +1,31 @@
 <?php
-ob_start();
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * The main coursework module configuration form. Presented to the user when they make a new
+ * instance of this module
+ *
+ * @package    mod_coursework
+ * @copyright  2011 University of London Computer Centre {@link ulcc.ac.uk}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require_once(dirname(__FILE__) . '/../../../../../config.php');
+require_login();
+ob_start();
 
 global $CFG, $USER, $DB, $SESSION, $PAGE;
 
@@ -14,26 +39,25 @@ $courseworkid = required_param('courseworkid', PARAM_INT);
 $unallocated = optional_param('unallocated', false, PARAM_BOOL);
 
 // Grading report display options.
-$report_options = array();
+$reportoptions = [];
 if ($unallocated) {
-    $report_options['unallocated'] = true;
+    $reportoptions['unallocated'] = true;
 }
 
-$report_options['group'] = $group;
-$report_options['perpage'] = $perpage;
-$report_options['sortby'] = $sortby;
-$report_options['sorthow'] = $sorthow;
-$report_options['showsubmissiongrade'] = false;
-$report_options['showgradinggrade'] = false;
-$report_options['courseworkid'] = $courseworkid;
-$report_options['mode'] = \mod_coursework\grading_report::$MODE_GET_REMAIN_RECORDS;
+$reportoptions['group'] = $group;
+$reportoptions['perpage'] = $perpage;
+$reportoptions['sortby'] = $sortby;
+$reportoptions['sorthow'] = $sorthow;
+$reportoptions['showsubmissiongrade'] = false;
+$reportoptions['showgradinggrade'] = false;
+$reportoptions['courseworkid'] = $courseworkid;
+$reportoptions['mode'] = \mod_coursework\grading_report::MODE_GET_REMAIN_RECORDS;
 
-//$controller = new mod_coursework\controllers\grading_controller(['courseworkid' => $report_options, 'allocatableid' => $USER->id, 'allocatabletype' => $USER->id]);
 $controller = new mod_coursework\controllers\grading_controller([]);
 sleep(10);
-$table_html = $controller->get_remain_rows_grading_table($report_options);
+$tablehtml = $controller->get_remain_rows_grading_table($reportoptions);
 if (ob_get_contents()) {
     ob_end_clean();
 }
 
-echo $table_html;
+echo $tablehtml;
