@@ -94,7 +94,7 @@ class mod_coursework_page_renderer extends plugin_renderer_base {
 
         $html = '';
 
-        $gradedby = ($teacher_feedback->assessorid == 0) ?  get_string('automaticagreement', 'mod_coursework') : fullname($assessor);
+        $gradedby = ($teacher_feedback->assessorid == 0) ? get_string('automaticagreement', 'mod_coursework') : fullname($assessor);
         $lasteditedby = ((!$teacher_feedback->get_coursework()->sampling_enabled() || $teacher_feedback->get_submission()->sampled_feedback_exists())
             && $teacher_feedback->assessorid == 0 && $teacher_feedback->timecreated == $teacher_feedback->timemodified )
                 ? get_string('automaticagreement', 'mod_coursework') : fullname($editor);
@@ -706,7 +706,7 @@ class mod_coursework_page_renderer extends plugin_renderer_base {
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public function non_teacher_allocated_grading_page($coursework, $viewallstudents_page, $viewallstudents_perpage, $viewallstudents_sortby, $viewallstudents_sorthow, $group, $displayallstudents=0, $firstnamealpha, $lastnamealpha, $groupnamealpha) {
+    public function non_teacher_allocated_grading_page($coursework, $viewallstudents_page, $viewallstudents_perpage, $viewallstudents_sortby, $viewallstudents_sorthow, $group, $displayallstudents, $firstnamealpha, $lastnamealpha, $groupnamealpha) {
 
         global $PAGE, $OUTPUT;
 
@@ -1446,9 +1446,9 @@ class mod_coursework_page_renderer extends plugin_renderer_base {
             'alert_personaldeadline_save_successful' => str_replace(' ', '_', get_string('alert_personaldeadline_save_successful', 'mod_coursework')),
             'alert_validate_deadline' => str_replace(' ', '_', get_string('alert_validate_deadline', 'mod_coursework')),
             'url_root' => $CFG->wwwroot,
-            'alert_feedback_save_successful' =>str_replace(' ', '_', get_string('alert_feedback_save_successful', 'mod_coursework')),
-            'alert_feedback_remove_successful' =>str_replace(' ', '_', get_string('alert_feedback_remove_successful', 'mod_coursework')),
-            'alert_request_error' =>str_replace(' ', '_', get_string('alert_request_error', 'mod_coursework')),
+            'alert_feedback_save_successful' => str_replace(' ', '_', get_string('alert_feedback_save_successful', 'mod_coursework')),
+            'alert_feedback_remove_successful' => str_replace(' ', '_', get_string('alert_feedback_remove_successful', 'mod_coursework')),
+            'alert_request_error' => str_replace(' ', '_', get_string('alert_request_error', 'mod_coursework')),
             'alert_feedback_draft_save_successful' => str_replace(' ', '_', get_string('alert_feedback_draft_save_successful', 'mod_coursework'))
         ];
 

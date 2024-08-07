@@ -162,13 +162,13 @@ function coursework_add_instance($formdata) {
     // we have to check to see if this coursework has a deadline ifm it doesn't we need to set the
     // deadline to zero
 
-    $formdata->deadline = empty($formdata->deadline) ?  0 : $formdata->deadline;
+    $formdata->deadline = empty($formdata->deadline) ? 0 : $formdata->deadline;
     $subnotify = '';
     $comma = '';
     if (!empty($formdata->submissionnotification)) {
         foreach ($formdata->submissionnotification as $uid) {
             $subnotify .= $comma . $uid;
-            $comma = ', ';
+            $comma = ',';
         }
     }
     $formdata->submissionnotification = $subnotify;
@@ -442,7 +442,7 @@ function coursework_update_instance($coursework) {
     if (!empty($coursework->submissionnotification)) {
         foreach ($coursework->submissionnotification as $uid) {
             $subnotify .= $comma . $uid;
-            $comma = ', ';
+            $comma = ',';
         }
     }
 

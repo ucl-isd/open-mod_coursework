@@ -304,7 +304,7 @@ class student_submission_form extends moodleform {
         // state because the reason for doing submit on behalf of in the first place is that the student cannot use the
         // interface themselves, so they are unable to come back later to finalise it themselves.
         if (($ability->can('create', $this->get_submission()) || $ability->can('update', $this->get_submission()))
-            &&  $this->get_submission()->get_coursework()->has_deadline() ) {
+            && $this->get_submission()->get_coursework()->has_deadline() ) {
             $button_array[] = $this->_form->createElement('submit', 'submitbutton', get_string('submit'));
         }
         if ($ability->can('finalise', $this->get_submission())) {

@@ -104,7 +104,7 @@ class range_sample_type extends \mod_coursework\sample_set_rule\sample_base {
         }
 
         if ($dbrecord) {
-            $selected_type = array($dbrecord->ruletype=>get_string($dbrecord->ruletype, 'mod_coursework'));
+            $selected_type = array($dbrecord->ruletype=> get_string($dbrecord->ruletype, 'mod_coursework'));
            $selected_to = ($dbrecord->ruletype == 'scale') ? array($dbrecord->upperlimit => $scale[$dbrecord->upperlimit]) :  array($dbrecord->upperlimit => $dbrecord->upperlimit);
 
             $selected_from = ($dbrecord->ruletype == 'scale') ? array($dbrecord->lowerlimit => $scale[$dbrecord->lowerlimit]) :  array($dbrecord->lowerlimit => $dbrecord->lowerlimit);
@@ -112,7 +112,7 @@ class range_sample_type extends \mod_coursework\sample_set_rule\sample_base {
             $rules_checked = ($dbrecord) ? true : false;
 
         } else {
-            $selected_type = array('percentage' =>get_string('percentage', 'mod_coursework'));
+            $selected_type = array('percentage' => get_string('percentage', 'mod_coursework'));
             $selected_to = array('100' => '100');
             $selected_from = array('0' => '0');;
             $rules_checked = false;

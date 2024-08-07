@@ -339,7 +339,7 @@ class mod_coursework_mod_form extends moodleform_mod {
            $data->blindmarking = $CFG->coursework_blindmarking;
         }
 
-        if ($data->numberofmarkers >1) {
+        if ($data->numberofmarkers > 1) {
             $data->moderationagreementenabled = 0;
         }
 
@@ -498,7 +498,7 @@ class mod_coursework_mod_form extends moodleform_mod {
             get_string('usemarkingdeadline', 'mod_coursework'), $options);
         $moodle_form->setType('markingdeadlineenabled', PARAM_INT);
 
-        $settingdefault = (empty($CFG->coursework_marking_deadline) && empty($CFG->coursework_agreed_marking_deadline)) ?  0 : 1;
+        $settingdefault = (empty($CFG->coursework_marking_deadline) && empty($CFG->coursework_agreed_marking_deadline)) ? 0 : 1;
         $moodle_form->setDefault('markingdeadlineenabled', $settingdefault);
     }
 
@@ -615,7 +615,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     protected static function add_relative_initial_marking_deadline_field($moodle_form) {
         global $CFG;
 
-        $options = array('0' =>get_string('disabled', 'mod_coursework'));
+        $options = array('0' => get_string('disabled', 'mod_coursework'));
         $options['7'] = get_string('oneweekoption', 'mod_coursework');
         $options['14'] = get_string('twoweeksoption', 'mod_coursework');
         $options['21'] = get_string('threeweeksoption', 'mod_coursework');
@@ -640,7 +640,7 @@ class mod_coursework_mod_form extends moodleform_mod {
     protected static function add_relative_agreed_grade_marking_deadline_field($moodle_form) {
         global $CFG;
 
-        $options = array('0' =>get_string('disabled', 'mod_coursework'));
+        $options = array('0' => get_string('disabled', 'mod_coursework'));
         $options['7'] = get_string('oneweekoption', 'mod_coursework');
         $options['14'] = get_string('twoweeksoption', 'mod_coursework');
         $options['21'] = get_string('threeweeksoption', 'mod_coursework');
@@ -681,7 +681,7 @@ class mod_coursework_mod_form extends moodleform_mod {
             get_string('sendmarkingreminder', 'mod_coursework'), $options);
         $moodle_form->setType('markingreminderenabled', PARAM_INT);
 
-        $settingdefault = (empty($CFG->coursework_marking_deadline)) ?  0 : 1;
+        $settingdefault = (empty($CFG->coursework_marking_deadline)) ? 0 : 1;
         $moodle_form->setDefault('markingreminderenabled', $settingdefault);
 
     }
@@ -849,7 +849,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
         $moodle_form =& $this->_form;
 
-        $choices = array('0' =>get_string('no'), '1' =>get_string('yes'));
+        $choices = array('0' => get_string('no'), '1' => get_string('yes'));
         $courseworkid = self::get_coursework_id();
         $courseworkhassubmissions = (!empty($courseworkid)) ?
             $courseworkhassubmissions = $DB->get_records('coursework_submissions', array('courseworkid' => $courseworkid))
@@ -1266,7 +1266,7 @@ class mod_coursework_mod_form extends moodleform_mod {
         $moodle_form->addHelpButton('samplingenabled', 'samplingenabled', 'mod_coursework');
 
         $courseworkid = self::get_coursework_id();
-        if (!$courseworkid ||  ($courseworkid && !mod_coursework\models\coursework::find($courseworkid)->has_samples()) ) {
+        if (!$courseworkid || ($courseworkid && !mod_coursework\models\coursework::find($courseworkid)->has_samples()) ) {
             $moodle_form->disabledIf('samplingenabled', 'numberofmarkers', 'eq', 1);
 
         }
@@ -1293,7 +1293,7 @@ class mod_coursework_mod_form extends moodleform_mod {
 
         $moodle_form =& $this->_form;
 
-        $options = array('0' =>get_string('disabled', 'mod_coursework'));
+        $options = array('0' => get_string('disabled', 'mod_coursework'));
         $options['1800'] = get_string('timedminutes', 'mod_coursework', '30');
         $options['3600'] = get_string('timedhour', 'mod_coursework', '1');
         $options['7200'] = get_string('timedhours', 'mod_coursework', '2');

@@ -182,7 +182,7 @@ if ($ADMIN->fulltree) {
 
     // automatic agreement delay
 
-    $options = array('0' =>get_string('disabled', 'mod_coursework'));
+    $options = array('0' => get_string('disabled', 'mod_coursework'));
     $options['1800'] = get_string('timedminutes', 'mod_coursework', '30');
     $options['3600'] = get_string('timedhour', 'mod_coursework', '1');
     $options['7200'] = get_string('timedhours', 'mod_coursework', '2');

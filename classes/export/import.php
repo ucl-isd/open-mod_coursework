@@ -153,7 +153,7 @@ class import extends grading_sheet{
             $s++;
         }
 
-        return (!empty($errors)) ?  $errors : false;
+        return (!empty($errors)) ? $errors : false;
     }
 
     function rubric_count_correct($csvheader, $linefromimportedcsv)         {
@@ -174,12 +174,9 @@ class import extends grading_sheet{
                 $typepositions = false;
                 $i = 0;
 
-                foreach ($csvheader  as  $ch) {
-
+                foreach ($csvheader as $ch) {
                     if (strpos($ch, $type) !== false) {
-
                         if (empty($typepositions))   $typepositions = [];
-
                         $typefound = true;
                         $typepositions[] = $i;
                         //break;
@@ -355,7 +352,7 @@ class import extends grading_sheet{
             // defines the start offest to be used when searching for a rubric in a uploaded csv, if the format of upload
             // csv is changed this will require changing
 
-            $rubricoffset = $rubricoffsetstart = ($coursework->is_configured_to_have_group_submissions()) ?   4 : 5;
+            $rubricoffset = $rubricoffsetstart = ($coursework->is_configured_to_have_group_submissions()) ?  4 : 5;
 
             $numberofstages = count($stages);
 
@@ -519,7 +516,7 @@ class import extends grading_sheet{
             $s++;
         }
 
-        return (!empty($errors)) ?  $errors : false;
+        return (!empty($errors)) ? $errors : false;
 
     }
 
@@ -700,7 +697,7 @@ class import extends grading_sheet{
         $stage_identifier = 'assessor_1';
 
         // double marked - singlegrade - allocated
-        if ($this->coursework->get_max_markers()>1 && ($cell_identifier == 'singlegrade' || $cell_identifier == 'feedbackcomments')
+        if ($this->coursework->get_max_markers() > 1 && ($cell_identifier == 'singlegrade' || $cell_identifier == 'feedbackcomments')
             && $this->coursework->allocation_enabled()) {
 
             $dbrecord = $DB->get_record('coursework_allocation_pairs',
@@ -713,7 +710,7 @@ class import extends grading_sheet{
         }
 
         // double marked - singlegrade - notallocated
-        if ($this->coursework->get_max_markers()>1 && ($cell_identifier == 'singlegrade' || $cell_identifier == 'feedbackcomments')
+        if ($this->coursework->get_max_markers() > 1 && ($cell_identifier == 'singlegrade' || $cell_identifier == 'feedbackcomments')
             && !$this->coursework->allocation_enabled()) {
 
             // if any part of initial submission graded by the user then get stage_identifier from feedback
@@ -732,7 +729,7 @@ class import extends grading_sheet{
                         AND stage_identifier <> 'final_agreed_1'";
                 $record = $DB->get_record_sql($sql);
 
-                if ($this->coursework->get_max_markers()>$record->graded) {
+                if ($this->coursework->get_max_markers() > $record->graded) {
                     $stage = $record->graded+1;
                     $stage_identifier = 'assessor_' . $stage;
                 }
@@ -760,7 +757,7 @@ class import extends grading_sheet{
         }
 
         // double marked - multiplegrade - allocated/notallocated
-        if ($this->coursework->get_max_markers()>1 && ($cell_identifier != 'singlegrade' && $cell_identifier != 'feedbackcomments')) {
+        if ($this->coursework->get_max_markers() > 1 && ($cell_identifier != 'singlegrade' && $cell_identifier != 'feedbackcomments')) {
             if (substr($cell_identifier, 0, 8) == 'assessor') {
                 $stage_identifier = 'assessor_' . (substr($cell_identifier, -1));
                 //$cells[$i] = substr($cells[$i], 0, -1);

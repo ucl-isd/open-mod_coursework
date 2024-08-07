@@ -147,7 +147,7 @@ class upload {
             $s++;
         }
 
-        return (!empty($errors)) ?  $errors : false;
+        return (!empty($errors)) ? $errors : false;
     }
 
     /**
@@ -262,7 +262,7 @@ class upload {
             $s++;
         }
 
-        return (!empty($errors)) ?  $errors : false;
+        return (!empty($errors)) ? $errors : false;
 
     }
 

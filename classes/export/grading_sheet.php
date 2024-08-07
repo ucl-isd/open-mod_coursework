@@ -159,7 +159,7 @@ class grading_sheet extends csv{
 
         // based on capabilities decide what view display - singlegrade or multiplegrade
         if ((has_capability('mod/coursework:addagreedgrade', $PAGE->context) || has_capability('mod/coursework:administergrades', $PAGE->context))
-           && $coursework->get_max_markers()>1 ) {
+           && $coursework->get_max_markers() > 1 ) {
            for ($i = 1; $i <= $coursework->get_max_markers(); $i++) {
                // extra column with allocated assessor name
               if ($coursework->allocation_enabled() && $coursework->get_max_markers() > 1
@@ -173,7 +173,7 @@ class grading_sheet extends csv{
             $csv_cells[] = 'agreedgrade';
             $csv_cells[] = 'agreedfeedback';
 
-        } else if (has_capability('mod/coursework:addallocatedagreedgrade', $PAGE->context) && $coursework->get_max_markers() >1) {
+        } else if (has_capability('mod/coursework:addallocatedagreedgrade', $PAGE->context) && $coursework->get_max_markers() > 1) {
             $csv_cells[] = 'singlegrade';
             $csv_cells[] = 'feedbackcomments';
 

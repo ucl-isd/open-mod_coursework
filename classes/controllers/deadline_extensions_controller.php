@@ -293,7 +293,7 @@ class deadline_extensions_controller extends controller_base {
                 $ability->require_can('edit', $deadline_extension);
                 $time_content = '';
                 $time = '';
-                if ($this->coursework->personaldeadlineenabled &&  $personal_deadline = $this->personal_deadline()) {
+                if ($this->coursework->personaldeadlineenabled && $personal_deadline = $this->personal_deadline()) {
                     $time_content = 'Personal deadline: ' . userdate($personal_deadline->personal_deadline);
                     $time = date('d-m-Y H:i', $personal_deadline->personal_deadline);
                 } else if ($this->coursework->deadline) {

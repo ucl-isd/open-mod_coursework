@@ -191,8 +191,8 @@ class manager {
      * @return array
      */
     public function get_sampling_options() {
-        return array('0' =>get_string('manual', 'mod_coursework'),
-                     '1' =>get_string('automatic', 'mod_coursework'));
+        return array('0' => get_string('manual', 'mod_coursework'),
+                     '1' => get_string('automatic', 'mod_coursework'));
 
     }
 
@@ -344,7 +344,7 @@ class manager {
 
                 // save sample set
                 if (!empty($auto_sample_set)) {
-                        foreach ($auto_sample_set    as  $allocatable) {
+                        foreach ($auto_sample_set as $allocatable) {
                             $sample = new \stdClass();
                             $sample->courseworkid = $this->coursework->id;
                             $sample->allocatableid = $allocatable->id;

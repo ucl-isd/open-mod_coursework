@@ -96,7 +96,7 @@ abstract class base {
             return;
         }
 
-        if ($this->get_coursework()->assessorallocationstrategy == 'group_assessor' &&  $this->identifier() == 'assessor_1' ) {
+        if ($this->get_coursework()->assessorallocationstrategy == 'group_assessor' && $this->identifier() == 'assessor_1' ) {
             // get teacher form the group
             $teacher = $this->get_assessor_from_moodle_course_group($allocatable);
             //$teacher = user::find(12);

@@ -44,7 +44,7 @@ class deadline_extension_form extends \moodleform {
         $this->_form->addElement('hidden', 'id');
         $this->_form->settype('id', PARAM_INT);
 
-        if ($this->get_coursework()->personaldeadlineenabled &&  $personal_deadline = $this->personal_deadline()) {
+        if ($this->get_coursework()->personaldeadlineenabled && $personal_deadline = $this->personal_deadline()) {
             $this->_form->addElement('html', '<div class="alert">Personal deadline: '. userdate($personal_deadline->personal_deadline).'</div>');
         } else {
             // Current deadline for comparison
