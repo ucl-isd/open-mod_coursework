@@ -26,20 +26,20 @@ class submissionfileid_cell extends cell_base {
         return  get_string('submissionfileid', 'coursework');
     }
 
-    public function validate_cell($value,$submissionid,$stage_dentifier='',$uploadedgradecells = array())  {
+    public function validate_cell($value, $submissionid, $stage_dentifier='', $uploadedgradecells = []) {
         global $DB;
 
-        if (empty($value))  {
+        if (empty($value)) {
             return 'No submission hash value entered';
         }
 
-        $subdbrecord =   $DB->get_record('coursework_submissions',array('id'=>$submissionid));
+        $subdbrecord = $DB->get_record('coursework_submissions', array('id' => $submissionid));
 
         $submission = \mod_coursework\models\submission::find($subdbrecord);
 
-        $hash   =    $this->coursework->get_username_hash($submission->allocatableid);
+        $hash = $this->coursework->get_username_hash($submission->allocatableid);
 
-        return ($value == $hash) ? true : get_string('submissionnotfound','coursework');
+        return ($value == $hash) ? true : get_string('submissionnotfound', 'coursework');
     }
 
 }

@@ -88,7 +88,7 @@ class mailer {
         foreach ($recipients as $recipient) {
 
             // New approach.
-            $eventdata =  new \core\message\message();
+            $eventdata = new \core\message\message();
             $eventdata->component = 'mod_coursework';
             $eventdata->name = 'submission_receipt';
             $eventdata->userfrom = \core_user::get_noreply_user();
@@ -109,7 +109,6 @@ class mailer {
             message_send($eventdata);
         }
     }
-
 
     /**
      * Send feedback notifications to users whose feedback was released
@@ -164,7 +163,7 @@ class mailer {
      * @return mixed
      * @throws \coding_exception
      */
-    public function send_student_deadline_reminder($user)   {
+    public function send_student_deadline_reminder($user) {
 
         global $CFG;
 
@@ -175,7 +174,7 @@ class mailer {
         $email_data->coursework_name = $this->coursework->name;
         $email_data->coursework_name_with_link = \html_writer::link($CFG->wwwroot . '/mod/coursework/view.php?id=' . $this->coursework->get_coursemodule_id(), $this->coursework->name);
         $email_data->deadline = $user->deadline;
-        $email_data->human_deadline = userdate($user->deadline,'%a, %d %b %Y, %H:%M');
+        $email_data->human_deadline = userdate($user->deadline, '%a, %d %b %Y, %H:%M');
 
         $secondstodeadline = $user->deadline - time();
         $days = floor($secondstodeadline / 86400);
@@ -195,7 +194,7 @@ class mailer {
         $text_body = get_string('cron_email_text', 'mod_coursework', $email_data);
         $html_body = get_string('cron_email_html', 'mod_coursework', $email_data);
 
-        $eventdata =  new \core\message\message();
+        $eventdata = new \core\message\message();
         $eventdata->component = 'mod_coursework';
         $eventdata->name = 'student_deadline_reminder';
         $eventdata->userfrom = \core_user::get_noreply_user();
@@ -213,9 +212,7 @@ class mailer {
         return message_send($eventdata);
     }
 
-
-
-    public function send_submission_notification($userstonotify)  {
+    public function send_submission_notification($userstonotify) {
 
         global $CFG;
 
@@ -249,7 +246,6 @@ class mailer {
 
             message_send($eventdata);
         }
-
 
     }
 }

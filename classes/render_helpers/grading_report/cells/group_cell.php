@@ -28,11 +28,10 @@ class group_cell extends cell_base implements allocatable_cell {
         $content .= '<div class="group_style">';
         $content .= '<select>';
 
-
         if ($this->coursework->blindmarking_enabled() && !has_capability('mod/coursework:viewanonymous', $this->coursework->get_context()) && !$row_object->is_published()){
-            $content .= '<option class="expand_members" selected="selected">'.get_string('membershidden','coursework').'</option>';
+            $content .= '<option class="expand_members" selected="selected">'.get_string('membershidden', 'coursework').'</option>';
         } else{
-            $content .= '<option class="expand_members" selected="selected">'.get_string('viewmembers','coursework').'</option>';
+            $content .= '<option class="expand_members" selected="selected">'.get_string('viewmembers', 'coursework').'</option>';
         }
 
         $cm = $this->coursework->get_course_module();
@@ -51,11 +50,11 @@ class group_cell extends cell_base implements allocatable_cell {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
 
         //adding this line so that the sortable heading function will make a sortable link unique to the table
         //if tablename is set
-        $tablename  =   (isset($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (isset($options['tablename']))  ? $options['tablename']  : ''  ;
 
         return $this->helper_sortable_heading(get_string('tableheadgroups', 'coursework'),
                                               'groupname',

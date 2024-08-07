@@ -2,7 +2,6 @@
 
 namespace mod_coursework\render_helpers\grading_report\cells;
 
-
 use html_table_cell;
 use mod_coursework\grading_table_row_base;
 use mod_coursework\user_row;
@@ -22,8 +21,7 @@ interface cell_interface {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array());
-
+    public function get_table_header($options = []);
 
     /**
      * @return string

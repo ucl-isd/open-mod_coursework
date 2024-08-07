@@ -21,7 +21,6 @@ use mod_coursework\models\coursework;
 
 defined('MOODLE_INTERNAL') || die();
 
-
 /**
  * Renderable class to represent a table containing assessor feedbacks for a single student submission.
  * Used in the grading report for multiple assessor courseworks.
@@ -73,7 +72,7 @@ class assessor_feedback_table {
         // Makes a new result set every time, so we can modify this array without worrying about
         // messing up the cache.
 
-        $feedbackobjects = array();
+        $feedbackobjects = [];
         foreach ($this->coursework->get_assessor_marking_stages() as $stage) {
             $renderable_row = new assessor_feedback_row($stage, $this->get_allocatable(), $this->coursework);
             $feedbackobjects[] = $renderable_row;

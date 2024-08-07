@@ -36,7 +36,7 @@ class processor {
      * @param stage_base $stage
      * @param array $data_array incoming data from the allocation form
      */
-    public function __construct($coursework, $allocatable, $stage, $data_array = array()) {
+    public function __construct($coursework, $allocatable, $stage, $data_array = []) {
         $this->coursework = $coursework;
         $this->allocatable = $allocatable;
         $this->stage = $stage;
@@ -57,7 +57,6 @@ class processor {
             $this->save_assessor_allocation($cell_data);
         }
     }
-
 
     /**
      * @param data $data
@@ -94,8 +93,6 @@ class processor {
     private function get_allocation() {
         return $this->get_stage()->get_allocation($this->get_allocatable());
     }
-
-
 
     /**
      * @param data $data
@@ -146,23 +143,22 @@ class processor {
         }
     }
 
-
     /**
      * returns whether the current record was automatically included in the sample set at the current stage
      *
      * @return bool
      * @throws \coding_exception
      */
-    private function has_automatic_sampling()   {
+    private function has_automatic_sampling() {
 
         global $DB;
 
-        $params =   array('courseworkid'=>$this->coursework->id(),
-            'allocatableid'=>$this->get_allocatable()->id(),
-            'stage_identifier'=>$this->get_stage()->identifier(),
+        $params = array('courseworkid' => $this->coursework->id(),
+            'allocatableid' => $this->get_allocatable()->id(),
+            'stage_identifier' => $this->get_stage()->identifier(),
             'selectiontype' => 'automatic');
 
-        return $DB->record_exists('coursework_sample_set_mbrs',$params);
+        return $DB->record_exists('coursework_sample_set_mbrs', $params);
     }
 
 }

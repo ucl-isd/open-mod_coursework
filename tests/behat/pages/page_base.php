@@ -59,7 +59,7 @@ class mod_coursework_behat_page_base {
     public function should_have_text($text) {
 
         $page_text = $this->getPage()->getText();
-        if (substr_count($page_text, $text)== 0) {
+        if (substr_count($page_text, $text) == 0) {
             throw new ExpectationException('Page did not have text "'.$text.'"', $this->getSession());
         }
 
@@ -107,7 +107,7 @@ class mod_coursework_behat_page_base {
          * @var $things NodeElement[]
          */
         $things = $this->getPage()->findAll('css', $thing_css);
-        foreach($things as $thing) {
+        foreach ($things as $thing) {
             if (empty($text) || $thing->getText() == $text || $thing->getValue() == $text) {
                 $thing->click();
                 $ok = true;

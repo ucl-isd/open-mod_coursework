@@ -141,7 +141,6 @@ class controller_base {
 
     }
 
-
     /**
      * Single accessible method that look for a private method and uses it if its there, after preparing the environment.
      *

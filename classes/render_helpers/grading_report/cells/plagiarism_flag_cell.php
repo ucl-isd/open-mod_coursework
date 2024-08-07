@@ -33,7 +33,7 @@ class plagiarism_flag_cell extends cell_base {
             $plagiarism_flag_params = array(
                 'submissionid' => $rowobject->get_submission()->id
             );
-            $plagiarism_flag =  plagiarism_flag::find($plagiarism_flag_params);
+            $plagiarism_flag = plagiarism_flag::find($plagiarism_flag_params);
 
             if(!$plagiarism_flag){  // if plagiarism flag for this submission doesn't exist, we can create one
                 $plagiarism_flag_params = array('courseworkid' => $rowobject->get_coursework()->id,
@@ -62,7 +62,7 @@ class plagiarism_flag_cell extends cell_base {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
         return (get_string('tableheadplagiarismalert', 'coursework'));
     }
 
@@ -79,7 +79,6 @@ class plagiarism_flag_cell extends cell_base {
     public function header_group() {
         return 'submission';
     }
-
 
     /**
      * @param grading_table_row_base $rowobject
@@ -104,7 +103,6 @@ class plagiarism_flag_cell extends cell_base {
 
         return $OUTPUT->action_link($link, $title, null, $html_attributes);
     }
-
 
     /**
      * @param grading_table_row_base $rowobject

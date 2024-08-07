@@ -12,7 +12,6 @@ use mod_coursework\grade_judge;
  */
 class feedbackcomments_cell extends cell_base {
 
-
     /**
      * @param submission $submission
      * @param $student
@@ -35,27 +34,26 @@ class feedbackcomments_cell extends cell_base {
         return  get_string('feedbackcomment', 'coursework');
     }
 
-
-    public function validate_cell($value, $submissionid, $stage_identifier='',$uploadedgradecells = array()) {
+    public function validate_cell($value, $submissionid, $stage_identifier='', $uploadedgradecells = []) {
 
         global $PAGE, $DB, $USER;
 
         if (has_capability('mod/coursework:addinitialgrade', $PAGE->context) || has_capability('mod/coursework:editinitialgrade', $PAGE->context)
-            || has_capability('mod/coursework:administergrades', $PAGE->context))   {
+            || has_capability('mod/coursework:administergrades', $PAGE->context)) {
 
-            $dbrecord = $DB->get_record('coursework_submissions', array('id'=>$submissionid));
+            $dbrecord = $DB->get_record('coursework_submissions', array('id' => $submissionid));
 
-            $submission    =  \mod_coursework\models\submission::find($dbrecord);
+            $submission = \mod_coursework\models\submission::find($dbrecord);
 
             //is this submission ready to be graded
-            if (!$submission->ready_to_grade()) return get_string('submissionnotreadytograde','coursework');
+            if (!$submission->ready_to_grade()) return get_string('submissionnotreadytograde', 'coursework');
 
             //if you have administer grades you can grade anything
             if (has_capability('mod/coursework:administergrades', $PAGE->context)) return true;
 
             //is the current user an assessor at any of this submissions grading stages or do they have administer grades
-            if (!$this->coursework->is_assessor($USER) && !has_capability('mod/coursework:administergrades',$PAGE->context))
-                return get_string('nopermissiontogradesubmission','coursework');
+            if (!$this->coursework->is_assessor($USER) && !has_capability('mod/coursework:administergrades', $PAGE->context))
+                return get_string('nopermissiontogradesubmission', 'coursework');
 
             $ability = new ability(user::find($USER), $this->coursework);
 
@@ -75,12 +73,11 @@ class feedbackcomments_cell extends cell_base {
                 );
                 $new_feedback = feedback::build($feedback_params);
 
-
                 //this is a new feedback check it against the new ability checks
-                if (!$ability->can('new',$new_feedback))   return get_string('nopermissiontogradesubmission','coursework');
+                if (!$ability->can('new', $new_feedback))   return get_string('nopermissiontogradesubmission', 'coursework');
             } else {
                 //this is a new feedback check it against the edit ability checks
-                if (!$ability->can('edit',$feedback))   return get_string('nopermissiontoeditgrade','coursework');
+                if (!$ability->can('edit', $feedback))   return get_string('nopermissiontoeditgrade', 'coursework');
             }
         } else {
             return get_string('nopermissiontoimportgrade', 'coursework');

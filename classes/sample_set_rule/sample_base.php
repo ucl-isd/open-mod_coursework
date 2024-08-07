@@ -6,13 +6,10 @@
  * Time: 12:34
  */
 
-
-
 /**
  * File for a sampling rule that will include X students from between an upper and lower limit.
  *
- * @package    mod
- * @subpackage coursework
+ * @package    mod_coursework
  * @copyright  2015 University of London Computer Centre {@link ulcc.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -23,15 +20,12 @@ use html_writer;
 use mod_coursework\allocation\allocatable;
 use mod_coursework\models\coursework;
 
-
 defined('MOODLE_INTERNAL') || die();
-
 
 /**
  * This base class is extended to make specific sampling rules strategies
  */
 abstract class sample_base {
-
 
     /**
      * @var string DB table this class relates to.
@@ -47,7 +41,6 @@ abstract class sample_base {
      * @var int
      */
     public $courseworkid;
-
 
     protected $coursework;
 
@@ -89,12 +82,9 @@ abstract class sample_base {
         'minimum'
     );
 
-
-
-    function __construct($coursework)   {
-        $this->coursework   =   $coursework;
+    function __construct($coursework) {
+        $this->coursework = $coursework;
     }
-
 
     /**
      * Returns the name of the class without the 'coursework_moderation_set_rule_' prefix.
@@ -139,7 +129,6 @@ abstract class sample_base {
         return true;
     }
 
-
     /**
      * Each rule may have different form elements that we need to add in order for a new one to be
      * @abstract
@@ -167,9 +156,8 @@ abstract class sample_base {
                  WHERE  s.courseworkid = :courseworkid
                    AND  f.stage_identifier = 'final_agreed_1'";
 
-        return $DB->get_records_sql($sql, array('courseworkid'=>$this->coursework->id));
+        return $DB->get_records_sql($sql, array('courseworkid' => $this->coursework->id));
     }
-
 
     /**
      *
@@ -183,8 +171,7 @@ abstract class sample_base {
                  WHERE  courseworkid = :courseworkid
                    AND  firstpublished IS NOT NULL";
 
-        return $DB->get_records_sql($sql, array('courseworkid'=>$this->coursework->id));
+        return $DB->get_records_sql($sql, array('courseworkid' => $this->coursework->id));
     }
-
 
 }

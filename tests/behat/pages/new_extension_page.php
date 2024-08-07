@@ -29,7 +29,6 @@ class mod_coursework_behat_new_extension_page extends mod_coursework_behat_page_
         // Delegates to the field class.
         $field->set_value('Extra info here');
 
-
         $this->submit_form();
     }
 

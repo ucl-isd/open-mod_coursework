@@ -10,7 +10,8 @@ class cron_test extends advanced_testcase {
 
     use mod_coursework\test_helpers\factory_mixin;
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $this->resetAfterTest();
         $this->setAdminUser();
         $this->preventResetByRollback();
@@ -75,7 +76,6 @@ class cron_test extends advanced_testcase {
         $this->assertEquals(array($teacher), $cron_class->get_admins_and_teachers($this->coursework->get_context()));
     }
 
-
     public function test_auto_finalising_does_not_alter_time_submitted() {
         $this->create_a_course();
         $coursework = $this->create_a_coursework();
@@ -131,8 +131,6 @@ class cron_test extends advanced_testcase {
 
         $this->assertNotEmpty($submission->reload()->firstpublished);
     }
-
-
 
     /**
      * Was throwing an error when the allocatable could not be found.

@@ -9,6 +9,4 @@ namespace mod_coursework\allocation;
  */
 interface moderatable {
 
-
-
 }

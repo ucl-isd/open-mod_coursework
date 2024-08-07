@@ -38,12 +38,11 @@ class builder {
      * @param stage_base $stage
      * @param array $data_array incoming data from the allocation form
      */
-    public function __construct($coursework, $allocatable, $stage, $data_array = array()) {
+    public function __construct($coursework, $allocatable, $stage, $data_array = []) {
         $this->coursework = $coursework;
         $this->allocatable = $allocatable;
         $this->stage = $stage;
     }
-
 
     /**
      * @return \html_table_cell
@@ -74,7 +73,6 @@ class builder {
         }
 
         return $this->get_stage()->potential_marker_dropdown($this->get_allocatable());
-
 
     }
 
@@ -117,7 +115,6 @@ class builder {
     private function get_feedback() {
         return $this->get_stage()->get_feedback_for_allocatable($this->get_allocatable());
     }
-
 
     /**
      * @return bool|\mod_coursework\models\moderation
@@ -188,10 +185,9 @@ class builder {
             $assessor_name .= 'Grade: ';
             $assessor_name .= $this->get_feedback()->get_grade();
         } else if ($this->has_allocation()) {
-            $assessor_name .=  ' '.$this->pinned_checkbox($assessor_dropdown) ;
+            $assessor_name .= ' '.$this->pinned_checkbox($assessor_dropdown) ;
             $assessor_name .= $this->get_stage()->get_allocated_assessor_name($this->get_allocatable());
         }
-
 
         if ($assessor_name) {
            if ($this->get_stage()->uses_sampling() && !$this->get_feedback() && !$this->has_automatic_sampling()) {
@@ -239,12 +235,10 @@ class builder {
             $moderator_name .= $this->get_stage()->get_allocated_assessor_name($this->get_allocatable());
         }
 
-
         if ($moderator_name) {
             $contents .= '<br>';
             $contents .= "<span class='existing-moderator'>{$moderator_name}</span>";
         }
-
 
         if ($moderator_dropdown) {
             $contents .= '<br>';
@@ -256,7 +250,6 @@ class builder {
             </td>
         ';
     }
-
 
     /**
      * @return allocatable
@@ -283,12 +276,12 @@ class builder {
             $checkbox_checked = 1;
         }
 
-        $checkbox_checked   =   $this->checkbox_checked_in_session($checkbox_name,$checkbox_checked);
+        $checkbox_checked = $this->checkbox_checked_in_session($checkbox_name, $checkbox_checked);
 
         $checkbox_title = 'Included in sample';
 
         $attributes = array('class' => 'sampling_set_checkbox',
-                            'id'=>$this->get_allocatable()->type().'_' . $this->get_allocatable()->id() . '_'.$this->get_stage()->identifier() .'_samplecheckbox',
+                            'id' => $this->get_allocatable()->type().'_' . $this->get_allocatable()->id() . '_'.$this->get_stage()->identifier() .'_samplecheckbox',
                             'title' => $checkbox_title);
 
         // if agreed grade given or grade published to students disable remaining sampling checkbox
@@ -317,8 +310,8 @@ class builder {
             1,
            '',
             array('class' => 'sampling_set_checkbox',
-                'id'=>$this->get_allocatable()->type().'_' . $this->get_allocatable()->id() . '_'.$this->get_stage()->identifier() .'_samplecheckbox',
-                'title' => $checkbox_title, 'hidden'=>true));
+                'id' => $this->get_allocatable()->type().'_' . $this->get_allocatable()->id() . '_'.$this->get_stage()->identifier() .'_samplecheckbox',
+                'title' => $checkbox_title, 'hidden' =>true));
     }
 
     /**
@@ -327,26 +320,22 @@ class builder {
      * @return bool
      * @throws \coding_exception
      */
-    private function has_automatic_sampling()   {
+    private function has_automatic_sampling() {
 
         global $DB;
 
-        $params =   array('courseworkid'=>$this->coursework->id(),
-                          'allocatableid'=>$this->get_allocatable()->id(),
-                          'stage_identifier'=>$this->get_stage()->identifier(),
+        $params = array('courseworkid' => $this->coursework->id(),
+                          'allocatableid' => $this->get_allocatable()->id(),
+                          'stage_identifier' => $this->get_stage()->identifier(),
                           'selectiontype' => 'automatic');
 
-
-
-        return $DB->record_exists('coursework_sample_set_mbrs',$params);
+        return $DB->record_exists('coursework_sample_set_mbrs', $params);
     }
 
     /**
      * @return string
      */
     private function pinned_checkbox() {
-
-
 
         $checkbox_name =
             'allocatables[' . $this->get_allocatable()->id . '][' . $this->get_stage()->identifier() . '][pinned]';
@@ -357,7 +346,7 @@ class builder {
             }
         }
 
-        $checkbox_checked   =   $this->checkbox_checked_in_session($checkbox_name,$checkbox_checked);
+        $checkbox_checked = $this->checkbox_checked_in_session($checkbox_name, $checkbox_checked);
 
         $stage = substr($this->get_stage()->identifier(), -1);
         $checkbox_title = 'Pinned (auto allocations will not alter this)';
@@ -369,20 +358,16 @@ class builder {
                                                            'title' => $checkbox_title));
     }
 
-
-
-    private function checkbox_checked_in_session($checkboxname,$checkboxstate)  {
+    private function checkbox_checked_in_session($checkboxname, $checkboxstate) {
 
         global  $SESSION;
 
-        $cm =   $this->coursework->get_course_module();
+        $cm = $this->coursework->get_course_module();
 
-        if (!empty($SESSION->coursework_allocationsessions[$cm->id]))   {
-            if (isset($SESSION->coursework_allocationsessions[$cm->id][$checkboxname]))    {
+        if (!empty($SESSION->coursework_allocationsessions[$cm->id])) {
+            if (isset($SESSION->coursework_allocationsessions[$cm->id][$checkboxname])) {
                 return  $SESSION->coursework_allocationsessions[$cm->id][$checkboxname];
             }
-
-
 
         }
 
@@ -409,7 +394,7 @@ class builder {
      * @throws \coding_exception
      */
     private function get_included_in_sample_label() {
-        return \html_writer::label(get_string('includedinsample', 'mod_coursework'), null, true, array('class'=>'included_in_sample'));
+        return \html_writer::label(get_string('includedinsample', 'mod_coursework'), null, true, array('class' => 'included_in_sample'));
     }
 
     /**
@@ -417,7 +402,7 @@ class builder {
      * @throws \coding_exception
      */
     private function get_automatically_in_sample_label() {
-        return \html_writer::label(get_string('automaticallyinsample', 'mod_coursework'), null, true, array('class'=>'included_in_sample'));
+        return \html_writer::label(get_string('automaticallyinsample', 'mod_coursework'), null, true, array('class' => 'included_in_sample'));
     }
 
     /**

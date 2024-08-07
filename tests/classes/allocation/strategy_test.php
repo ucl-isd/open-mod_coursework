@@ -18,7 +18,6 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 
-
 /**
  * Unit tests for the base allocation strategy class.
  * @group mod_coursework
@@ -33,7 +32,8 @@ class coursework_allocation_strategy_test extends advanced_testcase {
     /**
      * Makes us a blank coursework and allocation manager.
      */
-    public function setUp() {
+    public function setUp(): void
+    {
 
         $this->resetAfterTest();
 
@@ -75,6 +75,5 @@ class coursework_allocation_strategy_test extends advanced_testcase {
         // Check that the original one is still OK.
 
     }
-
 
 }

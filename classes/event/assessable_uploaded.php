@@ -14,12 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
+/**
+ * @package    mod_coursework
+ * @copyright  2011 University of London computer Centre {@link ulcc.ac.uk}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 namespace mod_coursework\event;
 use mod_coursework\models\submission;
 defined('MOODLE_INTERNAL') || die();
-
 
 class assessable_uploaded extends \core\event\assessable_uploaded {
 
@@ -28,7 +31,7 @@ class assessable_uploaded extends \core\event\assessable_uploaded {
      *
      * @var array
      */
-    protected $legacyfiles = array();
+    protected $legacyfiles = [];
 
     /**
      * Returns description of what happened.
@@ -47,7 +50,6 @@ class assessable_uploaded extends \core\event\assessable_uploaded {
      */
     protected function get_legacy_eventdata() {
 
-
         $submission = submission::find($this->objectid);
         $fs = get_file_storage();
         $files = $fs->get_area_files($submission->get_context_id(), 'mod_coursework', 'submission',
@@ -60,12 +62,11 @@ class assessable_uploaded extends \core\event\assessable_uploaded {
         $eventdata->courseid = $submission->get_course_id();
         $eventdata->userid = $submission->get_author_id();
 
-
         $eventdata->timeavailable = $submission->get_coursework()->timecreated;
         $eventdata->timedue = $submission->get_coursework()->get_user_deadline($submission->get_author_id());
         $eventdata->feedbackavailable = $submission->get_coursework()->get_individual_feedback_deadline();
         if ($files) {
-            $eventdata->pathnamehashes = array();
+            $eventdata->pathnamehashes = [];
             foreach ($files as $file) {
                 $eventdata->pathnamehashes[] = $file->get_pathnamehash();
             }
@@ -73,7 +74,6 @@ class assessable_uploaded extends \core\event\assessable_uploaded {
         }
         return $eventdata;
     }
-
 
     /**
      * Return the legacy event name.

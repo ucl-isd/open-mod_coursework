@@ -12,7 +12,6 @@ use mod_coursework\export;
  */
 class assessorgrade_cell extends cell_base{
 
-
     /**
      * @param submission$submission
      * @param $student
@@ -38,7 +37,7 @@ class assessorgrade_cell extends cell_base{
         if (($submission->get_agreed_grade() || ($feedback && $ability->can('show', $feedback))) || !$submission->any_editable_feedback_exists() || is_siteadmin($USER->id)) {
 
             if($this->coursework->is_using_rubric()){
-                $gradedata = array();
+                $gradedata = [];
                 $this->get_rubric_scores_gradedata($grade, $gradedata); // multiple parts are handled here
             } else{
                 $gradedata = (!$grade)? '': $this->get_actual_grade($grade->grade);
@@ -70,21 +69,21 @@ class assessorgrade_cell extends cell_base{
     public function get_header($stage){
 
         if ($this->coursework->is_using_rubric() ) {
-            $strings = array();
+            $strings = [];
             $criterias = $this->coursework->get_rubric_criteria();
             foreach ($criterias as $criteria) { // rubrics can have multiple parts, so let's create header for each of it
                 $strings['assessorgrade'.$stage.'_'.$criteria['id']] = 'Assessor '.$stage.' - '.$criteria['description'];
                 $strings['assessorgrade'.$stage.'_'.$criteria['id'] . 'comment'] = 'Comment for:  Assessor '.$stage.' - '.$criteria['description'];
             }
         } else {
-            $strings =  get_string('assessorgradecsv', 'coursework', $stage);
+            $strings = get_string('assessorgradecsv', 'coursework', $stage);
         }
 
         return  $strings;
 
     }
 
-    public function validate_cell($value,$submissionid,$stage_identifier='', $uploadedgradecells = array())
+    public function validate_cell($value, $submissionid, $stage_identifier='', $uploadedgradecells = [])
     {
         global $DB, $PAGE, $USER;
 
@@ -99,8 +98,7 @@ class assessorgrade_cell extends cell_base{
             || has_capability('mod/coursework:administergrades', $PAGE->context)
         ) {
 
-
-            $errormsg   =   '';
+            $errormsg = '';
 
             if (!$this->coursework->is_using_rubric()) {
                 $gradejudge = new grade_judge($this->coursework);
@@ -117,7 +115,7 @@ class assessorgrade_cell extends cell_base{
                 //keys isnt. We will use array_filter whhich will return all values from the array if this is empty then we have
                 //nothing to do
 
-                $arrayvalues    =   array_filter($value);
+                $arrayvalues = array_filter($value);
 
                 //if there are no values we don't need to do anything
                 if (!empty($arrayvalues)) {
@@ -157,10 +155,8 @@ class assessorgrade_cell extends cell_base{
 
             if (!empty($errormsg))  return $errormsg;
 
-
             //is the submission in question ready to grade?
             if (!$submission->ready_to_grade()) return get_string('submissionnotreadytograde', 'coursework');
-
 
             //has the submission been published if yes then no further grades are allowed
             if ($submission->get_state() >= submission::PUBLISHED) return $submission->get_status_text();
@@ -189,7 +185,6 @@ class assessorgrade_cell extends cell_base{
 
             }
 
-
             if (!$this->coursework->allocation_enabled() && !empty($feedback)) {
                 //was this user the one who last graded this submission if not then user cannot grade
                 if ($feedback->assessorid != $USER->id || !has_capability('mod/coursework:editinitialgrade', $PAGE->context))
@@ -211,7 +206,6 @@ class assessorgrade_cell extends cell_base{
                 ) return get_string('nopermissiontogradesubmission', 'coursework');
             }
 
-
             //check for coursework without allocations - with/without samplings
             if (has_capability('mod/coursework:addinitialgrade', $PAGE->context) && !has_capability('mod/coursework:editinitialgrade', $PAGE->context)
                 && $this->coursework->get_max_markers() > 1 && !$this->coursework->allocation_enabled()
@@ -230,7 +224,6 @@ class assessorgrade_cell extends cell_base{
                 }
                 if ($assessors == $feedbacks) return get_string('gradealreadyexists', 'coursework');
             }
-
 
         } else if (has_any_capability($agreedgradecap, $PAGE->context)) {
 
@@ -254,9 +247,9 @@ class assessorgrade_cell extends cell_base{
 
         global  $DB;
 
-        $valuefound =   false;
+        $valuefound = false;
 
-        $levels     =   $criteria['levels'];
+        $levels = $criteria['levels'];
 
         if (is_numeric($value) ) {
             foreach ($levels as $level) {
@@ -270,7 +263,6 @@ class assessorgrade_cell extends cell_base{
             }
         }
 
-
         return $valuefound;
     }
 
@@ -281,41 +273,34 @@ class assessorgrade_cell extends cell_base{
      * @param $csv_cells
      *
      */
-    function    get_rubrics($coursework,$csv_cells)        {
-
+    function    get_rubrics($coursework, $csv_cells)        {
 
         if ($coursework->is_using_rubric()) {
 
-            $rubricheaders      =       array();
+            $rubricheaders = [];
 
             $criterias = $coursework->get_rubric_criteria();
 
-            foreach ($criterias as  $criteria)   {
-                $rubricheaders[]    =   $criteria['description'];
-                $rubricheaders[]    =   $criteria['description']." comment";
+            foreach ($criterias as  $criteria) {
+                $rubricheaders[] = $criteria['description'];
+                $rubricheaders[] = $criteria['description']." comment";
             }
 
-
             //find out the position of singlegrade
-            $position = array_search('singlegrade',$csv_cells);
+            $position = array_search('singlegrade', $csv_cells);
             //get all data from the position of the singlegrade to the length of rubricheaders
-            // $csv_cells     =   array_splice($csv_cells,5, 1, $rubricheaders);
+            // $csv_cells = array_splice($csv_cells,5, 1, $rubricheaders);
 
+            $start_cells = array_slice($csv_cells,0, $position,true);
+            $end_cells = array_slice($csv_cells, $position+1,count($csv_cells),true);
 
-            $start_cells        =   array_slice($csv_cells,0,$position,true);
-            $end_cells          =   array_slice($csv_cells,$position+1,count($csv_cells),true);
+            $cells = array_merge($start_cells, $rubricheaders);
 
-            $cells              =   array_merge($start_cells,$rubricheaders);
-
-            $cells              =   array_merge($cells,$end_cells);
-
-
+            $cells = array_merge($cells, $end_cells);
 
         }
 
-
         return $cells;
     }
-
 
 }

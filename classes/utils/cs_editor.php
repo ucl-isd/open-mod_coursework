@@ -63,22 +63,22 @@ class cs_editor extends \atto_texteditor
         }
 
         $grouplines = explode("\n", $configstr);
-        $groups = array();
+        $groups = [];
 
         foreach ($grouplines as $groupline) {
             $line = explode('=', $groupline);
             if (count($line) > 1) {
                 $group = trim(array_shift($line));
-                $plugins = array_map('trim', explode(',', array_shift($line)));
+                $plugins = array_map('trim', explode(', ', array_shift($line)));
                 $groups[$group] = $plugins;
             }
         }
-        $jsplugins = array();
+        $jsplugins = [];
         foreach ($groups as $group => $plugins) {
-            $groupplugins = array();
+            $groupplugins = [];
             foreach ($plugins as $plugin) {
                 // Do not die on missing plugin.
-                if (!\core_component::get_component_directory('atto_' . $plugin))  {
+                if (!\core_component::get_component_directory('atto_' . $plugin)) {
                     continue;
                 }
 
@@ -87,9 +87,9 @@ class cs_editor extends \atto_texteditor
                     continue;
                 }
 
-                $jsplugin = array();
+                $jsplugin = [];
                 $jsplugin['name'] = $plugin;
-                $jsplugin['params'] = array();
+                $jsplugin['params'] = [];
                 $modules[] = 'moodle-atto_' . $plugin . '-button';
 
                 component_callback('atto_' . $plugin, 'strings_for_js');
@@ -102,7 +102,7 @@ class cs_editor extends \atto_texteditor
                 $PAGE->requires->string_for_js('pluginname', 'atto_' . $plugin);
                 $groupplugins[] = $jsplugin;
             }
-            $jsplugins[] = array('group'=>$group, 'plugins'=>$groupplugins);
+            $jsplugins[] = array('group' => $group, 'plugins' => $groupplugins);
         }
         return $jsplugins;
     }

@@ -4,7 +4,6 @@ use mod_coursework\models\coursework;
 
 global $CFG;
 
-
 /**
  * This class takes the manual data about the teachers who should be allocated to various
  * students and saves it. We want to keep this separate from the processing of the auto allocations
@@ -23,7 +22,8 @@ class table_processor_test extends advanced_testcase {
 
     use mod_coursework\test_helpers\factory_mixin;
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -44,7 +44,6 @@ class table_processor_test extends advanced_testcase {
         $this->create_another_teacher();
         $this->delete_all_auto_allocations_caused_by_enrol_hooks();
     }
-
 
     public function test_process_rows_makes_a_new_assessor_allocation() {
 
@@ -144,7 +143,7 @@ class table_processor_test extends advanced_testcase {
 
     public function test_that_missing_columns_dont_mess_it_up() {
         $processor = new processor($this->coursework);
-        $processor->process_data(array($this->student->id => array()));
+        $processor->process_data(array($this->student->id => []));
     }
 
     public function test_that_missing_rows_dont_mess_it_up() {

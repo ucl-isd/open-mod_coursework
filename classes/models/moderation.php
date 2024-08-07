@@ -22,7 +22,7 @@ use mod_coursework\framework\table_base;
 use mod_coursework\ability;
 use mod_coursework\stages\base as stage_base;
 use stdClass;
-use \mod_coursework\feedback_files;
+use mod_coursework\feedback_files;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,7 +34,6 @@ defined('MOODLE_INTERNAL') || die();
  */
 class moderation extends table_base{
 
-
     /**
      * @var int
      */
@@ -44,7 +43,6 @@ class moderation extends table_base{
      * @var int
      */
    public $feedbackid;
-
 
     /**
  * @var int
@@ -76,7 +74,6 @@ class moderation extends table_base{
      */
     public $modcommentformat;
 
-
     /**
      * Chained getter for loose coupling.
      *
@@ -86,7 +83,6 @@ class moderation extends table_base{
         return $this->get_submission()->get_coursework();
     }
 
-
     /**
      *
      */
@@ -94,7 +90,7 @@ class moderation extends table_base{
         global $DB;
 
         //Moderation done only for single courseworks so submission id to retrieve feedback is enough
-        $params = array('id'=>$this->feedbackid);
+        $params = array('id' => $this->feedbackid);
         $feedback = $DB->get_record('coursework_feedbacks', $params);
         return $feedback;
 
@@ -103,9 +99,7 @@ class moderation extends table_base{
     public function get_agreement(){
         return $this->agreement;
 
-
     }
-
 
     /**
      * Memoized getter
@@ -113,13 +107,11 @@ class moderation extends table_base{
      * @return bool|submission
      */
     public function get_submission() {
-       $feedback =  $this->get_feedback();
+       $feedback = $this->get_feedback();
        $this->submission = submission::find($feedback->submissionid);
 
         return $this->submission;
     }
-
-
 
     /**
      * @return user
@@ -144,7 +136,6 @@ class moderation extends table_base{
     public function get_moderator_id(){
         return $this->moderator->id;
     }
-
 
     /**
      * Check if assessor is allocated to the user in this stage

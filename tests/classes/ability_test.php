@@ -1,6 +1,5 @@
 <?php
 
-
 use mod_coursework\ability;
 
 /**
@@ -9,9 +8,9 @@ use mod_coursework\ability;
  */
 class ability_test extends advanced_testcase {
 
-    use \mod_coursework\test_helpers\factory_mixin;
+    use mod_coursework\test_helpers\factory_mixin;
 
-    public function setUp() {
+    public function setUp():void {
         $this->setAdminUser();
         $this->resetAfterTest();
     }

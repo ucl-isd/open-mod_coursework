@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 use mod_coursework\export\csv;
 use mod_coursework\models\submission;
 use mod_coursework\models\deadline_extension;
@@ -39,13 +38,10 @@ global $CFG;
  */
 class csv_test extends advanced_testcase {
 
-
     use mod_coursework\test_helpers\factory_mixin;
 
-
-
-
-    public function setUp() {
+    public function setUp(): void
+    {
 
         $this->resetAfterTest();
 
@@ -73,13 +69,12 @@ class csv_test extends advanced_testcase {
         $this->coursework = $generator->create_instance(array('course' => $this->course->id,
                                                               'grade' => 100,
                                                               'numberofmarkers' => 1,
-                                                              'deadline'=>time()+86400,
-                                                                'extensionsenabled'=>1));
+                                                              'deadline' =>time()+86400,
+                                                                'extensionsenabled' => 1));
         $this->submission = new stdClass();
         $this->submission->userid = $this->student->id;
         $this->submission->allocatableid = $this->student->id;
         $this->submission = $generator->create_submission($this->submission, $this->coursework);
-
 
         $student = $this->student;
         $assessor = $this->teacher;
@@ -91,7 +86,7 @@ class csv_test extends advanced_testcase {
         $feedback_data->stage_identifier = 'assessor_1';
         $feedback = $generator->create_feedback($feedback_data);
 
-        $extendion_deadline  =   time();
+        $extendion_deadline = time();
         $params = array('allocatableid' => $this->student->id,
             'allocatabletype' => 'user',
             'courseworkid' => $this->coursework->id,
@@ -103,18 +98,17 @@ class csv_test extends advanced_testcase {
 
         $extension = deadline_extension::create($params);
 
-        $extension_reasons  =   $this->coursework->extension_reasons();
+        $extension_reasons = $this->coursework->extension_reasons();
 
         if (empty($extension_reasons)) {
 
             set_config('coursework_extension_reasons_list',"coursework extension \n sick leave");
-            $extension_reasons  =   $this->coursework->extension_reasons();
+            $extension_reasons = $this->coursework->extension_reasons();
 
         }
 
-
         // headers and data for csv
-        $csv_cells = array('name','username','submissiondate','submissiontime',
+        $csv_cells = array('name', 'username', 'submissiondate', 'submissiontime',
             'submissionfileid');
 
         if ($this->coursework->extensions_enabled()){
@@ -125,21 +119,19 @@ class csv_test extends advanced_testcase {
         $csv_cells[] = 'stages';
         $csv_cells[] = 'finalgrade';
 
-
         $timestamp = date('d_m_y @ H-i');
         $filename = get_string('finalgradesfor', 'coursework'). $this->coursework->name .' '.$timestamp;
         $csv = new \mod_coursework\export\csv($this->coursework, $csv_cells, $filename);
-        $csv_grades = $csv->add_cells_to_array($submission,$student,$csv_cells);
+        $csv_grades = $csv->add_cells_to_array($submission, $student, $csv_cells);
 
        // build an array
         $studentname = $student->lastname .' '.$student->firstname;
         $assessorname = $assessor->lastname .' '. $assessor->firstname;
-        $assessorusername =  $assessor->username;
-
+        $assessorusername = $assessor->username;
 
         $one_assessor_grades = array('0' => $studentname,
                                      '1' => $student->username,
-                                     '2' => userdate(time(),$dateformat),
+                                     '2' => userdate(time(), $dateformat),
                                      '3' => 'On time',
                                      '4' => $this->coursework->get_username_hash($submission->allocatableid),
                                      '5' => userdate($extension->extended_deadline, $dateformat),
@@ -148,12 +140,11 @@ class csv_test extends advanced_testcase {
                                      '8' => $feedback->grade,
                                      '9' => $assessorname,
                                      '10' => $assessorusername,
-                                     '11' => userdate(time(),$dateformat),
+                                     '11' => userdate(time(), $dateformat),
                                      '12' => $feedback->grade);
 
         $this->assertEquals($one_assessor_grades, $csv_grades);
     }
-
 
     /**
      * Two stages with final agreed grade, extension not enabled
@@ -167,11 +158,10 @@ class csv_test extends advanced_testcase {
         $this->coursework = $generator->create_instance(array('course' => $this->course->id,
                                                               'grade' => 100,
                                                               'numberofmarkers' => 2,
-                                                              'deadline'=>time()-86400));
+                                                              'deadline' =>time()-86400));
         $this->submission = new stdClass();
         $this->submission->userid = $this->student->id;
         $this->submission = $generator->create_submission($this->submission, $this->coursework);
-
 
         $student = $this->student;
         $assessor1 = $this->teacher;
@@ -204,7 +194,7 @@ class csv_test extends advanced_testcase {
         $feedback3 = $generator->create_feedback($feedback_data3);
 
         // headers and data for csv
-        $csv_cells = array('name','username','submissiondate','submissiontime',
+        $csv_cells = array('name', 'username', 'submissiondate', 'submissiontime',
             'submissionfileid');
 
         if ($this->coursework->extensions_enabled()){
@@ -215,11 +205,10 @@ class csv_test extends advanced_testcase {
         $csv_cells[] = 'stages';
         $csv_cells[] = 'finalgrade';
 
-
         $timestamp = date('d_m_y @ H-i');
         $filename = get_string('finalgradesfor', 'coursework'). $this->coursework->name .' '.$timestamp;
         $csv = new \mod_coursework\export\csv($this->coursework, $csv_cells, $filename);
-        $csv_grades = $csv->add_cells_to_array($submission,$student,$csv_cells);
+        $csv_grades = $csv->add_cells_to_array($submission, $student, $csv_cells);
 
         // build an array
         $studentname = $student->lastname .' '.$student->firstname;
@@ -231,26 +220,25 @@ class csv_test extends advanced_testcase {
 
         $two_assessors_grades = array('0' => $studentname,
                                       '1' => $student->username,
-                                      '2' => userdate(time(),$dateformat),
+                                      '2' => userdate(time(), $dateformat),
                                       '3' => 'Late',
                                  '4' => $this->coursework->get_username_hash($submission->allocatableid),
                                       '5' => $feedback1->grade,
                                       '6' => $assessorname1,
                                  '7' => $assessorusername1,
-                                      '8' => userdate(time(),$dateformat),
+                                      '8' => userdate(time(), $dateformat),
                                       '9' => $feedback2->grade,
                                       '10' => $assessorname2,
                                   '11' => $assessorusername2,
-                                      '12' => userdate(time(),$dateformat),
+                                      '12' => userdate(time(), $dateformat),
                                       '13' => $feedback3->grade,
                                       '14' => $assessorname1,
                                  '15' => $assessorusername1,
-                                      '16' => userdate(time(),$dateformat),
+                                      '16' => userdate(time(), $dateformat),
                                       '17' => $feedback3->grade);
 
         $this->assertEquals($two_assessors_grades, $csv_grades);
     }
-
 
     /**
      * Sampling enabled, student not in sample, extension not enabled
@@ -265,7 +253,7 @@ class csv_test extends advanced_testcase {
                                                               'grade' => 100,
                                                               'numberofmarkers' => 2,
                                                               'samplingenabled' => 1,
-                                                              'deadline'=>time()+86400));
+                                                              'deadline' =>time()+86400));
         $this->submission = new stdClass();
         $this->submission->userid = $this->student->id;
         $this->submission = $generator->create_submission($this->submission, $this->coursework);
@@ -283,7 +271,7 @@ class csv_test extends advanced_testcase {
         $feedback = $generator->create_feedback($feedback_data);
 
         // headers and data for csv
-        $csv_cells = array('name','username','submissiondate','submissiontime',
+        $csv_cells = array('name', 'username', 'submissiondate', 'submissiontime',
             'submissionfileid');
 
         if ($this->coursework->extensions_enabled()){
@@ -294,11 +282,10 @@ class csv_test extends advanced_testcase {
         $csv_cells[] = 'stages';
         $csv_cells[] = 'finalgrade';
 
-
         $timestamp = date('d_m_y @ H-i');
         $filename = get_string('finalgradesfor', 'coursework'). $this->coursework->name .' '.$timestamp;
         $csv = new \mod_coursework\export\csv($this->coursework, $csv_cells, $filename);
-        $csv_grades = $csv->add_cells_to_array($submission,$student,$csv_cells);
+        $csv_grades = $csv->add_cells_to_array($submission, $student, $csv_cells);
 
         // build an array
         $studentname = $student->lastname .' '.$student->firstname;
@@ -306,16 +293,15 @@ class csv_test extends advanced_testcase {
 
         $assessorusername1 = $assessor1->username;
 
-
         $grades = array('0' => $studentname,
                         '1' => $student->username,
-                        '2' => userdate(time(),$dateformat),
+                        '2' => userdate(time(), $dateformat),
                         '3' => 'On time',
                         '4' => $this->coursework->get_username_hash($submission->allocatableid),
                         '5' => $feedback->grade,
                         '6' => $assessorname1,
                         '7' => $assessorusername1,
-                        '8' => userdate(time(),$dateformat),
+                        '8' => userdate(time(), $dateformat),
                         '9' => '',
                         '10' => '',
                         '11' => '',
@@ -342,7 +328,7 @@ class csv_test extends advanced_testcase {
                                                               'grade' => 100,
                                                               'numberofmarkers' => 2,
                                                               'samplingenabled' => 1,
-                                                              'deadline'=>time()+86400));
+                                                              'deadline' =>time()+86400));
         $student1 = $this->student;
         $assessor1 = $this->teacher;
         $assessor2 = $this->other_teacher;
@@ -351,13 +337,11 @@ class csv_test extends advanced_testcase {
         $submission1->allocatableid = $student1->id;
         $submission1 = $generator->create_submission($submission1, $this->coursework);
 
-
         $student2 = $this->create_a_student();
         $submission2 = new stdClass();
         $submission2->userid = $student2->id;
         $submission2->allocatableid = $student2->id;
         $submission2 = $generator->create_submission($submission2, $this->coursework);
-
 
         // student 2 manual sampling enabled
         $set_members_data = new stdClass();
@@ -367,8 +351,6 @@ class csv_test extends advanced_testcase {
         $set_members_data->stage_identifier = 'assessor_2';
 
         $DB->insert_record('coursework_sample_set_mbrs', $set_members_data);
-
-
 
         // Assessor one feedback for student 1
         $feedback_data1 = new stdClass();
@@ -404,7 +386,7 @@ class csv_test extends advanced_testcase {
         $feedback4 = $generator->create_feedback($feedback_data4);
 
         // headers and data for csv
-        $csv_cells = array('name','username','submissiondate','submissiontime',
+        $csv_cells = array('name', 'username', 'submissiondate', 'submissiontime',
             'submissionfileid');
 
         if ($this->coursework->extensions_enabled()){
@@ -415,12 +397,11 @@ class csv_test extends advanced_testcase {
         $csv_cells[] = 'stages';
         $csv_cells[] = 'finalgrade';
 
-
         $timestamp = date('d_m_y @ H-i');
         $filename = get_string('finalgradesfor', 'coursework'). $this->coursework->name .' '.$timestamp;
         $csv = new \mod_coursework\export\csv($this->coursework, $csv_cells, $filename);
-        $array1 = $csv->add_cells_to_array($submission1,$student1,$csv_cells);
-        $array2 = $csv->add_cells_to_array($submission2,$student2,$csv_cells);
+        $array1 = $csv->add_cells_to_array($submission1, $student1, $csv_cells);
+        $array2 = $csv->add_cells_to_array($submission2, $student2, $csv_cells);
 
         $csv_grades = array_merge($array1, $array2);
 
@@ -430,18 +411,18 @@ class csv_test extends advanced_testcase {
         $assessorname1 = $assessor1->lastname .' '. $assessor1->firstname;
         $assessorname2 = $assessor2->lastname .' '. $assessor2->firstname;
 
-        $assessorusername1    =   $assessor1->username;
-        $assessorusername2    =   $assessor2->username;
+        $assessorusername1 = $assessor1->username;
+        $assessorusername2 = $assessor2->username;
 
         $assessors_grades = array('0' => $studentname1,
                                   '1' => $student1->username,
-                                  '2' => userdate(time(),$dateformat),
+                                  '2' => userdate(time(), $dateformat),
                                   '3' => 'On time',
                                   '4' => $this->coursework->get_username_hash($submission1->allocatableid),
                                   '5' => $feedback1->grade,
                                   '6' => $assessorname1,
                                   '7' => $assessorusername1,
-                                  '8' => userdate(time(),$dateformat),
+                                  '8' => userdate(time(), $dateformat),
                                   '9' => '',
                                   '10' => '',
                                   '11' => '',
@@ -453,25 +434,24 @@ class csv_test extends advanced_testcase {
                                   '17' => $feedback1->grade,
                                   '18' => $studentname2,
                                   '19' => $student2->username,
-                                  '20' => userdate(time(),$dateformat),
+                                  '20' => userdate(time(), $dateformat),
                                   '21' => 'On time',
                                   '22' => $this->coursework->get_username_hash($submission2->allocatableid),
                                   '23' => $feedback2->grade,
                                   '24' => $assessorname1,
                                   '25' => $assessorusername1,
-                                  '26' => userdate(time(),$dateformat),
+                                  '26' => userdate(time(), $dateformat),
                                   '27' => $feedback3->grade,
                                   '28' => $assessorname2,
                                   '29' => $assessorusername2,
-                                  '30' => userdate(time(),$dateformat),
+                                  '30' => userdate(time(), $dateformat),
                                   '31' => $feedback4->grade,
                                   '32' => $assessorname2,
                                  '33' => $assessorusername2,
-                                  '34' => userdate(time(),$dateformat),
-                                  '35'=> $feedback4->grade);
+                                  '34' => userdate(time(), $dateformat),
+                                  '35' => $feedback4->grade);
 
         $this->assertEquals($assessors_grades, $csv_grades);
     }
 }
-
 

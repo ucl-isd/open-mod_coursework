@@ -9,7 +9,6 @@ global $CFG;
 
 require_once($CFG->dirroot . '/mod/coursework/tests/behat/pages/page_base.php');
 
-
 /**
  * Holds the functions that know about the HTML structure of the student page.
  *
@@ -137,8 +136,8 @@ class mod_coursework_behat_allocations_page extends mod_coursework_behat_page_ba
      * @param $stage
      * @throws \Behat\Mink\Exception\ElementNotFoundException
      */
-    public function enable_atomatic_sampling_for($stage)  {
-        $elementid  =   '#assessor_'.$stage.'_samplingstrategy';
+    public function enable_atomatic_sampling_for($stage) {
+        $elementid = '#assessor_'.$stage.'_samplingstrategy';
         $node = $this->getPage()->find('css', $elementid);
 
         $node->selectOption('Automatic');
@@ -210,12 +209,12 @@ class mod_coursework_behat_allocations_page extends mod_coursework_behat_page_ba
      * @param $stage
      * @throws \Behat\Mink\Exception\ElementNotFoundException
      */
-    public function select_total_percentage_for_stage($percentage,$stage)   {
+    public function select_total_percentage_for_stage($percentage, $stage) {
 
         //increment stage as the this will match the id of the element;
         $stage++;
 
-        $elementid  =   '#assessor_'.$stage.'_sampletotal';
+        $elementid = '#assessor_'.$stage.'_sampletotal';
         $node = $this->getPage()->find('css', $elementid);
 
         $node->selectOption($percentage);
@@ -226,26 +225,25 @@ class mod_coursework_behat_allocations_page extends mod_coursework_behat_page_ba
      * @param $user
      * @param $stage_number
      */
-    public function automatically_included_in_sample($coursework,$user,$other_user,$stage_number,$negate)  {
+    public function automatically_included_in_sample($coursework, $user, $other_user, $stage_number, $negate) {
         global $DB;
 
         $other_sql = (!empty($other_user))?  "OR allocatableid = $other_user->id" : '';
 
-        $sql    =   "SELECT     *
+        $sql = "SELECT     *
                      FROM       {coursework_sample_set_mbrs}
                      WHERE      courseworkid = :courseworkid
                      AND        stage_identifier = :stage
                      AND        (allocatableid = :user $other_sql)";
 
+        $stage = "assessor_".$stage_number;
 
-        $stage  =   "assessor_".$stage_number;
-
-        $params     =   array('courseworkid'=>$coursework->id,
-            'user'=>$user->id,
+        $params = array('courseworkid' => $coursework->id,
+            'user' => $user->id,
             'stage' => $stage);
 
         if (empty($negate)){
-             assertTrue($DB->record_exists_sql($sql,$params));
+             assertTrue($DB->record_exists_sql($sql, $params));
         } else {
             assertFalse($DB->record_exists_sql($sql, $params));
         }
@@ -267,13 +265,10 @@ class mod_coursework_behat_allocations_page extends mod_coursework_behat_page_ba
         $this->$role_name_to_save = $this->create_user($role_name, $role_name_to_save);
     }
 
-
-    public function save_sampling_strategy()     {
+    public function save_sampling_strategy() {
 
         $this->getPage()->pressButton('save_manual_sampling');
 
     }
-
-
 
 }

@@ -22,7 +22,7 @@ use mod_coursework\framework\table_base;
 use mod_coursework\ability;
 use mod_coursework\stages\base as stage_base;
 use stdClass;
-use \mod_coursework\feedback_files;
+use mod_coursework\feedback_files;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -200,7 +200,6 @@ class feedback extends table_base {
         return $assessor_name;
     }
 
-
     /**
      * Real name for display. Allows us to defer the DB call to retrieve first and last name
      * in case we don't need it.
@@ -266,7 +265,6 @@ class feedback extends table_base {
     public function get_coursemodule_id() {
         return $this->get_submission()->get_course_module_id();
     }
-
 
     /**
      * Returns a feedback instance
@@ -345,8 +343,6 @@ class feedback extends table_base {
 
         return false;
     }
-
-
 
     /**
      * @return mixed
@@ -438,7 +434,6 @@ class feedback extends table_base {
     public function get_context() {
         return $this->get_coursework()->get_context();
     }
-
 
     /**
      * Is this feedback one of the component grades in a multiple marking scenario?

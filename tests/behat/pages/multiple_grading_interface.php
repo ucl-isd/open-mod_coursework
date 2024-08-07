@@ -82,7 +82,6 @@ class mod_coursework_behat_multiple_grading_interface extends mod_coursework_beh
         return '#allocatable_' . $this->allocatable_identifier_hash($allocatable);
     }
 
-
     /**
      * @param allocatable $allocatable
      * @return string
@@ -90,8 +89,6 @@ class mod_coursework_behat_multiple_grading_interface extends mod_coursework_beh
     private function assessor_feedback_table_id($allocatable) {
         return '#assessorfeedbacktable_' . $this->allocatable_identifier_hash($allocatable);
     }
-
-
 
     /**
      * @param allocatable $allocatable
@@ -171,14 +168,11 @@ class mod_coursework_behat_multiple_grading_interface extends mod_coursework_beh
 
     public function confirm_publish_action() {
 
-
-
         if ($this->getPage()->hasButton('Continue')) {
             $this->getPage()->pressButton('Continue');
         } else {
 echo "failed";
         }
-
 
         if ($this->getPage()->hasLink('Continue')) {
             $this->getPage()->clickLink('Continue');
@@ -262,8 +256,6 @@ echo "failed";
         $this->should_have_css($identifier);
     }
 
-
-
     /**
      * @param feedback $feedback
      */
@@ -271,7 +263,6 @@ echo "failed";
         $identifier = '#edit_final_feedback_' . $this->allocatable_identifier_hash($allocatable);
         $this->should_not_have_css($identifier);
     }
-
 
     /**
      * @param submission $submission
@@ -308,7 +299,7 @@ echo "failed";
     public function get_provisional_grade_field($submission) {
        $elementid = '#allocatable_' . $submission->get_coursework()
                 ->get_allocatable_identifier_hash($submission->get_allocatable()). ' .assessor_feedback_grade';
-       $grade_field =  $this->getPage()->find('css', $elementid);
+       $grade_field = $this->getPage()->find('css', $elementid);
        return $grade_field ? $grade_field->getValue() : false;
     }
 
@@ -319,7 +310,7 @@ echo "failed";
     public function get_grade_field($submission){
         $elementid = '#assessorfeedbacktable_' . $submission->get_coursework()
                  ->get_allocatable_identifier_hash($submission->get_allocatable()). ' .grade_for_gradebook_cell';
-        $grade_field =  $this->getPage()->find('css', $elementid);
+        $grade_field = $this->getPage()->find('css', $elementid);
         return $grade_field ? $grade_field->getValue() : false;
     }
 
@@ -358,7 +349,6 @@ echo "failed";
         $reasons = coursework::extension_reasons();
         $this->should_have_css($element_selector, $reasons[1]);
     }
-
 
     /**
      * @param allocatable $allocatable

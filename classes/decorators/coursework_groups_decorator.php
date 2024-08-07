@@ -13,6 +13,4 @@ use mod_coursework\models\coursework;
  */
 class coursework_groups_decorator extends decorator {
 
-
-
 }

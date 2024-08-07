@@ -35,20 +35,18 @@ abstract class cell_base implements cell_interface {
 
     }
 
-
     /**
      * Function to check if a user can see real names/usernames even if blind marking is enabled
      * @return bool
      * @throws \coding_exception
      */
-    public function can_view_hidden()    {
+    public function can_view_hidden() {
 
-        $viewanonymous = has_capability('mod/coursework:viewanonymous',$this->coursework->get_context());
-        $exportgrade   = has_capability('mod/coursework:canexportfinalgrades',$this->coursework->get_context());
+        $viewanonymous = has_capability('mod/coursework:viewanonymous', $this->coursework->get_context());
+        $exportgrade = has_capability('mod/coursework:canexportfinalgrades', $this->coursework->get_context());
 
         return (!$this->coursework->blindmarking || $viewanonymous || $exportgrade);
     }
-
 
     /**
      * Function to check if the student was given an extension
@@ -57,11 +55,10 @@ abstract class cell_base implements cell_interface {
      */
     public function extension_exists($student){
 
-        $extension = $this->extension->get_extension_for_student($student,$this->coursework);
+        $extension = $this->extension->get_extension_for_student($student, $this->coursework);
 
         return ($this->coursework->extensions_enabled() && !empty($extension));
     }
-
 
     /**
      * Function to get student's extension date
@@ -70,11 +67,10 @@ abstract class cell_base implements cell_interface {
      */
     public function get_extension_date_for_csv($student){
 
-        $extension = $this->extension->get_extension_for_student($student,$this->coursework);
+        $extension = $this->extension->get_extension_for_student($student, $this->coursework);
 
         return userdate($extension->extended_deadline, $this->dateformat);
     }
-
 
     /**
      * Function to get extra information about student's extension
@@ -83,11 +79,10 @@ abstract class cell_base implements cell_interface {
      */
     public function get_extension_extra_info_for_csv($student){
 
-        $extension = $this->extension->get_extension_for_student($student,$this->coursework);
+        $extension = $this->extension->get_extension_for_student($student, $this->coursework);
 
         return strip_tags($extension->extra_information_text);
     }
-
 
     /**
      * Function to get student's extension pre-defined reason
@@ -96,13 +91,12 @@ abstract class cell_base implements cell_interface {
      */
     public function get_extension_reason_for_csv($student){
 
-        $extension = $this->extension->get_extension_for_student($student,$this->coursework);
+        $extension = $this->extension->get_extension_for_student($student, $this->coursework);
         $extension_reasons = $this->get_extension_predefined_reasons();
 
         return (!empty($extension_reasons[$extension->pre_defined_reason])) ?
             strip_tags($extension_reasons[$extension->pre_defined_reason]) : "";
     }
-
 
     /**
      * Function to get all pre-defined extension reasons
@@ -111,8 +105,6 @@ abstract class cell_base implements cell_interface {
     public function get_extension_predefined_reasons(){
         return $this->coursework->extension_reasons();
     }
-
-
 
     /**
      * Function to check if the plagiarism has been flagged for the given submission
@@ -150,7 +142,6 @@ abstract class cell_base implements cell_interface {
         return strip_tags($flag->comment);
     }
 
-
     /**
      * Function to get a grade that should be displayed
      * @param $grade
@@ -158,11 +149,10 @@ abstract class cell_base implements cell_interface {
      */
     public function get_actual_grade($grade){
 
-        $judge =  new grade_judge($this->coursework);
+        $judge = new grade_judge($this->coursework);
 
         return $judge->grade_to_display($grade);
     }
-
 
     /**
      * Function to get assessor's full name
@@ -172,25 +162,23 @@ abstract class cell_base implements cell_interface {
     public function get_assessor_name($assessorid){
         global $DB;
 
-        $assessor = $DB->get_record('user',array('id'=>$assessorid),'firstname, lastname');
+        $assessor = $DB->get_record('user', array('id' => $assessorid), 'firstname, lastname');
 
         return $assessor->lastname .' '. $assessor->firstname;
     }
-
 
     /**
      * Function to get assessor's username
      * @param $assessorid
      * @return string
      */
-    public function get_assessor_username($assessorid)   {
+    public function get_assessor_username($assessorid) {
         global $DB;
 
-        $assessor = $DB->get_record('user',array('id'=>$assessorid),'username');
+        $assessor = $DB->get_record('user', array('id' => $assessorid), 'username');
 
         return $assessor->username;
     }
-
 
     /**
      * Function to get a message if submission was made withihn the deadline
@@ -199,9 +187,9 @@ abstract class cell_base implements cell_interface {
     protected function submission_time($submission){
 
         if ($submission->is_late() && (!$submission->has_extension() || !$submission->submitted_within_extension())){
-            $time =  get_string('late', 'coursework');
+            $time = get_string('late', 'coursework');
         } else {
-            $time =  get_string('ontime', 'mod_coursework');
+            $time = get_string('ontime', 'mod_coursework');
         }
 
         return $time;
@@ -242,10 +230,9 @@ abstract class cell_base implements cell_interface {
      * Function to validate cell for the file upload
      * @return mixed
      */
-    public function validate_cell($value,$submissions,$stage_dentifier='', $uploadedgradecells = array()){
+    public function validate_cell($value, $submissions, $stage_dentifier='', $uploadedgradecells = []){
         return true;
     }
-
 
     /**
      * @param $grade
@@ -275,6 +262,5 @@ abstract class cell_base implements cell_interface {
             }
         }
     }
-
 
 }

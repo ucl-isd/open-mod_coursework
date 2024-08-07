@@ -148,7 +148,7 @@ class deadline_extensions_controller extends controller_base {
         // Default to current deadline
         // check for personal deadline first o
         if ($this->coursework->personaldeadlineenabled){
-            $personal_deadline =  $DB->get_record('coursework_person_deadlines', $params);
+            $personal_deadline = $DB->get_record('coursework_person_deadlines', $params);
             if ($personal_deadline) {
                 $this->coursework->deadline = $personal_deadline->personal_deadline;
             }
@@ -156,8 +156,6 @@ class deadline_extensions_controller extends controller_base {
         $this->deadline_extension->extended_deadline = $this->coursework->deadline;
         return $params;
     }
-
-
 
     /**
      * Begin Ajax functions
@@ -208,13 +206,11 @@ class deadline_extensions_controller extends controller_base {
         global $CFG;
         $max_deadline = $CFG->coursework_max_extension_deadline;
 
-
         if ($this->coursework->personaldeadlineenabled && $personal_deadline = $this->personal_deadline()) {
             $deadline = $personal_deadline->personal_deadline;
         } else {
             $deadline = $this->coursework->deadline;
         }
-
 
         if ( $data['extended_deadline'] <= $deadline) {
             return $errors = 'The new deadline must be later than the current deadline';
@@ -239,7 +235,7 @@ class deadline_extensions_controller extends controller_base {
         $extensionid = optional_param('id', 0,  PARAM_INT);
 
         if ($extensionid != 0) {
-            $ext =  $DB->get_record('coursework_extensions', array('id' => $extensionid));
+            $ext = $DB->get_record('coursework_extensions', array('id' => $extensionid));
             $allocatableid = $ext->allocatableid;
             $allocatabletype = $ext->allocatabletype;
             $courseworkid = $ext->courseworkid;
@@ -247,7 +243,7 @@ class deadline_extensions_controller extends controller_base {
 
             $allocatableid = required_param('allocatableid', PARAM_INT);
             $allocatabletype = required_param('allocatabletype', PARAM_ALPHANUMEXT);
-            $courseworkid =  required_param('courseworkid', PARAM_INT);
+            $courseworkid = required_param('courseworkid', PARAM_INT);
         }
 
         $params = array(
@@ -292,12 +288,12 @@ class deadline_extensions_controller extends controller_base {
 
                 $deadline_extension_transform = [
                     'time_content' => $time_content,
-                    'time'  => $time,
+                    'time' => $time,
                     'text' => $deadline_extension->extra_information_text,
                     'allocatableid' => $deadline_extension->allocatableid,
                     'allocatabletype' => $deadline_extension->allocatabletype,
                     'courseworkid' => $deadline_extension->courseworkid,
-                    'id'    => $deadline_extension->id,
+                    'id' => $deadline_extension->id,
                     'pre_defined_reason' => $deadline_extension->pre_defined_reason,
                 ];
                 $response = [
@@ -332,7 +328,7 @@ class deadline_extensions_controller extends controller_base {
         $time_content = '';
         $time = '';
         if ($this->coursework->deadline){
-            $personal_deadline =  $DB->get_record('coursework_person_deadlines', $params);
+            $personal_deadline = $DB->get_record('coursework_person_deadlines', $params);
             if ($personal_deadline) {
                 $time_content = 'Personal deadline: ' . userdate($personal_deadline->personal_deadline);
                 // $this->coursework->deadline = $personal_deadline->personal_deadline;
@@ -345,7 +341,7 @@ class deadline_extensions_controller extends controller_base {
 
         $deadline_extension_transform = [
             'time_content' => $time_content,
-            'time'  => $time,
+            'time' => $time,
         ];
 
         $response = [
@@ -355,7 +351,6 @@ class deadline_extensions_controller extends controller_base {
 
         echo json_encode($response);
     }
-
 
     /**
      * function table_cell_response
@@ -375,12 +370,11 @@ class deadline_extensions_controller extends controller_base {
             $row_object = new \mod_coursework\grading_table_row_single($coursework, $participant);
         }
 
-        $time_submitted_cell = new  \mod_coursework\render_helpers\grading_report\cells\time_submitted_cell(array('coursework'=>$this->coursework));
+        $time_submitted_cell = new  \mod_coursework\render_helpers\grading_report\cells\time_submitted_cell(array('coursework' => $this->coursework));
 
         $content = $time_submitted_cell->prepare_content_cell($row_object);
 
         return $content;
     }
-
 
 }

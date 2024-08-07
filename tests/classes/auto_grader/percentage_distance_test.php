@@ -10,9 +10,10 @@ namespace mod_coursework\auto_grader;
  */
 class percentage_distance_test extends \advanced_testcase {
 
-    use \mod_coursework\test_helpers\factory_mixin;
+    use mod_coursework\test_helpers\factory_mixin;
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $this->setAdminUser();
         $this->resetAfterTest();
     }
@@ -117,7 +118,7 @@ class percentage_distance_test extends \advanced_testcase {
 
         $object->create_auto_grade_if_rules_match($user);
 
-        $created_feedback = $DB->get_record('coursework_feedbacks', array());
+        $created_feedback = $DB->get_record('coursework_feedbacks', []);
 
         $this->assertEquals($created_feedback->grade, 55); // Right grade
         $this->assertEquals($created_feedback->submissionid, 234234); // Right submission

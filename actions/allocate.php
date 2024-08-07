@@ -160,7 +160,6 @@ if ($formsavebutton) {
 $allocationwidget = new widget($coursework);
 $allocationwidget = new \mod_coursework_allocation_widget($allocationwidget);
 
-
 // Var mod_coursework_object_renderer $objectrenderer.
 $objectrenderer = $PAGE->get_renderer('mod_coursework', 'object');
 // Var mod_coursework_page_renderer $pagerenderer.

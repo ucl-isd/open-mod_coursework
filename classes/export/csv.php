@@ -21,7 +21,6 @@ use mod_coursework\ability;
 use mod_coursework\models\coursework;
 use mod_coursework\models\submission;
 
-
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -73,7 +72,7 @@ class csv {
         $this->csvexport = new csv_export_writer();
         $this->add_filename($this->filename);
 
-        $csv_data = array();
+        $csv_data = [];
         // headers
         $this->add_headers($this->csv_cells);
 
@@ -88,7 +87,7 @@ class csv {
         // loop through each submission in the coursework
         foreach ($submissions as $submission){
             // add data to cvs
-            $data =  $this->add_csv_data($submission);
+            $data = $this->add_csv_data($submission);
             $csv_data = array_merge($csv_data, $data);
         }
 
@@ -105,9 +104,9 @@ class csv {
      * @param $csv_cells
      * @return array
      */
-    public function add_cells_to_array($submission,$student,$csv_cells){
-        $row = array();
-        foreach($csv_cells as $csv_cell) {
+    public function add_cells_to_array($submission, $student, $csv_cells){
+        $row = [];
+        foreach ($csv_cells as $csv_cell) {
             if(substr($csv_cell,0,8) == 'assessor'){
                 $stage_dentifier = 'assessor_'.(substr($csv_cell,-1));
                 $csv_cell = substr($csv_cell, 0, -1);
@@ -117,35 +116,34 @@ class csv {
             if(substr($csv_cell,0,8) == 'assessor'){
                 $cell = $cell->get_cell($submission, $student, $stage_dentifier);
                 if(is_array($cell)){
-                    $row =  array_merge($row,$cell);
+                    $row = array_merge($row, $cell);
                 } else {
                     $row[] = $cell;
                 }
             } else if ($csv_cell != 'stages' && $csv_cell != 'moderationagreement' && $csv_cell != 'otherassessors'){
                 $cell = $cell->get_cell($submission, $student, false);
                if(is_array($cell)){
-                   $row =  array_merge($row,$cell);
+                   $row = array_merge($row, $cell);
                } else{
                    $row[] = $cell;
                }
             } else {
 
                 $stages = $cell->get_cell($submission, $student, false);
-                $row =  array_merge($row,$stages);
+                $row = array_merge($row, $stages);
             }
 
         }
         return $row;
     }
 
-
     /**
      * create headers for CSV
      * @param $csv_headers
      */
         public function add_headers($csv_headers){
-            $headers = array();
-            foreach($csv_headers as $header) {
+            $headers = [];
+            foreach ($csv_headers as $header) {
                 if(substr($header,0,8) == 'assessor'){
                     $stage = (substr($header,-1));
                     $header = substr($header, 0, -1);
@@ -153,23 +151,23 @@ class csv {
                 $class = "mod_coursework\\export\\csv\\cells\\".$header."_cell";
                 $cell = new $class($this->coursework);
                 if(substr($header,0,8) == 'assessor'){
-                    $head =  $cell->get_header($stage);
+                    $head = $cell->get_header($stage);
                     if(is_array($head)){
-                        $headers =  array_merge($headers,$head);
+                        $headers = array_merge($headers, $head);
                     } else{
                         $headers[$header.$stage] = $head;
                     }
 
                 } else if ($header != 'stages' && $header != 'moderationagreement' && $header != 'otherassessors' ) {
-                     $head =  $cell->get_header(false);
+                     $head = $cell->get_header(false);
                     if(is_array($head)){
-                        $headers =  array_merge($headers,$head);
+                        $headers = array_merge($headers, $head);
                     } else{
                         $headers[$header] = $head;
                     }
                 } else {
                     $array_headers = $cell->get_header(false);
-                    $headers =  array_merge($headers,$array_headers);
+                    $headers = array_merge($headers, $array_headers);
                 }
             }
 
@@ -237,7 +235,7 @@ class csv {
      */
     public function add_csv_data($submission){
 
-        $csv_data = array();
+        $csv_data = [];
         // retrieve all students (even if group coursework)
         $students = $submission->get_students();
 
@@ -254,24 +252,17 @@ class csv {
         if ($this->coursework->is_using_rubric()) {
             $criterias = $this->coursework->get_rubric_criteria();
             //we will increment by the number of criterias plus 1 for feedback
-            $increment  =   (count($criterias) * 2) +1;
+            $increment = (count($criterias) * 2) +1;
 
         } else {
-            $increment  =   2;
+            $increment = 2;
         }
-
 
             for ($i = 1; $i < $this->coursework->get_max_markers(); $i++) {
                 $cells = $cells + $increment; // one for grade, one for feedback
             }
 
-
-
-
-
-
         return $cells;
-
 
     }
 

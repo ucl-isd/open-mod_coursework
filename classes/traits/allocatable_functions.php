@@ -63,7 +63,6 @@ trait allocatable_functions {
         return !empty($result);
     }
 
-
     /**
      * @param coursework $coursework
      * @return bool
@@ -81,7 +80,6 @@ trait allocatable_functions {
 
         return $DB->get_record_sql($sql, array('id' => $this->id(), 'courseworkid' => $coursework->id()));
     }
-
 
     /**
      * @param coursework $coursework

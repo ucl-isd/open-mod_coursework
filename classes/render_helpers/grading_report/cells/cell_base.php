@@ -2,7 +2,6 @@
 
 namespace mod_coursework\render_helpers\grading_report\cells;
 
-
 use html_writer;
 use mod_coursework\models\coursework;
 use mod_coursework\router;
@@ -20,7 +19,7 @@ abstract class cell_base implements cell_interface {
     /**
      * @param array $items
      */
-    public function __construct($items = array()) {
+    public function __construct($items = []) {
         $this->coursework = $items['coursework'];
         $this->after_initialisation($items);
     }
@@ -34,13 +33,13 @@ abstract class cell_base implements cell_interface {
      * @param string $sortby The current sort from the URL.
      * @return string
      */
-    protected function helper_sortable_heading($display_name, $field, $sort_how, $sortby = '',$tablename='') {
+    protected function helper_sortable_heading($display_name, $field, $sort_how, $sortby = '', $tablename='') {
 
         global $PAGE;
 
         $params = array('id' => optional_param('id', 0, PARAM_INT));
 
-        $tablename  =   (!empty($tablename))  ? $tablename.'_'  : ''  ;
+        $tablename = (!empty($tablename))  ? $tablename.'_'  : ''  ;
 
         if (optional_param($tablename.'page', 0, PARAM_INT) > 0) {
             $params[$tablename.'page'] = optional_param($tablename.'page', 0, PARAM_INT);
@@ -52,8 +51,6 @@ abstract class cell_base implements cell_interface {
             // Default for columns not currently being sorted.
             $params[$tablename.'sorthow'] = 'ASC';
         }
-
-
 
         // $url = clone($PAGE->url);
         // $url->params($params);
@@ -128,6 +125,5 @@ abstract class cell_base implements cell_interface {
     public function get_table_header_help_icon(){
 
     }
-
 
 }

@@ -8,7 +8,6 @@ use mod_coursework\models\submission;
  */
 class assessor_cell extends cell_base{
 
-
     /**
      * @param $submission
      * @param $student
@@ -36,7 +35,5 @@ class assessor_cell extends cell_base{
     public function get_header($stage){
         return  get_string('assessorcsv', 'coursework', $stage);
     }
-
-
 
 }

@@ -59,7 +59,6 @@ class submission_cell extends cell_base {
                                                                      'createdby' => $USER->id,
                                                                  ));
 
-
         if (($rowobject->get_submission()&& !$rowobject->get_submission()->finalised)
             || !$rowobject->get_submission()) {
 
@@ -113,9 +112,9 @@ class submission_cell extends cell_base {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
 
-        $tablename  =   (isset($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (isset($options['tablename']))  ? $options['tablename']  : ''  ;
 
         $fileid = $this->helper_sortable_heading(get_string('tableheadid', 'coursework'),
                                                  'hash',

@@ -2,7 +2,6 @@
 
 namespace mod_coursework\render_helpers\grading_report\cells;
 
-
 use html_writer;
 use mod_coursework\ability;
 use mod_coursework\grade_judge;
@@ -45,7 +44,6 @@ class multiple_agreed_grade_cell extends cell_base {
     public function get_content($rowobject) {
 
         global $USER, $OUTPUT;
-
 
         //if coursework uses sampling check if any enabled for this submission, otherwise there is no agreed grade
         if($rowobject->get_coursework()->sampling_enabled() && $rowobject->get_submission() && !$rowobject->get_submission()->sampled_feedback_exists()){
@@ -95,7 +93,6 @@ class multiple_agreed_grade_cell extends cell_base {
             );
             $new_feedback = feedback::build($feedback_params);
 
-
             //if the user is a site admin then they can add final feedback
             if ($ability->can('new', $new_feedback) || is_siteadmin()) {
                 $title = get_string('addfinalfeedback', 'coursework');
@@ -109,7 +106,7 @@ class multiple_agreed_grade_cell extends cell_base {
                 $iconlink = $OUTPUT->action_link($link,
                                                  $title,
                                                  null,
-                                                 array('class'=>'new_final_feedback',
+                                                 array('class' => 'new_final_feedback',
                                                        'id' => 'new_final_feedback_' . $rowobject->get_coursework()
                                                         ->get_allocatable_identifier_hash($rowobject->get_allocatable())));
 
@@ -123,7 +120,7 @@ class multiple_agreed_grade_cell extends cell_base {
                 $iconlink = $OUTPUT->action_link($link,
                                                  $linktitle,
                                                  null,
-                                                 array('class'=>'show_feedback','id' => $link_id));
+                                                 array('class' => 'show_feedback', 'id' => $link_id));
             }
         }
 
@@ -149,14 +146,14 @@ class multiple_agreed_grade_cell extends cell_base {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
 
         //adding this line so that the sortable heading function will make a sortable link unique to the table
         //if tablename is set
-        $tablename  =   (isset($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (isset($options['tablename']))  ? $options['tablename']  : ''  ;
 
         $column_name = get_string('agreedgrade', 'coursework');
-        return $this->helper_sortable_heading($column_name, 'finalgrade', $options['sorthow'], $options['sortby'],$tablename);
+        return $this->helper_sortable_heading($column_name, 'finalgrade', $options['sorthow'], $options['sortby'], $tablename);
     }
 
     /**
@@ -165,7 +162,6 @@ class multiple_agreed_grade_cell extends cell_base {
     public function get_table_header_class(){
         return 'agreedgrade';
     }
-
 
     /**
      * @return string

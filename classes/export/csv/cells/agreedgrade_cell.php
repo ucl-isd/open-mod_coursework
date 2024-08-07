@@ -11,7 +11,6 @@ use mod_coursework\grade_judge;
  */
 class agreedgrade_cell extends cell_base{
 
-
     /**
      * @param $submission
      * @param $student
@@ -23,7 +22,7 @@ class agreedgrade_cell extends cell_base{
 
         $agreedgrade = $submission->get_agreed_grade();
         if($this->coursework->is_using_rubric() && $this->coursework->finalstagegrading != 1){
-            $gradedata = array();
+            $gradedata = [];
             $this->get_rubric_scores_gradedata($agreedgrade, $gradedata); // multiple parts are handled here
         } else {
             $gradedata = (!$agreedgrade)? '': $this->get_actual_grade($agreedgrade->grade);
@@ -40,7 +39,7 @@ class agreedgrade_cell extends cell_base{
     public function get_header($stage){
 
         if ($this->coursework->is_using_rubric() && $this->coursework->finalstagegrading != 1) {
-            $strings = array();
+            $strings = [];
             $criterias = $this->coursework->get_rubric_criteria();
             foreach ($criterias as $criteria) { // rubrics can have multiple parts, so let's create header for each of it
                 $strings['agreedgrade'.$criteria['id']] = 'Agreed grade - '.$criteria['description'];
@@ -53,20 +52,20 @@ class agreedgrade_cell extends cell_base{
         return $strings;
     }
 
-    public function validate_cell($value,$submissionid,$stage_identifier='', $uploadedgradecells = array()) {
+    public function validate_cell($value, $submissionid, $stage_identifier='', $uploadedgradecells = []) {
 
-        global $DB,$PAGE,$USER;
+        global $DB, $PAGE, $USER;
 
         $stage_identifier = 'final_agreed_1';
-        $agreedgradecap    =   array('mod/coursework:addagreedgrade','mod/coursework:editagreedgrade',
-                                     'mod/coursework:addallocatedagreedgrade','mod/coursework:editallocatedagreedgrade');
+        $agreedgradecap = array('mod/coursework:addagreedgrade', 'mod/coursework:editagreedgrade',
+                                     'mod/coursework:addallocatedagreedgrade', 'mod/coursework:editallocatedagreedgrade');
 
         if (empty($value)) return true;
 
-        if (has_any_capability($agreedgradecap,$PAGE->context)
-            || has_capability('mod/coursework:administergrades', $PAGE->context))   {
+        if (has_any_capability($agreedgradecap, $PAGE->context)
+            || has_capability('mod/coursework:administergrades', $PAGE->context)) {
 
-            $errormsg   =   '';
+            $errormsg = '';
 
             if (!$this->coursework->is_using_rubric() || ($this->coursework->is_using_rubric() && $this->coursework->finalstagegrading == 1)) {
                 $gradejudge = new grade_judge($this->coursework);
@@ -84,7 +83,7 @@ class agreedgrade_cell extends cell_base{
                 //keys isnt. We will use array_filter whhich will return all values from the array if this is empty then we have
                 //nothing to do
 
-                $arrayvalues    =   array_filter($value);
+                $arrayvalues = array_filter($value);
 
                 //if there are no values we don't need to do anything
                 if (!empty($arrayvalues)) {
@@ -121,7 +120,7 @@ class agreedgrade_cell extends cell_base{
                 } else {
 
                     //set value to false so that a submission not ready to grade message isn't returned
-                    $value  =   false;
+                    $value = false;
 
                 }
 
@@ -129,12 +128,11 @@ class agreedgrade_cell extends cell_base{
 
             if (!empty($errormsg))  return $errormsg;
 
-            $subdbrecord =   $DB->get_record('coursework_submissions',array('id'=>$submissionid));
+            $subdbrecord = $DB->get_record('coursework_submissions', array('id' => $submissionid));
             $submission = \mod_coursework\models\submission::find($subdbrecord);
 
-
             //is the submission in question ready to grade?
-            if (!$submission->all_inital_graded() && !empty($value) && count($uploadedgradecells) < $submission->max_number_of_feedbacks()) return get_string('submissionnotreadyforagreedgrade','coursework');
+            if (!$submission->all_inital_graded() && !empty($value) && count($uploadedgradecells) < $submission->max_number_of_feedbacks()) return get_string('submissionnotreadyforagreedgrade', 'coursework');
 
             //has the submission been published if yes then no further grades are allowed
             if ($submission->get_state() >= submission::PUBLISHED)  return $submission->get_status_text();
@@ -162,17 +160,12 @@ class agreedgrade_cell extends cell_base{
                 );
                 $new_feedback = feedback::build($feedback_params);
 
-
                 //this is a new feedback check it against the new ability checks
-                if (!has_capability('mod/coursework:administergrades', $PAGE->context) && !has_capability('mod/coursework:addallocatedagreedgrade', $PAGE->context) && !$ability->can('new',$new_feedback))   return get_string('nopermissiontogradesubmission','coursework');
+                if (!has_capability('mod/coursework:administergrades', $PAGE->context) && !has_capability('mod/coursework:addallocatedagreedgrade', $PAGE->context) && !$ability->can('new', $new_feedback))   return get_string('nopermissiontogradesubmission', 'coursework');
             } else {
                 //this is a new feedback check it against the edit ability checks
-                if (!has_capability('mod/coursework:administergrades', $PAGE->context) && !$ability->can('edit',$feedback))   return get_string('nopermissiontoeditgrade','coursework');
+                if (!has_capability('mod/coursework:administergrades', $PAGE->context) && !$ability->can('edit', $feedback))   return get_string('nopermissiontoeditgrade', 'coursework');
             }
-
-
-
-
 
         } else {
             return get_string('nopermissiontoimportgrade', 'coursework');
@@ -181,7 +174,6 @@ class agreedgrade_cell extends cell_base{
         return true;
 
     }
-
 
     /***
      * Check that the given value is within the values that can be excepted by the given rubric criteria
@@ -194,9 +186,9 @@ class agreedgrade_cell extends cell_base{
 
         global  $DB;
 
-        $valuefound =   false;
+        $valuefound = false;
 
-        $levels     =   $criteria['levels'];
+        $levels = $criteria['levels'];
 
         if (is_numeric($value) ) {
             foreach ($levels as $level) {
@@ -210,7 +202,6 @@ class agreedgrade_cell extends cell_base{
             }
         }
 
-
         return $valuefound;
     }
 
@@ -221,41 +212,34 @@ class agreedgrade_cell extends cell_base{
      * @param $csv_cells
      *
      */
-    function    get_rubrics($coursework,$csv_cells)        {
-
+    function    get_rubrics($coursework, $csv_cells)        {
 
         if ($coursework->is_using_rubric()  && $this->coursework->finalstagegrading != 1) {
 
-            $rubricheaders      =       array();
+            $rubricheaders = [];
 
             $criterias = $coursework->get_rubric_criteria();
 
-            foreach ($criterias as  $criteria)   {
-                $rubricheaders[]    =   $criteria['description'];
-                $rubricheaders[]    =   $criteria['description']." comment";
+            foreach ($criterias as  $criteria) {
+                $rubricheaders[] = $criteria['description'];
+                $rubricheaders[] = $criteria['description']." comment";
             }
 
-
             //find out the position of singlegrade
-            $position = array_search('singlegrade',$csv_cells);
+            $position = array_search('singlegrade', $csv_cells);
             //get all data from the position of the singlegrade to the length of rubricheaders
-            // $csv_cells     =   array_splice($csv_cells,5, 1, $rubricheaders);
+            // $csv_cells = array_splice($csv_cells,5, 1, $rubricheaders);
 
+            $start_cells = array_slice($csv_cells,0, $position,true);
+            $end_cells = array_slice($csv_cells, $position+1,count($csv_cells),true);
 
-            $start_cells        =   array_slice($csv_cells,0,$position,true);
-            $end_cells          =   array_slice($csv_cells,$position+1,count($csv_cells),true);
+            $cells = array_merge($start_cells, $rubricheaders);
 
-            $cells              =   array_merge($start_cells,$rubricheaders);
-
-            $cells              =   array_merge($cells,$end_cells);
-
-
+            $cells = array_merge($cells, $end_cells);
 
         }
 
-
         return $cells;
     }
-
 
 }

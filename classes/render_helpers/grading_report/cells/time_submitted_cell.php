@@ -54,14 +54,14 @@ class time_submitted_cell extends cell_base {
 
             $time_submitted = $submission->time_submitted();
 
-            $content .= userdate($time_submitted,'%a, %d %b %Y, %H:%M');
+            $content .= userdate($time_submitted, '%a, %d %b %Y, %H:%M');
             $content .= html_writer::empty_tag('br');
 
             if ($submission->is_late() && (!$submission->has_extension() || !$submission->submitted_within_extension())) {
 
                 // check if submission has personal deadline
                 if ($coursework->personaldeadlineenabled ){
-                    $deadline =  $submission->submission_personal_deadline();
+                    $deadline = $submission->submission_personal_deadline();
                 } else { // if not, use coursework default deadline
                     $deadline = $coursework->deadline;
                 }
@@ -84,7 +84,7 @@ class time_submitted_cell extends cell_base {
                 $content .= html_writer::end_span();
 
             } else {
-                $content .= html_writer::span('(' . get_string('ontime', 'mod_coursework') . ')','ontime_submission');
+                $content .= html_writer::span('(' . get_string('ontime', 'mod_coursework') . ')', 'ontime_submission');
             }
 
             if ($submission->get_allocatable()->type() == 'group') {
@@ -114,7 +114,6 @@ class time_submitted_cell extends cell_base {
             $displayeddeadline = $extension->extended_deadline;
         }
 
-
         if($extension->id) {
             $new_extension_params['id'] = $extension->id;
         }
@@ -124,7 +123,7 @@ class time_submitted_cell extends cell_base {
 
         $deadline = $deadline ?? $coursework->deadline;
         $content_time = [
-            'time' => date('d-m-Y H:i',$deadline),
+            'time' => date('d-m-Y H:i', $deadline),
             'time_content' => userdate($deadline),
             'is_have_deadline' => ($coursework->deadline > 0)? 1 : 0,
         ];
@@ -146,7 +145,6 @@ class time_submitted_cell extends cell_base {
                 null,
                 array('class' => 'edit_deadline_extension', 'data-name' => $row_object->get_allocatable()->name(), 'data-params' => json_encode($new_extension_params), 'data-time' =>json_encode($content_time)));
         }
-
 
         $content .= '</div>';
 
@@ -177,11 +175,11 @@ class time_submitted_cell extends cell_base {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
 
         //adding this line so that the sortable heading function will make a sortable link unique to the table
         //if tablename is set
-        $tablename  =   (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
 
         return $this->helper_sortable_heading(get_string('tableheadsubmissiondate', 'coursework'),
             'timesubmitted',

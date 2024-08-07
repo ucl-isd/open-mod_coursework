@@ -11,7 +11,6 @@ namespace mod_coursework\render_helpers\grading_report;
  */
 interface component_factory_interface {
 
-
     public function get_cells();
 
     public function get_sub_rows();

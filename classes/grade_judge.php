@@ -1,6 +1,5 @@
 <?php
 
-
 namespace mod_coursework;
 
 use mod_coursework\allocation\allocatable;
@@ -141,7 +140,6 @@ class grade_judge {
         return $gradebook_feedback && $gradebook_feedback->id == $feedback->id;
     }
 
-
     /**
      * @param allocatable $allocatable
      * @return bool
@@ -156,10 +154,9 @@ class grade_judge {
             return $this->coursework->has_multiple_markers();
         }
 
-
     }
 
-    public function grade_in_scale($value)    {
+    public function grade_in_scale($value) {
         if (is_null($value)) {
             return true;
         } else if ($this->coursework->grade >= 1) {
@@ -172,7 +169,7 @@ class grade_judge {
             // Scale
             $scale = \grade_scale::fetch(array('id' => abs($this->coursework->grade)));
             $scale->load_items();
-            return in_array($value,$scale->scale_items);
+            return in_array($value, $scale->scale_items);
         }
     }
 
@@ -182,21 +179,17 @@ class grade_judge {
      * @param $value
      * @return mixed
      */
-    public function get_grade($value)   {
+    public function get_grade($value) {
 
         if ($this->coursework->grade <= -1) {
             // Scale
             $scale = \grade_scale::fetch(array('id' => abs($this->coursework->grade)));
             $scale->load_items();
-            return array_search($value,$scale->scale_items)+1;
+            return array_search($value, $scale->scale_items)+1;
         } else {
             return $value;
         }
 
-
     }
-
-
-
 
 }

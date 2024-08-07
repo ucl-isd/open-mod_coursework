@@ -1,6 +1,5 @@
 <?php
 
-
 namespace mod_coursework\auto_grader;
 
 use mod_coursework\allocation\allocatable;
@@ -55,8 +54,6 @@ class average_grade implements auto_grader {
             return;
         }
 
-
-
         if (!$this->get_allocatable()->has_agreed_feedback($this->get_coursework())) {
             $this->create_final_feedback();
         } else {
@@ -66,8 +63,6 @@ class average_grade implements auto_grader {
                 $this->update_final_feedback($agreed_feedback);
             }
         }
-
-
 
         // trigger events?
 
@@ -94,20 +89,18 @@ class average_grade implements auto_grader {
         // round it according to the chosen rule
         switch ($this->roundingrule) {
             case 'mid':
-                $avggrade =  round($avggrade);
+                $avggrade = round($avggrade);
                 break;
             case 'up':
-                $avggrade =  ceil($avggrade);
+                $avggrade = ceil($avggrade);
                 break;
             case 'down':
-                $avggrade =  floor($avggrade);
+                $avggrade = floor($avggrade);
                 break;
         }
 
-
         return $avggrade;
     }
-
 
     /**
      * @return allocatable
@@ -128,7 +121,6 @@ class average_grade implements auto_grader {
         ));
     }
 
-
     /**
      *
      */
@@ -143,7 +135,6 @@ class average_grade implements auto_grader {
         $DB->update_record('coursework_feedbacks', $updated_feedback);
 
     }
-
 
     /**
      * @return array

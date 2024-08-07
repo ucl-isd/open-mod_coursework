@@ -84,7 +84,6 @@ class multi_marker_feedback_sub_rows implements sub_rows_interface {
         $ability = new ability(user::find($USER, false), $coursework);
         $feedbackrows = $assessor_feedback_table->get_renderable_feedback_rows();
 
-
         $allocatable = $assessor_feedback_table->get_allocatable();
 
         $output_rows = '';
@@ -105,18 +104,17 @@ class multi_marker_feedback_sub_rows implements sub_rows_interface {
                 continue;
             }*/
 
-
             $output_rows .= ' <tr class="' . $this->row_class($feedback_row) . '">';
 
             if ($coursework->sampling_enabled() && $stage->uses_sampling() && !$stage->allocatable_is_in_sample($allocatable)) {
 
                 $output_rows .= '
-                        <td class = "not_included_in_sample" colspan =3>'.get_string('notincludedinsample','mod_coursework').'</td>
+                        <td class = "not_included_in_sample" colspan =3>'.get_string('notincludedinsample', 'mod_coursework').'</td>
                         </tr >';
             } else {
 
-                $assessor_details  =   (empty($feedback_row->get_assessor()->id()) && $coursework->allocation_enabled()) ?
-                     get_string('assessornotallocated','mod_coursework') : $this->profile_link($feedback_row);
+                $assessor_details = (empty($feedback_row->get_assessor()->id()) && $coursework->allocation_enabled()) ?
+                     get_string('assessornotallocated', 'mod_coursework') : $this->profile_link($feedback_row);
                 
                  $output_rows .=
                      '<td>' . $assessor_details. ' </td>
@@ -129,7 +127,7 @@ class multi_marker_feedback_sub_rows implements sub_rows_interface {
 
         if (!empty($output_rows)) {
 
-            $allocation_string =  ($coursework->allocation_enabled())?
+            $allocation_string = ($coursework->allocation_enabled())?
                                    get_string('allocatedtoassessor', 'mod_coursework'):
                                    get_string('assessor', 'mod_coursework');
 /*
@@ -238,7 +236,7 @@ class multi_marker_feedback_sub_rows implements sub_rows_interface {
         $iconlink = $OUTPUT->action_link($link,
                                          $linktitle,
                                          null,
-                                         array('class'=>'show_feedback','id' => $link_id));
+                                         array('class' => 'show_feedback', 'id' => $link_id));
         return $iconlink;
     }
 
@@ -264,7 +262,7 @@ class multi_marker_feedback_sub_rows implements sub_rows_interface {
         $iconlink = $OUTPUT->action_link($link,
                                          $linktitle,
                                          null,
-                                         array('class'=>'new_feedback'));
+                                         array('class' => 'new_feedback'));
         return $iconlink;
     }
 
@@ -330,8 +328,7 @@ class multi_marker_feedback_sub_rows implements sub_rows_interface {
                 }
             }
 
-            $grade_editing    =    get_config('mod_coursework','coursework_grade_editing');
-
+            $grade_editing = get_config('mod_coursework', 'coursework_grade_editing');
 
             if ($ability->can('edit', $feedback_row->get_feedback()) && !$submission->already_published()) {
                 $html .= $this->edit_existing_feedback_link($feedback_row);

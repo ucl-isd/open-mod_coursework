@@ -7,7 +7,8 @@ use mod_coursework\models\group;
  */
 class coursework_group_test extends advanced_testcase {
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $this->resetAfterTest();
     }
 

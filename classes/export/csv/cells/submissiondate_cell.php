@@ -8,7 +8,6 @@ use mod_coursework\models\submission;
  */
 class submissiondate_cell extends cell_base {
 
-
     /**
      * @param submission $submission
      * @param $student

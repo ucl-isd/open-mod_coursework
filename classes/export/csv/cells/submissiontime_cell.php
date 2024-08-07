@@ -7,7 +7,6 @@ namespace mod_coursework\export\csv\cells;
  */
 class submissiontime_cell extends cell_base {
 
-
     /**
      * @param $submission
      * @param $student
@@ -27,6 +26,5 @@ class submissiontime_cell extends cell_base {
         return  get_string('submissiontime', 'coursework');
 
     }
-
 
 }
