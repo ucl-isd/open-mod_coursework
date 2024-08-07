@@ -7,7 +7,6 @@ namespace mod_coursework\export\csv\cells;
  */
 class extensionextrainfo_cell extends cell_base {
 
-
     /**
      * @param $submission
      * @param $student

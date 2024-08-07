@@ -76,7 +76,6 @@ class personal_deadline extends table_base {
         }
     }
 
-
     /**
      * cache array
      *

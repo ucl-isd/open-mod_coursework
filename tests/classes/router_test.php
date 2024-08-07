@@ -23,7 +23,8 @@ class router_test extends advanced_testcase {
      */
     protected $moodle_location = 'https://www.example.com/moodle';
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $this->router = router::instance();
         $this->setAdminUser();
         $this->resetAfterTest();
@@ -59,7 +60,7 @@ class router_test extends advanced_testcase {
      * @return stdClass
      */
     private function get_course() {
-        $this->course =  $this->getDataGenerator()->create_course();
+        $this->course = $this->getDataGenerator()->create_course();
         return $this->course;
     }
 }

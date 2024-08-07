@@ -8,9 +8,8 @@
 class deadline_extensions_controller_test extends basic_testcase {
 
     public function test_model_name() {
-        $controller = new \mod_coursework\controllers\deadline_extensions_controller(array());
+        $controller = new \mod_coursework\controllers\deadline_extensions_controller([]);
         $this->assertEquals('deadline_extension', $controller->model_name());
     }
-
 
 }

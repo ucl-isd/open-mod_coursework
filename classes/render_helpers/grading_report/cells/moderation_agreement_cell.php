@@ -17,7 +17,6 @@ use pix_icon;
  */
 class moderation_agreement_cell extends cell_base {
 
-
     /**
      * @var allocatable
      */
@@ -28,16 +27,12 @@ class moderation_agreement_cell extends cell_base {
      */
     private $stage;
 
-
-
     /**
      * @param array $items
      */
     protected function after_initialisation($items) {
         $this->stage = $items['stage'];
     }
-
-
 
     /**
      * @param grading_table_row_base $rowobject
@@ -49,7 +44,7 @@ class moderation_agreement_cell extends cell_base {
         $ability = new ability(user::find($USER), $rowobject->get_coursework());
 
         $content = '';
-        $moderation  = '';
+        $moderation = '';
         if ($rowobject->has_submission()) {
             if ($rowobject->get_single_feedback()){
                 $moderation = $this->stage->get_moderation_for_feedback($rowobject->get_single_feedback());
@@ -58,7 +53,6 @@ class moderation_agreement_cell extends cell_base {
             if (!$moderation &&
                 $rowobject->get_submission()->final_grade_agreed() &&
                 ($this->stage->user_is_moderator($USER))) {
-
 
                 $moderation_params = array(
                     'submissionid' => $rowobject->get_submission()->id,
@@ -111,7 +105,7 @@ class moderation_agreement_cell extends cell_base {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
         return get_string('tableheadmoderationagreement', 'coursework');
     }
 
@@ -136,7 +130,6 @@ class moderation_agreement_cell extends cell_base {
         global $OUTPUT;
         return ($OUTPUT->help_icon('moderationagreement', 'coursework'));
     }
-
 
     /**
      * @param grading_table_row_base $rowobject
@@ -165,9 +158,8 @@ class moderation_agreement_cell extends cell_base {
         return  $OUTPUT->action_link($link,
                                      $title,
                                 null,
-                                array('class'=>'new_moderation','id' => $link_id));
+                                array('class' => 'new_moderation', 'id' => $link_id));
     }
-
 
     /**
      * @param $rowobject
@@ -188,7 +180,6 @@ class moderation_agreement_cell extends cell_base {
 
         $title = get_string('editmoderation', 'coursework');
         $icon = new pix_icon('edit', $title, 'coursework');
-
 
         return  $OUTPUT->action_icon($link,
             $icon,
@@ -218,6 +209,6 @@ class moderation_agreement_cell extends cell_base {
         return $OUTPUT->action_link($link,
                                     $linktitle,
                                 null,
-                                      array('class'=>'show_moderation','id' => $link_id));
+                                      array('class' => 'show_moderation', 'id' => $link_id));
     }
 }

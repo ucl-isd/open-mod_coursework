@@ -8,6 +8,4 @@ namespace mod_coursework\controllers;
  */
 class allocations_controller extends controller_base {
 
-
-
 }

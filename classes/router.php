@@ -48,7 +48,7 @@ class router {
      * @throws \coding_exception
      * @return moodle_url|string url
      */
-    public function get_path($path_name, $items = array(), $as_url_object = false, $escaped = true) {
+    public function get_path($path_name, $items = [], $as_url_object = false, $escaped = true) {
 
         global $CFG;
 
@@ -184,8 +184,8 @@ class router {
             case 'new moderations':
                 $params = array('submissionid' => $items['submission']->id,
                                 'stage_identifier' => $items['stage']->identifier(),
-                                'feedbackid' =>$items['feedbackid']);
-                $url = new moodle_url('/mod/coursework/actions/moderations/new.php',$params);
+                                'feedbackid' => $items['feedbackid']);
+                $url = new moodle_url('/mod/coursework/actions/moderations/new.php', $params);
                 break;
 
             case 'create moderation agreement':
@@ -195,7 +195,7 @@ class router {
             case 'edit moderation':
                 $url = new moodle_url('/mod/coursework/actions/moderations/edit.php',
                                       array('moderationid' => $items['moderation']->id,
-                                           'feedbackid' =>$items['moderation']->feedbackid));
+                                           'feedbackid' => $items['moderation']->feedbackid));
                 break;
 
             case 'update moderation':
@@ -205,13 +205,13 @@ class router {
             case 'show moderation':
                 $url = new moodle_url('/mod/coursework/actions/moderations/show.php',
                                         array('moderationid' => $items['moderation']->id,
-                                        'feedbackid' =>$items['moderation']->feedbackid));
+                                        'feedbackid' => $items['moderation']->feedbackid));
 
                 break;
 
             case 'new plagiarism flag':
                 $url = new moodle_url('/mod/coursework/actions/plagiarism_flagging/new.php',
-                                        array('submissionid' =>$items['submission']->id ));
+                                        array('submissionid' => $items['submission']->id ));
 
                 break;
 
@@ -243,7 +243,7 @@ class router {
             $auto_path = '/mod/coursework/actions/' . $this->pluralise($type) . '/' . $action . '.php';
             if (file_exists($CFG->dirroot . $auto_path)) {
 
-                $params = array();
+                $params = [];
                 if (array_key_exists($type, $items)) {
                     $params[$type.'id'] = $items[$type]->id;
                 } else if (array_key_exists('coursework', $items)) {

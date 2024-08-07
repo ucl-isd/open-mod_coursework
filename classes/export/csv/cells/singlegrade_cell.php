@@ -12,7 +12,6 @@ use mod_coursework\models\feedback;
  */
 class singlegrade_cell extends cell_base{
 
-
     /**
      * @param $submission
      * @param $student
@@ -25,7 +24,7 @@ class singlegrade_cell extends cell_base{
 
         $grade = $submission->get_assessor_feedback_by_stage($stage_identifier);
         if($this->coursework->is_using_rubric()){
-            $gradedata = array();
+            $gradedata = [];
             $this->get_rubric_scores_gradedata($grade, $gradedata); // multiple parts are handled here
         } else {
             $gradedata = (!$grade)? '': $this->get_actual_grade($grade->grade);
@@ -42,7 +41,7 @@ class singlegrade_cell extends cell_base{
     public function get_header($stage){
 
         if ($this->coursework->is_using_rubric()) {
-            $strings = array();
+            $strings = [];
             $criterias = $this->coursework->get_rubric_criteria();
             foreach ($criterias as $criteria) { // rubrics can have multiple parts, so let's create header for each of it
                 $strings['singlegrade'.$criteria['id']] = $criteria['description'];
@@ -54,15 +53,14 @@ class singlegrade_cell extends cell_base{
             return $strings;
     }
 
-
-    public function validate_cell($value,$submissionid,$stage_identifier='',$uploadedgradecells = array()) {
+    public function validate_cell($value, $submissionid, $stage_identifier='', $uploadedgradecells = []) {
 
         global $PAGE, $DB, $USER;
 
         if (has_capability('mod/coursework:addinitialgrade', $PAGE->context) || has_capability('mod/coursework:editinitialgrade', $PAGE->context)
-            || has_capability('mod/coursework:administergrades', $PAGE->context))   {
+            || has_capability('mod/coursework:administergrades', $PAGE->context)) {
 
-            $errormsg   =   '';
+            $errormsg = '';
 
             if (!empty($value) && !$this->coursework->is_using_rubric()) {
                 $gradejudge = new grade_judge($this->coursework);
@@ -75,12 +73,11 @@ class singlegrade_cell extends cell_base{
                 }
             } else {
 
-
                 //we won't be processing this line if it has no values, empty wont tell us this as it thinks that an array with
                 //keys isnt. We will use array_filter whhich will return all values from the array if this is empty then we have
                 //nothing to do
 
-                $arrayvalues    =   array_filter($value);
+                $arrayvalues = array_filter($value);
 
                 //if there are no values we don't need to do anything
                 if (!empty($arrayvalues)) {
@@ -116,23 +113,21 @@ class singlegrade_cell extends cell_base{
 
             }
 
-
             if (!empty($errormsg))  return $errormsg;
 
+            $dbrecord = $DB->get_record('coursework_submissions', array('id' => $submissionid));
 
-            $dbrecord = $DB->get_record('coursework_submissions', array('id'=>$submissionid));
-
-            $submission    =  \mod_coursework\models\submission::find($dbrecord);
+            $submission = \mod_coursework\models\submission::find($dbrecord);
 
             //is this submission ready to be graded
-            if (!$submission->ready_to_grade() && $submission->get_state() < \mod_coursework\models\submission::FULLY_GRADED) return get_string('submissionnotreadytograde','coursework');
+            if (!$submission->ready_to_grade() && $submission->get_state() < \mod_coursework\models\submission::FULLY_GRADED) return get_string('submissionnotreadytograde', 'coursework');
 
             //if you have administer grades you can grade anything
             if (has_capability('mod/coursework:administergrades', $PAGE->context)) return true;
 
             //is the current user an assessor at any of this submissions grading stages or do they have administer grades
-            if ($this->coursework->allocation_enabled() && !$this->coursework->is_assessor($USER) && !has_capability('mod/coursework:administergrades',$PAGE->context))
-                return get_string('nopermissiontogradesubmission','coursework');
+            if ($this->coursework->allocation_enabled() && !$this->coursework->is_assessor($USER) && !has_capability('mod/coursework:administergrades', $PAGE->context))
+                return get_string('nopermissiontogradesubmission', 'coursework');
 
                         //has the submission been published if yes then no further grades are allowed
             if ($submission->get_state() >= submission::PUBLISHED)  return $submission->get_status_text();
@@ -144,15 +139,12 @@ class singlegrade_cell extends cell_base{
             );
             $feedback = feedback::find($feedback_params);
 
-            if (!$this->coursework->allocation_enabled() && !empty($feedback))   {
+            if (!$this->coursework->allocation_enabled() && !empty($feedback)) {
                 //was this user the one who last graded this submission if not then user cannot grade
                 if ($feedback->assessorid != $USER->id || !has_capability('mod/coursework:editinitialgrade', $PAGE->context) && !has_capability('mod/coursework:administergrades', $PAGE->context))
-                    return get_string('nopermissiontoeditgrade','coursework');
+                    return get_string('nopermissiontoeditgrade', 'coursework');
 
             }
-
-
-
 
             $ability = new ability(user::find($USER), $this->coursework);
 
@@ -162,7 +154,7 @@ class singlegrade_cell extends cell_base{
             );
             $feedback = feedback::find($feedback_params);
 
-            //if (!$ability->can('edit',$feedback))   return get_string('nopermissiontoeditgrade','coursework');
+            //if (!$ability->can('edit', $feedback))   return get_string('nopermissiontoeditgrade', 'coursework');
 
             //does a feedback exist for this stage
             if (empty($feedback)) {
@@ -174,12 +166,11 @@ class singlegrade_cell extends cell_base{
                 );
                 $new_feedback = feedback::build($feedback_params);
 
-
                 //this is a new feedback check it against the new ability checks
-                if (!$ability->can('new',$new_feedback))   return get_string('nopermissiontogradesubmission','coursework');
+                if (!$ability->can('new', $new_feedback))   return get_string('nopermissiontogradesubmission', 'coursework');
             } else {
                 //this is a new feedback check it against the edit ability checks
-                if (!$ability->can('edit',$feedback))   return get_string('nopermissiontoeditgrade','coursework');
+                if (!$ability->can('edit', $feedback))   return get_string('nopermissiontoeditgrade', 'coursework');
             }
 
         } else {
@@ -200,9 +191,9 @@ class singlegrade_cell extends cell_base{
 
         global  $DB;
 
-        $valuefound =   false;
+        $valuefound = false;
 
-        $levels     =   $criteria['levels'];
+        $levels = $criteria['levels'];
 
         if (is_numeric($value) ) {
             foreach ($levels as $level) {
@@ -216,7 +207,6 @@ class singlegrade_cell extends cell_base{
             }
         }
 
-
         return $valuefound;
     }
 
@@ -227,38 +217,32 @@ class singlegrade_cell extends cell_base{
      * @param $csv_cells
      *
      */
-    function    get_rubrics($coursework,$csv_cells)        {
-
+    function    get_rubrics($coursework, $csv_cells)        {
 
         if ($coursework->is_using_rubric()) {
 
-            $rubricheaders      =       array();
+            $rubricheaders = [];
 
             $criterias = $coursework->get_rubric_criteria();
 
-            foreach ($criterias as  $criteria)   {
-                $rubricheaders[]    =   $criteria['description'];
-                $rubricheaders[]    =   $criteria['description']." comment";
+            foreach ($criterias as  $criteria) {
+                $rubricheaders[] = $criteria['description'];
+                $rubricheaders[] = $criteria['description']." comment";
             }
 
-
             //find out the position of singlegrade
-            $position = array_search('singlegrade',$csv_cells);
+            $position = array_search('singlegrade', $csv_cells);
             //get all data from the position of the singlegrade to the length of rubricheaders
-           // $csv_cells     =   array_splice($csv_cells,5, 1, $rubricheaders);
+           // $csv_cells = array_splice($csv_cells,5, 1, $rubricheaders);
 
+            $start_cells = array_slice($csv_cells,0, $position,true);
+            $end_cells = array_slice($csv_cells, $position+1,count($csv_cells),true);
 
-            $start_cells        =   array_slice($csv_cells,0,$position,true);
-            $end_cells          =   array_slice($csv_cells,$position+1,count($csv_cells),true);
+            $cells = array_merge($start_cells, $rubricheaders);
 
-            $cells              =   array_merge($start_cells,$rubricheaders);
-
-            $cells              =   array_merge($cells,$end_cells);
-
-
+            $cells = array_merge($cells, $end_cells);
 
         }
-
 
         return $cells;
     }

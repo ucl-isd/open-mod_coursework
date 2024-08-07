@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace mod_coursework\event;
 
 /**
@@ -31,8 +29,5 @@ class feedback_changed extends \core\event\base {
         $this->data['edulevel'] = self::LEVEL_TEACHING;
         $this->data['objecttable'] = 'coursework_feedbacks';
     }
-
-
-
 
 }

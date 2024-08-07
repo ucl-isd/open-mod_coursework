@@ -33,7 +33,6 @@ class plagiarism_flagging_controller extends controller_base {
      */
     protected $plagiarism_flag;
 
-
     /**
      * This deals with the page that the assessors see when they want to add component feedbacks.
      *
@@ -45,14 +44,12 @@ class plagiarism_flagging_controller extends controller_base {
 
         $plagiarismflag = new plagiarism_flag();
         $plagiarismflag->submissionid = $this->params['submissionid'];
-        $plagiarismflag->courseworkid =  $this->coursework->id;
-
+        $plagiarismflag->courseworkid = $this->coursework->id;
 
         $ability = new ability(user::find($USER), $this->coursework);
         $ability->require_can('new', $plagiarismflag);
 
-
-        $urlparams = array();
+        $urlparams = [];
         $urlparams['submissionid'] = $plagiarismflag->submissionid;
 
         $PAGE->set_url('/mod/coursework/actions/moderations/new.php', $urlparams);
@@ -90,7 +87,6 @@ class plagiarism_flagging_controller extends controller_base {
         $renderer->edit_plagiarism_flag_page($plagiarism_flag, $creator, $editor);
     }
 
-
     /**
      * Saves the new plagiarism flag for the first time.
      */
@@ -99,7 +95,7 @@ class plagiarism_flagging_controller extends controller_base {
         global $USER, $PAGE;
 
         $plagiarismflag = new plagiarism_flag();
-        $plagiarismflag->courseworkid =  $this->coursework->id();
+        $plagiarismflag->courseworkid = $this->coursework->id();
         $plagiarismflag->submissionid = $this->params['submissionid'];
         $plagiarismflag->createdby = $USER->id;
 
@@ -131,7 +127,6 @@ class plagiarism_flagging_controller extends controller_base {
         }
     }
 
-
     /**
      * Updates plagiarism flag
      */
@@ -156,7 +151,7 @@ class plagiarism_flagging_controller extends controller_base {
         $plagiarismflag = $form->process_data($plagiarismflag);
 
         // add to log here
-        $oldstatus =  $DB->get_field(plagiarism_flag::get_table_name(), 'status', array('id' => $flagid)); //retrieve old status before saving new
+        $oldstatus = $DB->get_field(plagiarism_flag::get_table_name(), 'status', array('id' => $flagid)); //retrieve old status before saving new
         $params = array(
             'context' => \context_module::instance($this->coursework->get_course_module()->id),
             'courseid' => $this->coursework->get_course()->id,
@@ -177,8 +172,6 @@ class plagiarism_flagging_controller extends controller_base {
 
         redirect($coursework_page_url);
     }
-
-
 
     /**
      * Get any plagiarism flag-specific stuff.

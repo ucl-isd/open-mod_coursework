@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    mod
- * @subpackage coursework
+ * @package    mod_coursework
  * @copyright  2011 University of London Computer Centre {@link ulcc.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,17 +35,8 @@ if (! $course = $DB->get_record('course', array('id' => $id))) {
 
 require_course_login($course);
 
-if ((float)substr($CFG->release, 0, 5) > 2.6) { // 2.8 > 2.6
-    $event = \mod_coursework\event\course_module_instance_list_viewed::create(array('context' => context_course::instance($course->id)));
-    $event->trigger();
-} else {
-    add_to_log($course->id,
-               'coursework',
-               'view',
-               "view.php?id=$course_module->id",
-               $coursework->name,
-               $course_module->id);
-}
+$event = \mod_coursework\event\course_module_instance_list_viewed::create(array('context' => context_course::instance($course->id)));
+$event->trigger();
 
 // Print the header.
 
@@ -64,7 +54,6 @@ if (! $courseworks = get_all_instances_in_course('coursework', $course)) {
     echo $OUTPUT->footer();
     die();
 }
-
 
 echo $OUTPUT->heading(get_string('modulenameplural', 'coursework'), 2);
 $page_renderer = $PAGE->get_renderer('mod_coursework', 'page');

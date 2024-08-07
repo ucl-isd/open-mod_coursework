@@ -12,7 +12,6 @@ use mod_coursework\models\feedback;
  */
 class otherassessors_cell extends cell_base{
 
-
     /**
      * @param submission $submission
      * @param $student
@@ -26,7 +25,6 @@ class otherassessors_cell extends cell_base{
       //  $stage_identifier =
     // retrieve all feedbacks without currents user feedback
 
-
         $params = array(
             'submissionid' => $submission->id,
             'assessorid' => $USER->id,
@@ -39,10 +37,10 @@ class otherassessors_cell extends cell_base{
                 AND stage_identifier <> 'final_agreed_1'";
 
         $feedbacks = $DB->get_records_sql($sql, $params);
-        $gradedata = array();
+        $gradedata = [];
 
        // $stage_identifier = ($this->coursework->get_max_markers() == 1) ? "assessor_1" : $this->get_stage_identifier_for_assessor($submission, $student);
-        foreach($feedbacks as $feedback){
+        foreach ($feedbacks as $feedback){
 
             $grade = $submission->get_assessor_feedback_by_stage($feedback->stage_identifier);
             if ($grade){
@@ -66,7 +64,6 @@ class otherassessors_cell extends cell_base{
                     $gradedata[] = '';
                 }
 
-
             } else {
 
                 if($this->coursework->is_using_rubric()){
@@ -83,13 +80,13 @@ class otherassessors_cell extends cell_base{
 
         }
 
-        $numothereassessorfeedbacks    =   $submission->max_number_of_feedbacks() -1;
+        $numothereassessorfeedbacks = $submission->max_number_of_feedbacks() -1;
 
-        if ($numothereassessorfeedbacks - count($feedbacks) != 0 )  {
+        if ($numothereassessorfeedbacks - count($feedbacks) != 0 ) {
 
-            $blankcolumns   =   $numothereassessorfeedbacks - count($feedbacks);
+            $blankcolumns = $numothereassessorfeedbacks - count($feedbacks);
 
-            for($i = 0; $i < $blankcolumns; $i++) {
+            for ($i = 0; $i < $blankcolumns; $i++) {
                 if ($this->coursework->is_using_rubric()) {
                     $criterias = $this->coursework->get_rubric_criteria();
                     foreach ($criterias as $criteria) { // rubrics can have multiple parts, so let's create header for each of it
@@ -115,7 +112,7 @@ class otherassessors_cell extends cell_base{
      */
     public function get_header($stage){
 
-        $fields = array();
+        $fields = [];
 
         for ($i = 1; $i < $this->stages ; $i++) {
             if ($this->coursework->is_using_rubric()) {
@@ -131,7 +128,5 @@ class otherassessors_cell extends cell_base{
         }
        return $fields;
     }
-
-
 
 }

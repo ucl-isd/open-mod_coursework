@@ -54,7 +54,7 @@ class cron {
             'users' => 0
         );
 
-        $userswhoneedreminding = array();
+        $userswhoneedreminding = [];
 
         $raw_courseworks = $DB->get_records('coursework');
         foreach ($raw_courseworks as $raw_coursework) {
@@ -72,7 +72,6 @@ class cron {
                 continue;
             }
 
-
             $students = $coursework->get_students_who_have_not_yet_submitted();
 
             foreach ($students as $student) {
@@ -87,7 +86,6 @@ class cron {
                 }
 
                 $deadline = $personal_deadline ? $personal_deadline->personal_deadline : $coursework->deadline;
-
 
                 if ($individual_extension){
                     // check if 1st reminder is due to be sent but has not been sent yet
@@ -108,8 +106,6 @@ class cron {
                            $student->nextremindernumber= 2;
                            $userswhoneedreminding[$student->id().'_'.$coursework->id] = $student;
                    }
-
-
 
                 } else if ($deadline > time()) { // coursework or personal deadline hasn't passed
                     // check if 1st reminder is due to be sent but has not been sent yet
@@ -219,7 +215,7 @@ class cron {
                 }
 
                 $user->coursework_name = $coursework_instance->name;
-                $user->deadline = userdate($coursework_instance->get_deadline(),'%a, %d %b %Y, %H:%M');
+                $user->deadline = userdate($coursework_instance->get_deadline(), '%a, %d %b %Y, %H:%M');
                 $user->day_hour = coursework_seconds_to_string($coursework_instance->get_deadline() - time());
 
                 $subject = get_string('cron_email_subject_admin', 'mod_coursework', $user);
@@ -262,7 +258,7 @@ class cron {
      * @global  $CFG
      * @return string
      */
-    public static function coursework_debuggable_query($query, $params = array()) {
+    public static function coursework_debuggable_query($query, $params = []) {
 
         global $CFG;
 
@@ -294,7 +290,7 @@ class cron {
         global $DB;
 
         $emailcounter = 0;
-        $usercounter = array();
+        $usercounter = [];
 
         foreach ($users as $user) {
 
@@ -311,7 +307,7 @@ class cron {
                     $usercounter[$user->id]++;
                 }
 
-                $extension =  isset($user->extension)? $user->extension : 0;
+                $extension = isset($user->extension)? $user->extension : 0;
                 $email_reminder = new stdClass();
                 $email_reminder->userid = $user->id;
                 $email_reminder->coursework_id = $user->coursework_id;
@@ -370,7 +366,6 @@ class cron {
         global $DB;
         echo 'Auto releasing feedbacks for courseworks where the release date have passed...';
 
-
        $sql = "SELECT *
                  FROM {coursework} c
                  JOIN {coursework_submissions} cs
@@ -404,7 +399,6 @@ class cron {
      */
     public static function get_admins_and_teachers($context){
 
-
         $graders = get_enrolled_users($context, 'mod/coursework:addinitialgrade');
         $managers = get_enrolled_users($context, 'mod/coursework:addagreedgrade');
 
@@ -418,9 +412,6 @@ class cron {
         return $users;
 
     }
-
-
-
 
 }
 

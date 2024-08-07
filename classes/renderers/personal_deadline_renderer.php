@@ -10,7 +10,6 @@ namespace mod_coursework\renderers;
  */
 class personal_deadline_renderer {
 
-
     /**
      * @param array $vars
      * @throws \coding_exception
@@ -23,12 +22,12 @@ class personal_deadline_renderer {
         $PAGE->set_title($SITE->fullname);
         $PAGE->set_heading($SITE->fullname);
 
-        $html   =   '';
+        $html = '';
 
         //if page has been accessed via the set personal deadline page then we dont want to say who set the last personal
         //deadline
         if (empty($vars['params']['multipleuserdeadlines'])) {
-            $allocatable  = $vars['personal_deadline']->get_allocatable();
+            $allocatable = $vars['personal_deadline']->get_allocatable();
             $createdby = $DB->get_record('user', array('id' => $vars['personal_deadline']->createdbyid));
             $lasteditedby = $DB->get_record('user', array('id' => $vars['personal_deadline']->lastmodifiedbyid));
 
@@ -44,9 +43,8 @@ class personal_deadline_renderer {
                 $html .= '</table>';
             }
         } else {
-            $html = '<h1> Edit personal deadline for ' . get_string('multipleusers','mod_coursework') . '</h1>';
+            $html = '<h1> Edit personal deadline for ' . get_string('multipleusers', 'mod_coursework') . '</h1>';
         }
-
 
         echo $OUTPUT->header();
         echo $html;

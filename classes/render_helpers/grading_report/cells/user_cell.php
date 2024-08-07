@@ -35,13 +35,13 @@ class user_cell extends cell_base implements allocatable_cell {
         // TODO CSS for the space!!
         $content .= ' ' . $rowobject->get_user_name(true);
         $content .= "<br>".$rowobject->get_email();
-        $user   =   $rowobject->get_allocatable();
+        $user = $rowobject->get_allocatable();
 /*
-        $candidatenumber    =   $user->candidate_number();
+        $candidatenumber = $user->candidate_number();
 
-        if (!empty($candidatenumber))   {
+        if (!empty($candidatenumber)) {
 
-            $content    .=  '<br /> ('.$candidatenumber.')';
+            $content    .= '<br /> ('.$candidatenumber.')';
 
         }
 
@@ -54,13 +54,13 @@ class user_cell extends cell_base implements allocatable_cell {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
 
        $viewanonymous = has_capability('mod/coursework:viewanonymous', $this->coursework->get_context());
 
         //adding this line so that the sortable heading function will make a sortable link unique to the table
         //if tablename is set
-        $tablename  =   (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
 
       // allow to sort users only if CW is not set to blind marking or a user has capability to view anonymous
        if($viewanonymous || !$this->coursework->blindmarking) {

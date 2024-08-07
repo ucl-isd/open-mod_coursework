@@ -14,7 +14,8 @@ class auto_allocator_test extends advanced_testcase {
 
     use mod_coursework\test_helpers\factory_mixin;
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -159,10 +160,6 @@ class auto_allocator_test extends advanced_testcase {
 
         $this->assertTrue(\mod_coursework\models\allocation::exists($allocation_params));
     }
-
-
-
-
 
     private function set_coursework_to_single_marker() {
         $this->coursework->update_attribute('numberofmarkers', 1);

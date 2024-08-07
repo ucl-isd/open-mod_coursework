@@ -17,8 +17,7 @@
 /**
  * Unit tests for the coursework class
  *
- * @package    mod
- * @subpackage coursework
+ * @package    mod_coursework
  * @copyright  2012 University of London Computer Centre {@link ulcc.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +28,6 @@ use mod_coursework\stages\assessor;
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-
 
 /**
  * Class that will make sure the allocation_manager works.
@@ -48,7 +46,8 @@ class coursework_test extends advanced_testcase {
     /**
      * Makes us a blank coursework and allocation manager.
      */
-    public function setUp() {
+    public function setUp(): void
+    {
 
         $this->resetAfterTest();
 
@@ -62,7 +61,8 @@ class coursework_test extends advanced_testcase {
     /**
      * Clean up the test fixture by removing the objects.
      */
-    public function tearDown() {
+    public function tearDown(): void
+    {
         global $DB;
 
         $DB->delete_records('coursework', array('id' => $this->coursework->id));

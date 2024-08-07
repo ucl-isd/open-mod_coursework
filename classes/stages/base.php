@@ -49,7 +49,6 @@ abstract class base {
         'user_is_assessor' => []
     ];
 
-
     /**
      * @param coursework $coursework
      * @param int $stage_identifier
@@ -58,7 +57,6 @@ abstract class base {
         $this->coursework = $coursework;
         $this->stage_identifier = $stage_identifier;
     }
-
 
     /**
      * @return strategy_base
@@ -85,7 +83,6 @@ abstract class base {
         } else {
             $teacher = $this->get_next_teacher($allocatable);
         }
-
 
         if ($teacher) {
             $this->make_auto_allocation($allocatable, $teacher);
@@ -182,7 +179,6 @@ abstract class base {
         return $cell_helper->get_renderable_allocation_table_cell();
     }
 
-
     /**
      * @param $allocatable
      * @return \html_table_cell
@@ -234,7 +230,7 @@ abstract class base {
     private function get_percentage_allocated_teachers(){
         global $DB;
 
-        return $DB->get_records('coursework_allocation_config', array('courseworkid'=>$this->get_coursework_id()),'','assessorid as id');
+        return $DB->get_records('coursework_allocation_config', array('courseworkid' => $this->get_coursework_id()), '', 'assessorid as id');
     }
 
     /**
@@ -278,20 +274,20 @@ abstract class base {
     public function get_teachers() {
         $cache = \cache::make('mod_coursework', 'courseworkdata');
 
-        $serialised_teachers  =   $cache->get($this->coursework->id()."_teachers");
+        $serialised_teachers = $cache->get($this->coursework->id()."_teachers");
 
         //there is a chance that when the teachers were initially cached the dataset was empty
         //so check again
         if (empty($serialised_teachers) || empty(unserialize($serialised_teachers))) {
             $teachers = get_enrolled_users($this->coursework->get_context(), $this->assessor_capability());
-            $teacher_users = array();
+            $teacher_users = [];
             foreach ($teachers as $teacher) {
                 $teacher_users[] = user::build($teacher);
             }
 
             $cache->set($this->coursework->id()."_teachers", serialize($teacher_users));
         } else {
-            $teacher_users  =   unserialize($serialised_teachers);
+            $teacher_users = unserialize($serialised_teachers);
         }
 
         return $teacher_users;
@@ -339,7 +335,6 @@ abstract class base {
             return false;
         }
     }
-
 
     /**
      * @param $moderation
@@ -396,7 +391,6 @@ abstract class base {
         return in_array($allocatable->id, $this->allocatables_with_allocations);
     }
 
-
     /**
      * Check if current marking stage has any allocation
      *
@@ -409,7 +403,6 @@ abstract class base {
 
         return !empty($record);
     }
-
 
     /**
      * @param $allocatable
@@ -539,7 +532,7 @@ abstract class base {
             'courseworkid' => $this->coursework->id,
             'allocatableid' => $allocatable->id(),
             'allocatabletype' => $allocatable->type(),
-            'stage_identifier'=> $this->stage_identifier
+            'stage_identifier' => $this->stage_identifier
         );
         $DB->delete_records('coursework_sample_set_mbrs', $params);
     }
@@ -551,7 +544,7 @@ abstract class base {
     public function user_is_assessor($assessor) {
         if (!isset(self::$self_cache['user_is_assessor'][$this->coursework->id][$assessor->id])) {
             $enrolled = is_enrolled($this->coursework->get_course_context(), $assessor, $this->assessor_capability());
-            $res =  $enrolled || is_primary_admin($assessor->id);
+            $res = $enrolled || is_primary_admin($assessor->id);
             self::$self_cache['user_is_assessor'][$this->coursework->id][$assessor->id] = $res;
         }
         return self::$self_cache['user_is_assessor'][$this->coursework->id][$assessor->id];
@@ -565,7 +558,6 @@ abstract class base {
         $enrolled = is_enrolled($this->coursework->get_course_context(), $moderator, 'mod/coursework:moderate');
         return $enrolled || is_primary_admin($moderator->id);
     }
-
 
     /**
      * Check if a user has any allocation in this stage
@@ -710,7 +702,6 @@ abstract class base {
         return moderation::find($moderation_params);
     }
 
-
     /**
      * return bool
      */
@@ -748,7 +739,6 @@ abstract class base {
      */
     public function potential_marker_dropdown($allocatable) {
 
-
         // This gets called a lot on the allocations page, but does not change.
 
         if (!isset($this->assessor_dropdown_options)) {
@@ -780,11 +770,9 @@ abstract class base {
 
         $option_for_nothing_chosen_yet = array('' => get_string($identifier, 'mod_coursework'));
 
+        $dropdown_name = $this->assessor_dropdown_name($allocatable);
 
-        $dropdown_name  =   $this->assessor_dropdown_name($allocatable);
-
-        $selected   =   $this->selected_allocation_in_session($dropdown_name);
-
+        $selected = $this->selected_allocation_in_session($dropdown_name);
 
         $assessor_dropdown = \html_writer::select($this->assessor_dropdown_options,
                                                  $dropdown_name,
@@ -792,7 +780,6 @@ abstract class base {
                                                   $option_for_nothing_chosen_yet,
                                                   $html_attributes
         );
-
 
         return $assessor_dropdown;
     }
@@ -803,15 +790,15 @@ abstract class base {
      */
     public function potential_moderator_dropdown($allocatable) {
 
-        $option_for_nothing_chosen_yet = array('' =>'Choose Moderator');
+        $option_for_nothing_chosen_yet = array('' => 'Choose Moderator');
         $html_attributes = array(
             'id' => $this->moderator_dropdown_id($allocatable),
             'class' => 'moderator_id_dropdown',
         );
 
-        $dropdown_name  =   $this->assessor_dropdown_name($allocatable);
+        $dropdown_name = $this->assessor_dropdown_name($allocatable);
 
-        $selected   =   $this->selected_allocation_in_session($dropdown_name);
+        $selected = $this->selected_allocation_in_session($dropdown_name);
 
         return  $moderator_dropdown = \html_writer::select($this->potential_moderators_as_options_array(),
             'allocatables[' . $allocatable->id . '][moderator][assessor_id]',
@@ -825,7 +812,7 @@ abstract class base {
      */
     private function potential_markers_as_options_array() {
         $potentialmarkers = $this->get_teachers();
-        $options = array();
+        $options = [];
         foreach ($potentialmarkers as $marker) {
             $options[$marker->id] = $marker->name();
         }
@@ -838,7 +825,7 @@ abstract class base {
      */
     private function potential_moderators_as_options_array() {
         $potentialmoderators = get_enrolled_users($this->coursework->get_course_context(), 'mod/coursework:moderate');
-        $options = array();
+        $options = [];
         foreach ($potentialmoderators as $moderator) {
             $options[$moderator->id] = fullname($moderator);
         }
@@ -893,7 +880,6 @@ abstract class base {
         return false;
     }
 
-
     /**
      * @param $allocatable
      */
@@ -908,29 +894,25 @@ abstract class base {
         submission::fill_pool_coursework($coursework_id);
         $submission = submission::get_object($coursework_id, 'allocatableid-allocatabletype', [$allocatable->id(), $allocatable->type()]);
 
-        $feedback   =   $this->get_feedback_for_submission($submission);
+        $feedback = $this->get_feedback_for_submission($submission);
         if ($feedback) {
             $result += $feedback->timecreated;
         }
-
 
         return $result > time();
 
     }
 
-
-    private function selected_allocation_in_session($dropdownname)     {
+    private function selected_allocation_in_session($dropdownname) {
         global  $SESSION;
 
-        $cm =   $this->coursework->get_course_module();
+        $cm = $this->coursework->get_course_module();
 
-        if (!empty($SESSION->coursework_allocationsessions[$cm->id]))   {
+        if (!empty($SESSION->coursework_allocationsessions[$cm->id])) {
 
-            if (!empty($SESSION->coursework_allocationsessions[$cm->id][$dropdownname]))    {
+            if (!empty($SESSION->coursework_allocationsessions[$cm->id][$dropdownname])) {
                 return  $SESSION->coursework_allocationsessions[$cm->id][$dropdownname];
             }
-
-
 
         }
 

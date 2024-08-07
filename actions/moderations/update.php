@@ -8,7 +8,6 @@ require_once(dirname(__FILE__) . '/../../../../config.php');
 
 global $CFG, $USER;
 
-
 $moderationid = required_param('moderationid', PARAM_INT);
 
 $params = array(

@@ -64,9 +64,8 @@ class null_user implements \mod_coursework\allocation\allocatable {
      * @return feedback[]
      */
     public function get_initial_feedbacks($coursework) {
-        return array();
+        return [];
     }
-
 
     /**
      * @param coursework $coursework
@@ -76,7 +75,6 @@ class null_user implements \mod_coursework\allocation\allocatable {
         return false;
     }
 
-
     /**
      * @param coursework $coursework
      * @return bool
@@ -84,7 +82,6 @@ class null_user implements \mod_coursework\allocation\allocatable {
     public function get_agreed_feedback($coursework){
         return false;
     }
-
 
     /**
      * @param coursework $coursework

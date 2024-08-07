@@ -26,9 +26,7 @@ class stages_cell extends cell_base {
             $timemodified = $feedback->timemodified;
         }
 
-
-
-        $gradedata = array();
+        $gradedata = [];
         // go through each stage and get a grade, if grade not present then put  a placeholder
         for ($i = 1; $i <= $this->stages; $i++){
             $stage_identifier = 'assessor_'.$i;
@@ -83,7 +81,6 @@ class stages_cell extends cell_base {
                 $gradedata[] = $submission->get_agreed_grade() == false ? '' : $this->get_assessor_username($submission->get_agreed_grade()->lasteditedbyuser);
             }
 
-
             $gradedata[] = $submission->get_agreed_grade() == false ? '' : userdate($submission->get_agreed_grade()->timemodified, $this->dateformat);
         }
 
@@ -97,7 +94,7 @@ class stages_cell extends cell_base {
      */
     public function get_header($stage){
 
-        $fields = array();
+        $fields = [];
 
         for ($i = 1; $i <= $this->stages; $i++) {
             if ($this->coursework->allocation_enabled()) {
@@ -136,11 +133,5 @@ class stages_cell extends cell_base {
 
         return $fields;
     }
-
-
-
-
-
-
 
 }

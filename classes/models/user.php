@@ -9,8 +9,8 @@
 namespace mod_coursework\models;
 
 use mod_coursework\framework\table_base;
-use \mod_coursework\allocation\allocatable;
-use \mod_coursework\allocation\moderatable;
+use mod_coursework\allocation\allocatable;
+use mod_coursework\allocation\moderatable;
 use mod_coursework\traits\allocatable_functions;
 
 /**
@@ -31,7 +31,7 @@ class user extends table_base implements allocatable, moderatable {
      */
     public function __construct($data = false) {
         $allnames = \core_user\fields::get_name_fields();
-        foreach($allnames as $namefield) {
+        foreach ($allnames as $namefield) {
             $this->$namefield = '';
         }
         parent::__construct($data);
@@ -111,7 +111,6 @@ class user extends table_base implements allocatable, moderatable {
         return $this->id;
     }
 
-
     /**
      * cache array
      *
@@ -189,6 +188,5 @@ class user extends table_base implements allocatable, moderatable {
         }
         return self::$pool['id'][$id];
     }
-
 
 }

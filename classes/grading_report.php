@@ -36,7 +36,7 @@ class grading_report {
     //added static vars to determine in what manner the report is loaded
     public static $MODE_GET_ALL = 1;
     public static $MODE_GET_FIRST_RECORDS = 2;
-    public static $MODE_GET_REMAIN_RECORDS = 3;
+    const MODE_GET_REMAIN_RECORDS = 3;
 
     /**
      * @var array rendering options
@@ -83,7 +83,7 @@ class grading_report {
      */
     public function __construct(array $options, $coursework) {
 
-        $options['courseworkid']    =   $coursework->id;
+        $options['courseworkid'] = $coursework->id;
 
         $this->options = $options;
         $this->coursework = $coursework;
@@ -113,7 +113,6 @@ class grading_report {
     public function get_coursework() {
         return $this->coursework;
     }
-
 
     /**
      * @param $options
@@ -199,7 +198,6 @@ class grading_report {
         return $sort;
     }
 
-
     /**
      * For use with usort.
      * Method called dynamically, so don't delete if unused. See construct_sort_function_name().
@@ -251,7 +249,6 @@ class grading_report {
         return $this->sort_by_stringfield($a->get_student_lastname(), $b->get_student_lastname());
     }
 
-
     /**
      * For use with usort.
      * Method called dynamically, so don't delete if unused. See construct_sort_function_name().
@@ -263,8 +260,6 @@ class grading_report {
     public function sort_by_groupname($a, $b) {
         return $this->sort_by_stringfield($a->get_allocatable()->name, $b->get_allocatable()->name);
     }
-
-
 
     /**
      * For use with usort.
@@ -350,11 +345,11 @@ class grading_report {
             $participants = $this->coursework->get_allocatables();
 
             // Make tablerow objects so we can use the methods to check permissions and set things.
-            $rows = array();
+            $rows = [];
             $row_class = $this->coursework->has_multiple_markers() ? 'mod_coursework\grading_table_row_multi' : 'mod_coursework\grading_table_row_single';
             $ability = new ability(user::find($USER, false), $this->get_coursework());
 
-            $participantsfound  =   0;
+            $participantsfound = 0;
 
             foreach ($participants as $key => $participant) {
 
@@ -405,7 +400,7 @@ class grading_report {
                 if ($counter > $perpage) {
                     if ($mode == self::$MODE_GET_FIRST_RECORDS) {
                         $rows = array_slice($rows, 0, $perpage);
-                    } else if ($mode == self::$MODE_GET_REMAIN_RECORDS) {
+                    } else if ($mode == self::MODE_GET_REMAIN_RECORDS) {
                         $rows = array_slice($rows, $perpage);
                     }
                 }
@@ -425,6 +420,5 @@ class grading_report {
     public function get_options() {
         return $this->options;
     }
-
 
 }

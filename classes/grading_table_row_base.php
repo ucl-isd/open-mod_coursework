@@ -26,7 +26,6 @@ use moodle_url;
 
 defined('MOODLE_INTERNAL') || die();
 
-
 /**
  * Refactoring the grading table to clarify the logic. There will be two subclasses of this -
  * one for single row tables and one for multi-row tables. These classes contain all the business
@@ -195,7 +194,7 @@ abstract class grading_table_row_base implements user_row {
         $personal_deadline = $DB->get_record('coursework_person_deadlines',
                                             array('courseworkid' => $this->get_coursework()->id,
                                                   'allocatableid' => $allocatable->id(),
-                                                  'allocatabletype'=>  $allocatable->type()));
+                                                  'allocatabletype' =>  $allocatable->type()));
         if ($personal_deadline){
             $personal_deadline = $personal_deadline->personal_deadline;
         } else {
@@ -204,8 +203,6 @@ abstract class grading_table_row_base implements user_row {
         
         return  $personal_deadline;
     }
-
-
 
     /**
      * Returns the hash used to name files anonymously for this user/coursework combination
@@ -259,7 +256,6 @@ abstract class grading_table_row_base implements user_row {
 
         return plagiarism_flag::find($params);
     }
-
 
     /**
      * Chained getter to prevent tight coupling.
@@ -347,7 +343,7 @@ abstract class grading_table_row_base implements user_row {
 
         $allocatable = $this->get_allocatable();
         if (empty($allocatable->firstname)) {
-            $this->allocatable =  user::find($allocatable);
+            $this->allocatable = user::find($allocatable);
         }
 
         return $this->get_allocatable()->firstname;
@@ -362,7 +358,7 @@ abstract class grading_table_row_base implements user_row {
 
         $allocatable = $this->get_allocatable();
         if (empty($allocatable->lastname)) {
-            $this->allocatable =  user::find($allocatable);
+            $this->allocatable = user::find($allocatable);
         }
 
         return $this->get_allocatable()->lastname;
@@ -394,7 +390,6 @@ abstract class grading_table_row_base implements user_row {
         return $this->get_submission()->get_assessor_feedback_by_stage('assessor_1');
     }
 
-
     /**
      * Check if the extension is given to this row
      *
@@ -406,10 +401,9 @@ abstract class grading_table_row_base implements user_row {
         global $DB;
         return $DB->record_exists('coursework_extensions', array('courseworkid' => $this->get_coursework()->id,
                                                                       'allocatableid' => $this->get_allocatable()->id(),
-                                                                      'allocatabletype'=>  $this->get_allocatable()->type()));
+                                                                      'allocatabletype' =>  $this->get_allocatable()->type()));
 
     }
-
 
     /**
      * Getter for row extension
@@ -421,7 +415,7 @@ abstract class grading_table_row_base implements user_row {
         global $DB;
         return $DB->get_record('coursework_extensions', array('courseworkid' => $this->get_coursework()->id,
                                                                    'allocatableid' => $this->get_allocatable()->id(),
-                                                                   'allocatabletype'=>  $this->get_allocatable()->type()));
+                                                                   'allocatabletype' =>  $this->get_allocatable()->type()));
     }
 
     public function get_user_firstname() {

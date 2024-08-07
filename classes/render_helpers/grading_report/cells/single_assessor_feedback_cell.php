@@ -2,7 +2,6 @@
 
 namespace mod_coursework\render_helpers\grading_report\cells;
 
-
 use coding_exception;
 use html_table_cell;
 use html_writer;
@@ -122,7 +121,7 @@ class single_assessor_feedback_cell extends cell_base {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
         return get_string('feedbackandgrading', 'coursework');
     }
 
@@ -159,7 +158,6 @@ class single_assessor_feedback_cell extends cell_base {
         $title = get_string('editfinalgrade', 'coursework');
         $icon = new pix_icon('edit', $title, 'coursework');
 
-
         return  $OUTPUT->action_icon($link,
                                      $icon,
                                      null,
@@ -183,12 +181,10 @@ class single_assessor_feedback_cell extends cell_base {
         $iconlink = $OUTPUT->action_link($link,
                                          $linktitle,
                                          null,
-                                         array('class'=>'show_feedback','id' => $link_id));
-
+                                         array('class' => 'show_feedback', 'id' => $link_id));
 
         return $iconlink;
     }
-
 
     /**
      * @param grading_table_row_base $rowobject
@@ -214,7 +210,7 @@ class single_assessor_feedback_cell extends cell_base {
         return  $OUTPUT->action_link($link,
                                      $title,
                                      null,
-                                     array('class'=>'new_final_feedback','id' => $link_id));
+                                     array('class' => 'new_final_feedback', 'id' => $link_id));
     }
 
 }

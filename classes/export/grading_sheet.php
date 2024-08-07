@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 namespace mod_coursework\export;
 use mod_coursework\export\csv;
 use mod_coursework\models\submission;
@@ -23,8 +22,6 @@ use mod_coursework\ability;
 use mod_coursework\models\coursework;
 
 class grading_sheet extends csv{
-
-
 
     public function get_submissions($groupid = null, $selected_submission_ids = ''){
         global $PAGE, $USER;
@@ -47,14 +44,13 @@ class grading_sheet extends csv{
 
         $ability = new ability(user::find($USER), $this->coursework);
 
-
         if (!has_capability('mod/coursework:administergrades', $PAGE->context)) {
 
             /**
              * @var submission[] $submissions
              */
            foreach ($submissions as $submission) {
-               $stage_identifiers = array();
+               $stage_identifiers = [];
                // remove all submissions that a user is not supposed to see
 
                // double marking not allocated
@@ -120,7 +116,7 @@ class grading_sheet extends csv{
      */
     public function add_csv_data($submission){
 
-        $csv_data = array();
+        $csv_data = [];
         // groups
         if ($this->coursework->is_configured_to_have_group_submissions()){
             $group = \mod_coursework\models\group::find($submission->allocatableid);
@@ -139,7 +135,6 @@ class grading_sheet extends csv{
         return $csv_data;
     }
 
-
     /**
      * Put together cells that will be used in the csv file
      * @param coursework $coursework
@@ -150,7 +145,7 @@ class grading_sheet extends csv{
         global $PAGE;
 
         // headers and data for csv
-        $csv_cells = array('submissionid','submissionfileid');
+        $csv_cells = array('submissionid', 'submissionfileid');
 
         if ($coursework->is_configured_to_have_group_submissions()){
             $csv_cells[] = 'group';
@@ -165,7 +160,7 @@ class grading_sheet extends csv{
         // based on capabilities decide what view display - singlegrade or multiplegrade
         if ((has_capability('mod/coursework:addagreedgrade', $PAGE->context) || has_capability('mod/coursework:administergrades', $PAGE->context))
            && $coursework->get_max_markers()>1 ){
-           for($i = 1; $i <= $coursework->get_max_markers(); $i++) {
+           for ($i = 1; $i <= $coursework->get_max_markers(); $i++) {
                // extra column with allocated assessor name
               if ($coursework->allocation_enabled() && $coursework->get_max_markers() > 1
                   && (has_capability('mod/coursework:addinitialgrade', $PAGE->context)
@@ -197,11 +192,10 @@ class grading_sheet extends csv{
 
                 $criterias = $coursework->get_rubric_criteria();
 
-                foreach ($criterias as  $criteria)   {
-                    $csv_cells[]    =   $criteria['description'];
-                    $csv_cells[]    =   $criteria['description']." comment";
+                foreach ($criterias as  $criteria) {
+                    $csv_cells[] = $criteria['description'];
+                    $csv_cells[] = $criteria['description']." comment";
                 }
-
 
             }
         */

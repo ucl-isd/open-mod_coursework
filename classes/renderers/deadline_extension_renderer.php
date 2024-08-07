@@ -31,7 +31,6 @@ class deadline_extension_renderer {
         $PAGE->set_title($SITE->fullname);
         $PAGE->set_heading($heading);
 
-
         $html = '';
 
         echo $OUTPUT->header();

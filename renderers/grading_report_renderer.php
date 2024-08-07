@@ -24,7 +24,6 @@ class mod_coursework_grading_report_renderer extends plugin_renderer_base {
      */
     protected $is_multiple_markers;
 
-
     /**
      * @param grading_report $grading_report
      * param $is_multiple_markers
@@ -57,7 +56,6 @@ class mod_coursework_grading_report_renderer extends plugin_renderer_base {
         return  $langelement . $table_html;
     }
 
-
     /**
      *
      * @return mixed
@@ -69,17 +67,16 @@ class mod_coursework_grading_report_renderer extends plugin_renderer_base {
             'exportgradingsheets' => get_string('exportgradingsheets', 'mod_coursework'),
             'loadingpagination' => get_string('loadingpagination', 'mod_coursework')
         ];
-        $result = html_writer::empty_tag('input',array(
-            'name'=>'',
-            'type'=>'hidden',
-            'data-lang'=>json_encode($lang_messages),
-            'id'=>'element_lang_messages'
+        $result = html_writer::empty_tag('input', array(
+            'name' => '',
+            'type' => 'hidden',
+            'data-lang' =>json_encode($lang_messages),
+            'id' => 'element_lang_messages'
         ));
         $result = html_writer::div($result);
 
         return $result;
     }
-
 
     /**
      * @param cell_interface $cell_helper
@@ -117,7 +114,6 @@ class mod_coursework_grading_report_renderer extends plugin_renderer_base {
         if ($is_multiple_markers) {
             $table_html .= '<td class="details-control"></td>';
         }
-
 
         foreach ($cell_helpers as $cell_helper) {
             $html_td = trim($cell_helper->get_table_cell($row_object));
@@ -176,11 +172,11 @@ class mod_coursework_grading_report_renderer extends plugin_renderer_base {
     /**
      * @return string
      */
-    protected function start_table($options=array()) {
+    protected function start_table($options=[]) {
         $options['width'] = '100%';
         $options['class'] = (!empty($options['class'])) ? $options['class'] : '';
         $options['class'] .= ' submissions datatabletest display compact';
-        $options['id']  = 'dt_table';
+        $options['id'] = 'dt_table';
         $table_html = \html_writer::start_tag('table', $options);
         $table_html .= \html_writer::start_tag('thead');
         return $table_html;
@@ -247,7 +243,7 @@ class mod_coursework_grading_report_renderer extends plugin_renderer_base {
      * @return mixed
      */
     private function upper_header_names_and_colspans($cell_helpers) {
-        $headers = array();
+        $headers = [];
 
         foreach ($cell_helpers as $helper) {
             if (!array_key_exists($helper->header_group(), $headers)) {
@@ -267,6 +263,5 @@ class mod_coursework_grading_report_renderer extends plugin_renderer_base {
     public function grading_table_row_id(allocatable $allocatable, coursework $coursework) {
         return 'allocatable_' . $coursework->get_allocatable_identifier_hash($allocatable);
     }
-
 
 }

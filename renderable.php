@@ -13,7 +13,7 @@ use mod_coursework\framework;
 /**
  * Class mod_coursework_renderable
  *
- * Acts as a decorator around a class. Remember to add the '@mixin' property so that PHPStorm will
+ * Acts as a decorator around a class. Remember to add the @ mixin property so that PHPStorm will
  * provide autocompletion of methods and properties in the renderer. We only need this because feeding
  * a namespaced class to the renderer borks it.
  */
@@ -57,7 +57,6 @@ class mod_coursework_assessor_feedback_table extends mod_coursework_renderable {
  * @mixin \mod_coursework\models\coursework
  */
 class mod_coursework_coursework extends mod_coursework_renderable  { }
-
 
 /**
  * @mixin \mod_coursework\grading_table_row_multi

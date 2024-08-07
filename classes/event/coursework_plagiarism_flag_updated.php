@@ -17,8 +17,7 @@
 /**
  * ccoursework_plagiarism_flag_updated
  *
- * @package    mod
- * @subpackage coursework
+ * @package    mod_coursework
  * @copyright  2016 University of London Computer Centre {@link ulcc.ac.uk}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +26,13 @@ namespace mod_coursework\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-
+/**
+ * ccoursework_plagiarism_flag_updated
+ *
+ * @package    mod_coursework
+ * @copyright  2016 University of London Computer Centre {@link ulcc.ac.uk}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class coursework_plagiarism_flag_updated extends \core\event\base {
 
     /**

@@ -2,7 +2,6 @@
 
 namespace mod_coursework\render_helpers\grading_report\cells;
 
-
 use coding_exception;
 use html_table_cell;
 use mod_coursework\ability;
@@ -64,11 +63,11 @@ class moderation_cell extends cell_base {
      * @param array $options
      * @return string
      */
-    public function get_table_header($options = array()) {
+    public function get_table_header($options = []) {
 
         //adding this line so that the sortable heading function will make a sortable link unique to the table
         //if tablename is set
-        $tablename  =   (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
 
         return $this->helper_sortable_heading(get_string('moderator', 'coursework'),
                                               'modgrade',
