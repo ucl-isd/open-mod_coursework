@@ -435,7 +435,7 @@ class range_sample_type extends \mod_coursework\sample_set_rule\sample_base {
                         $limits[0] = ceil($limits[0] / $weighting); // element of array
                         $limits[1] = ceil($limits[1] / $weighting); // element of array
 
-                        //note we have to add one as the values are not stored in there element positions
+                        // note we have to add one as the values are not stored in there element positions
 
                     }
 
@@ -458,8 +458,8 @@ class range_sample_type extends \mod_coursework\sample_set_rule\sample_base {
                     AND stage_identifier = :stage
                     AND $gradesql BETWEEN {$limit1} AND {$limit2}";
 
-        //note as things stand limit1 and limit2 can not be params as the type of the grade field (varchar)
-        //means the values are cast as strings
+        // note as things stand limit1 and limit2 can not be params as the type of the grade field (varchar)
+        // means the values are cast as strings
 
        return $DB->get_records_sql($sql, array('courseworkid' => $this->coursework->id,
                                                'stage' => $stage));

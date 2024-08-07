@@ -231,7 +231,7 @@ class mod_coursework_behat_allocations_page extends mod_coursework_behat_page_ba
      */
     public function select_total_percentage_for_stage($percentage, $stage) {
 
-        //increment stage as the this will match the id of the element;
+        // increment stage as the this will match the id of the element;
         $stage++;
 
         $elementid = '#assessor_'.$stage.'_sampletotal';

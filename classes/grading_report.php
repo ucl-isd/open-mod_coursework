@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 class grading_report {
 
-    //added static vars to determine in what manner the report is loaded
+    // added static vars to determine in what manner the report is loaded
     public static $MODE_GET_ALL = 1;
     public static $MODE_GET_FIRST_RECORDS = 2;
     const MODE_GET_REMAIN_RECORDS = 3;

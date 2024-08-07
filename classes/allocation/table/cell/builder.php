@@ -180,7 +180,7 @@ class builder {
                     if ($this->has_feedback()) {
                         $contents .= $this->get_included_in_sample_label();
                         $contents .= $this->sampling_hidden_checkbox();
-                    } else{
+                    } else {
                         $contents .= $this->sampling_set_checkbox();
                     }
                 }
