@@ -75,7 +75,7 @@ class upload {
         $allocatabletype = $this->coursework->get_allocatable_type();
         // find all individual users or groups in this coursework
         $allocatables = $this->coursework->get_allocatables();
-        $allocatables = ($allocatabletype == 'group')? array_keys($allocatables) : $allocatables;
+        $allocatables = ($allocatabletype == 'group') ? array_keys($allocatables) : $allocatables;
         // find all assessors for this coursework
         $assessors = get_enrolled_users($this->coursework->get_context(), 'mod/coursework:addinitialgrade');
         $assessors = array_keys($assessors); // keep only assessors' ids
@@ -92,23 +92,29 @@ class upload {
             $cells = $csv_cells;
             $assessorsinfile = [];
 
-            if (sizeof($line) != sizeof($csv_cells)) {$errors = get_string('incorrectfileformat', 'coursework'); break;}
+            if (sizeof($line) != sizeof($csv_cells)) {
+                $errors = get_string('incorrectfileformat', 'coursework');
+                break;
+            }
             foreach ($line as $keynum => $value) {
 
                 // validate allocatable (user or group)
                 if ($cells[$keynum] == 'allocatable') {
                     // check if allocatable exists in the file
-                    if (empty($value)) {$errors[$s] = get_string($allocatabletype .'namemissing', 'coursework'); break;}
+                    if (empty($value)) {
+                        $errors[$s] = get_string($allocatabletype .'namemissing', 'coursework');
+                        break;
+                    }
 
                     if ($allocatabletype == 'user') {
                         // get user id
                         $suballocatable = $DB->get_record('user', array($assessor_identifier=> $value));
-                        $allocatable = ($suballocatable)? \mod_coursework\models\user::find($suballocatable->id): '';
+                        $allocatable = ($suballocatable) ? \mod_coursework\models\user::find($suballocatable->id): '';
                     } else {
                         // get group id
                         $suballocatable = $DB->get_record('groups', array('courseid' => $this->coursework->course,
                                                                         'name' => $value));
-                        $allocatable = ($suballocatable)? \mod_coursework\models\group::find($suballocatable->id) : '';
+                        $allocatable = ($suballocatable) ? \mod_coursework\models\group::find($suballocatable->id) : '';
                     }
 
                     // check if allocatable exists in this coursework
@@ -200,7 +206,10 @@ class upload {
 
             $cells = $csv_cells;
 
-            if (sizeof($line) != sizeof($csv_cells)) {$errors = get_string('incorrectfileformat', 'coursework'); break;}
+            if (sizeof($line) != sizeof($csv_cells)) {
+                $errors = get_string('incorrectfileformat', 'coursework');
+                break;
+            }
 
             foreach ($line as $keynum => $value) {
 
@@ -212,12 +221,12 @@ class upload {
                     if ($allocatabletype == 'user') {
                         // get user id
                         $suballocatable = $DB->get_record('user', array($assessor_identifier=> $value));
-                        $allocatable = ($suballocatable)? \mod_coursework\models\user::find($suballocatable->id): '';
+                        $allocatable = ($suballocatable) ? \mod_coursework\models\user::find($suballocatable->id): '';
                     } else {
                         // get group id
                         $suballocatable = $DB->get_record('groups', array('courseid' => $this->coursework->course,
                             'name' => $value));
-                        $allocatable = ($suballocatable)? \mod_coursework\models\group::find($suballocatable->id): '';
+                        $allocatable = ($suballocatable) ? \mod_coursework\models\group::find($suballocatable->id): '';
                     }
                 }
                 if (substr($cells[$keynum], 0, 8) == 'assessor' && !(empty($value))) {

@@ -147,7 +147,7 @@ if (!(isset($SESSION->coursework_groupname_alpha[$course_module_id]))) {
     $SESSION->coursework_groupname_alpha[$course_module_id] = $coursework_groupname_alpha;
 }
 
-//we will use the same defaults as page (above) defaulting to page setting if no specific viewallstudents_page has been set
+// we will use the same defaults as page (above) defaulting to page setting if no specific viewallstudents_page has been set
 if (isset($SESSION->viewallstudents_perpage[$course_module_id]) && optional_param('viewallstudents_per_page', 0, PARAM_INT) != $SESSION->viewallstudents_perpage[$course_module_id]
     && optional_param('viewallstudents_per_page', 0, PARAM_INT) != 0) { // prevent blank pages if not in correct page
     $viewallstudents_page = 0;
@@ -160,7 +160,7 @@ if (isset($SESSION->viewallstudents_perpage[$course_module_id]) && optional_para
     $SESSION->viewallstudents_page[$course_module_id] = $viewallstudents_page;
 }
 
-//we will use the same defaults as perpage (above) defaulting to perpage setting if no specific viewallstudents_perpage has been set
+// we will use the same defaults as perpage (above) defaulting to perpage setting if no specific viewallstudents_perpage has been set
 if (!(isset($SESSION->viewallstudents_perpage[$course_module_id]))) {
     $SESSION->viewallstudents_perpage[$course_module_id] = optional_param('viewallstudents_per_page', $perpage, PARAM_INT);
     $viewallstudents_perpage = $SESSION->viewallstudents_perpage[$course_module_id];
@@ -169,7 +169,7 @@ if (!(isset($SESSION->viewallstudents_perpage[$course_module_id]))) {
     $SESSION->viewallstudents_perpage[$course_module_id] = $viewallstudents_perpage;
 }
 
-//we will use the same defaults as sortby (above) defaulting to sortby setting if no specific viewallstudents_sortby has been set
+// we will use the same defaults as sortby (above) defaulting to sortby setting if no specific viewallstudents_sortby has been set
 if (!(isset($SESSION->viewallstudents_sortby[$course_module_id]))) {
     $SESSION->viewallstudents_sortby[$course_module_id] = optional_param('viewallstudents_sortby', $sortby, PARAM_ALPHA);
     $viewallstudents_sortby = $SESSION->viewallstudents_sortby[$course_module_id];
@@ -178,7 +178,7 @@ if (!(isset($SESSION->viewallstudents_sortby[$course_module_id]))) {
     $SESSION->viewallstudents_sortby[$course_module_id] = $viewallstudents_sortby;
 }
 
-//we will use the same defaults as sorthow (above) defaulting to sorthow setting if no specific viewallstudents_sorthow has been set
+// we will use the same defaults as sorthow (above) defaulting to sorthow setting if no specific viewallstudents_sorthow has been set
 if (!(isset($SESSION->viewallstudents_sorthow[$course_module_id]))) {
     $SESSION->viewallstudents_sorthow[$course_module_id] = optional_param('viewallstudents_sorthow', $sorthow, PARAM_ALPHA);
     $viewallstudents_sorthow = $SESSION->viewallstudents_sorthow[$course_module_id];
@@ -416,7 +416,7 @@ $PAGE->set_url('/mod/coursework/view.php', $params);
 $PAGE->set_title($coursework->name);
 $PAGE->set_heading($course->shortname);
 
-//$PAGE->set_button($OUTPUT->update_module_button($course_module->id, 'coursework')); // deprecated from 3.2 (MDL-53765 core)
+// $PAGE->set_button($OUTPUT->update_module_button($course_module->id, 'coursework')); // deprecated from 3.2 (MDL-53765 core)
 
 // Auto publish after the deadline
 if ($coursework->has_individual_autorelease_feedback_enabled() &&
@@ -427,7 +427,7 @@ if ($coursework->has_individual_autorelease_feedback_enabled() &&
     $coursework->publish_grades();
 }
 
-//Create automatic feedback
+// Create automatic feedback
 if ($coursework->automaticagreement_enabled()) {
     $coursework->create_automatic_feedback();
 
@@ -543,8 +543,8 @@ echo '<script src="'.$CFG->wwwroot.'/mod/coursework/datatables/js/jquery-3.3.1.m
 <script src="'.$CFG->wwwroot.'/mod/coursework/datatables/js/edit_datatables.js"></script>
 ';
 
-//$PAGE->requires->js('/mod/coursework/datatables/js/jquery-3.3.1.min.js');
-//$PAGE->requires->js('/mod/coursework/datatables/js/jquery.datatables.js');
+// $PAGE->requires->js('/mod/coursework/datatables/js/jquery-3.3.1.min.js');
+// $PAGE->requires->js('/mod/coursework/datatables/js/jquery.datatables.js');
 // Finish the page.
 echo $OUTPUT->footer();
 
