@@ -485,7 +485,7 @@ class ability extends \mod_coursework\framework\ability {
             function (submission $submission) {
                 // take into account courseworks with personal deadlines
                 if ($submission->get_coursework()->personal_deadlines_enabled()) {
-                    $deadline_passed = ($submission->submission_personal_deadline() < time())? true : false;
+                    $deadline_passed = ($submission->submission_personal_deadline() < time()) ? true : false;
                  } else {
                      $deadline_passed = $submission->get_coursework()->deadline_has_passed();
                 }
