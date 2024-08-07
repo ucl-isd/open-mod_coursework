@@ -30,7 +30,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
             $append = FILE_APPEND;
         }
 
-        file_put_contents('/tmp/cheap.log',print_r($thing,true)."\n---------------\n", $append);
+        file_put_contents('/tmp/cheap.log', print_r($thing, true)."\n---------------\n", $append);
     }
 
     /**
@@ -68,9 +68,9 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
                         'mod_agreement' => 'coursework_submissions/coursework_submission/coursework_feedbacks/coursework_feedback/coursework_mod_agreements',
                         'plagiarism_flag' => 'coursework_submissions/coursework_submission/coursework_plagiarism_flags');
 
-            foreach ($bits as $bit =>  $bitpath)
+            foreach ($bits as $bit => $bitpath)
             {
-                $p = new restore_path_element("coursework_$bit","/activity/coursework/{$bitpath}/coursework_$bit");
+                $p = new restore_path_element("coursework_$bit", "/activity/coursework/{$bitpath}/coursework_$bit");
                 $paths[] = $p;
             }
         }
@@ -83,12 +83,12 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
         if (!empty($data->allocatableuser))
         {
             $data->allocatableid = $this->get_mappingid('user', $data->allocatableuser);
-            $data->allocatabletype='user';
+            $data->allocatabletype = 'user';
         }
         else
         {
             $data->allocatableid = $this->get_mappingid('group', $data->allocatablegroup);
-            $data->allocatabletype='group';
+            $data->allocatabletype = 'group';
         }
     }
 

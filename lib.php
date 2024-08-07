@@ -198,9 +198,7 @@ function coursework_add_instance($formdata) {
     // Since MDL-68645 in 2020 this has been the case - see commit f883c681.
     // Mod_assign does not use format and strips out pluginfiles so we do the same.
     $calandardescription = $coursemodule->showdescription
-        ? [ 'text' => strip_pluginfile_content($coursework->intro),
-            'format' => $coursework->introformat
-        ]
+        ? [ 'text' => strip_pluginfile_content($coursework->intro), 'format' => $coursework->introformat]
         : '';
     //create event for coursework deadline [due]
     if ($coursework && $coursework->deadline) {
@@ -450,8 +448,7 @@ function coursework_update_instance($coursework) {
 
     $coursework->submissionnotification = $subnotify;
 
-    $courseworkhassubmissions = ($DB->get_records('coursework_submissions', array('courseworkid' => $coursework->id)))
-      ? true : false;
+    $courseworkhassubmissions = $DB->record_exists('coursework_submissions', ['courseworkid' => $coursework->id]);
 
     //if the coursework has submissions then we the renamefiles setting can't be changes
     if ($courseworkhassubmissions) {
@@ -483,7 +480,7 @@ function coursework_update_instance($coursework) {
             'courseid' => $courseworkobj->get_course()->id,
             'objectid' => $coursework->id,
             'other' => array(
-                'courseworkid' =>  $coursework->id,
+                'courseworkid' => $coursework->id,
                 'oldsubmissiondeadline' => $oldsubmissiondeadline,
                 'newsubmissionsdeadline' => $coursework->deadline,
                 'oldgeneraldeadline' => $oldgeneraldeadline,
@@ -919,7 +916,7 @@ function coursework_role_assigned_event_handler($roleassignment) {
     $courseworkids = coursework_get_coursework_ids_from_context_id($roleassignment->contextid);
 
     foreach ($courseworkids as $courseworkid) {
-        $DB->set_field('coursework', 'processenrol',1, array('id' => $courseworkid));
+        $DB->set_field('coursework', 'processenrol', 1, array('id' => $courseworkid));
     }
 
     return true;
@@ -940,7 +937,7 @@ function coursework_role_unassigned_event_handler($roleassignment) {
     $courseworkids = coursework_get_coursework_ids_from_context_id($roleassignment->contextid);
 
     foreach ($courseworkids as $courseworkid) {
-        $DB->set_field('coursework', 'processunenrol',1, array('id' => $courseworkid));
+        $DB->set_field('coursework', 'processunenrol', 1, array('id' => $courseworkid));
     }
 
     return true;
@@ -1512,7 +1509,7 @@ function coursework_is_ulcc_digest_coursework_plugin_installed() {
     $disgestblockexists = $DB->record_exists_sql("SELECT id FROM {block} WHERE name = 'ulcc_digest' AND visible = 1");
 
     if (!empty($disgestblockexists)) {
-         $pluginexists = ($DB->get_records('block_ulcc_digest_plgs', array('module' => 'coursework', 'status' => 1)))  ? true   : false;
+         $pluginexists = $DB->record_exists('block_ulcc_digest_plgs', ['module' => 'coursework', 'status' => 1]);
     }
 
     return $pluginexists;

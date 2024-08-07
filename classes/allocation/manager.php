@@ -246,7 +246,7 @@ class manager {
 
         global $CFG, $DB;
 
-        $sampleplugins = $DB->get_records('coursework_sample_set_plugin',null, 'pluginorder');
+        $sampleplugins = $DB->get_records('coursework_sample_set_plugin', null, 'pluginorder');
         $order = 0;
         foreach ($sampleplugins as $plugin) {
 
@@ -266,7 +266,7 @@ class manager {
         $DB->delete_records('coursework_sample_set_rules', array('courseworkid' => $this->coursework->id));
         for ($i = 2; $i <= $this->coursework->get_max_markers(); $i++) {
 
-            $sample_strategy = required_param("assessor_{$i}_samplingstrategy",PARAM_INT);
+            $sample_strategy = required_param("assessor_{$i}_samplingstrategy", PARAM_INT);
 
             if ($sample_strategy) {
                 $this->save_sample_set_rule($i);
@@ -286,7 +286,7 @@ class manager {
     public function auto_generate_sample_set() {
         global $DB;
 
-        $sampleplugins = $DB->get_records('coursework_sample_set_plugin',null, 'pluginorder');
+        $sampleplugins = $DB->get_records('coursework_sample_set_plugin', null, 'pluginorder');
         $order = 0;
 
         $sample_set = [];

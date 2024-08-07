@@ -132,7 +132,7 @@ class warnings {
                     //get group ids of these students
                     if ($this->coursework->grouping_id) {
 
-                        $sql = "SELECT groups.id,groups.name
+                        $sql = "SELECT groups.id, groups.name
                                FROM {groups} groups
                          INNER JOIN {groupings_groups} groupings
                                  ON groups.id = groupings.groupid
@@ -148,7 +148,7 @@ class warnings {
                             'userid' => $student->userid);
                     } else {
 
-                        $sql = "SELECT groups.id,groups.name
+                        $sql = "SELECT groups.id, groups.name
                                 FROM {groups} groups
                           INNER JOIN {groups_members} gm
                                   ON gm.groupid = groups.id

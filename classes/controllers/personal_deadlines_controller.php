@@ -50,8 +50,8 @@ class personal_deadlines_controller extends controller_base{
         $ability = new ability(user::find($USER), $this->coursework);
         $ability->require_can('edit', $this->personal_deadline);
 
-        $params['allocatableid'] = (!is_array($params['allocatableid']))   ? $params['allocatableid']
-          :  serialize($params['allocatableid']);
+        $params['allocatableid'] = (!is_array($params['allocatableid']))
+            ? $params['allocatableid'] :  serialize($params['allocatableid']);
 
         $PAGE->set_url('/mod/coursework/actions/personal_deadline/new.php', $params);
         $create_url = $this->get_router()->get_path('edit personal deadline');
@@ -138,7 +138,7 @@ class personal_deadlines_controller extends controller_base{
 
         //if the allocatableid is an array then the current page will probably be setting multiple the personal deadlines
         //we use the first element in the array to setup the personal deadline object
-        $params['allocatableid'] = (is_array($this->params['allocatableid']))  ? current($this->params['allocatableid'])  : $this->params['allocatableid'];
+        $params['allocatableid'] = (is_array($this->params['allocatableid'])) ? current($this->params['allocatableid']) : $this->params['allocatableid'];
 
          $this->personal_deadline = personal_deadline::find_or_build($params);
 
@@ -191,8 +191,8 @@ class personal_deadlines_controller extends controller_base{
 
         $ability = new ability(user::find($USER), $this->coursework);
         $ability->require_can('edit', $this->personal_deadline);
-        $params['allocatableid'] = (!is_array($params['allocatableid']))   ? $params['allocatableid']
-          :  serialize($params['allocatableid']);
+        $params['allocatableid'] = (!is_array($params['allocatableid']))
+            ? $params['allocatableid'] :  serialize($params['allocatableid']);
 
         $data = (object) $this->params;
         if (empty($data->multipleuserdeadlines)) {
