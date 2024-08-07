@@ -220,8 +220,8 @@ class student_submission_form extends moodleform {
                 $message = get_string('latesubmissionsnotallowed', 'mod_coursework');
             } else {
                 $message = $submission->get_state() == submission::FINALISED
-                        ? get_string('finalisedlocked', 'coursework') :
-                        get_string('feedbacklocked', 'coursework');
+                    ? get_string('finalisedlocked', 'coursework')
+                    : get_string('feedbacklocked', 'coursework');
             }
             redirect($link, $message);
         }
@@ -354,7 +354,7 @@ class student_submission_form extends moodleform {
                                  $uploadfilestring,
                                  null,
                                  $this->get_file_manager_options());
-        $this->_form->addRule('submission_manager', 'You must upload file(s) into the box below before you can save', 'required', null, 'server',false,true);
+        $this->_form->addRule('submission_manager', 'You must upload file(s) into the box below before you can save', 'required', null, 'server', false, true);
 
     }
 
@@ -382,8 +382,8 @@ class student_submission_form extends moodleform {
      */
     protected function add_header_to_form() {
         $file_manager_options = $this->get_file_manager_options();
-        $files_string = ($file_manager_options['maxfiles'] == 1) ? 'yoursubmissionfile'
-            : 'yoursubmissionfiles';
+        $files_string = ($file_manager_options['maxfiles'] == 1)
+            ? 'yoursubmissionfile' : 'yoursubmissionfiles';
         $renamed = ($this->get_coursework()->renamefiles == 1)?get_string('yoursubmissionfile_renamed', 'coursework') : "";
 
         $this->_form->addElement('header', 'submitform', get_string($files_string, 'coursework'). $renamed);

@@ -120,7 +120,7 @@ class upload {
 
                 // validate assessor if exists in the coursework and has one of the capabilities allowing them to grade
                 // in initial stage
-                if (substr($cells[$keynum],0,8) == 'assessor') {
+                if (substr($cells[$keynum], 0, 8) == 'assessor') {
                     // skip empty assessors fields
                     if (empty($value)) { continue;}
 
@@ -220,7 +220,7 @@ class upload {
                         $allocatable = ($suballocatable)? \mod_coursework\models\group::find($suballocatable->id): '';
                     }
                 }
-                if (substr($cells[$keynum],0,8) == 'assessor' && !(empty($value))) {
+                if (substr($cells[$keynum], 0, 8) == 'assessor' && !(empty($value))) {
 
                     $assessor = $DB->get_record('user', array($assessor_identifier=> $value));
 

@@ -42,7 +42,7 @@ class upload_allocations_form extends moodleform {
       //  $mform->addElement('checkbox', 'overwrite', '',get_string('overwritegrades', 'coursework'));
         $mform->addElement('hidden', 'cmid', $this->cmid);
 
-        $mform->setType('cmid',PARAM_RAW);
+        $mform->setType('cmid', PARAM_RAW);
 
         $choices = csv_import_reader::get_delimiter_list();
         $mform->addElement('select', 'delimiter_name', get_string('csvdelimiter', 'tool_uploaduser'), $choices);
@@ -58,7 +58,7 @@ class upload_allocations_form extends moodleform {
         $mform->addElement('select', 'encoding', get_string('encoding', 'tool_uploaduser'), $choices);
         $mform->setDefault('encoding', 'UTF-8');
 
-        $this->add_action_buttons(true,get_string('uploadallocations', 'coursework'));
+        $this->add_action_buttons(true, get_string('uploadallocations', 'coursework'));
     }
 
     function display() {

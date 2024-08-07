@@ -662,7 +662,7 @@ class coursework extends table_base {
      * @return int
      */
     function get_initial_marking_deadline() {
-        return  (!empty($this->initialmarkingdeadline))   ? $this->initialmarkingdeadline : 0;
+        return  (!empty($this->initialmarkingdeadline)) ? $this->initialmarkingdeadline : 0;
     }
 
     /**
@@ -671,7 +671,7 @@ class coursework extends table_base {
      * @return int
      */
     function get_agreed_grade_marking_deadline() {
-          return  (!empty($this->agreedgrademarkingdeadline))   ? $this->agreedgrademarkingdeadline : 0;
+          return  (!empty($this->agreedgrademarkingdeadline)) ? $this->agreedgrademarkingdeadline : 0;
     }
 
     /**
@@ -2690,7 +2690,7 @@ class coursework extends table_base {
         $allocatables = $this->get_allocatables();
 
         if (!empty($allocatables)) {
-            $allocatables = array_map(array($this,"get_allocatable_personal_deadline"), $allocatables);
+            $allocatables = array_map(array($this, "get_allocatable_personal_deadline"), $allocatables);
         }
 
         return $allocatables;
