@@ -83,7 +83,7 @@ class grading_sheet extends csv{
                    }
                }
 
-               //TODO - decide if already marked submissions should be displayed in single marking
+               // TODO - decide if already marked submissions should be displayed in single marking
                //  if not marked by a user than dont display it as it would allow them to edit it??
                // || $submission->get_state() == submission::FINAL_GRADED
                if (!$ability->can('show', $submission)
@@ -177,7 +177,7 @@ class grading_sheet extends csv{
             $csv_cells[] = 'singlegrade';
             $csv_cells[] = 'feedbackcomments';
 
-            //other grades
+            // other grades
             $csv_cells[] = 'otherassessors';
 
             $csv_cells[] = 'agreedgrade';

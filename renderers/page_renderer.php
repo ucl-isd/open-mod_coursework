@@ -649,13 +649,13 @@ class mod_coursework_page_renderer extends plugin_renderer_base {
             || has_capability('mod/coursework:addallocatedagreedgrade', $PAGE->context)
             || has_capability('mod/coursework:administergrades', $PAGE->context))
             && $coursework->get_finalised_submissions()) {
-            //export grading sheet
+            // export grading sheet
             $url = $pageurl.'&export_grading_sheet=1';
             $links[$url] = get_string('exportgradingsheets', 'mod_coursework');
-            //import grading sheet
+            // import grading sheet
             $url = '/mod/coursework/actions/upload_grading_sheet.php?cmid='.$PAGE->cm->id;
             $links[$url] = get_string('uploadgradingworksheet', 'mod_coursework');
-            //import annotated submissions
+            // import annotated submissions
             $url = '/mod/coursework/actions/upload_feedback.php?cmid='.$PAGE->cm->id;
             $links[$url] = get_string('uploadfeedbackfiles', 'mod_coursework');
         }

@@ -71,7 +71,7 @@ class outstanding_marking   {
 
         $agreedsubmissions = [];
 
-            //AGREED GRADE INFORMATION
+            // AGREED GRADE INFORMATION
 
             if ($this->should_get_to_mark_agreed_grade_info($coursework->id, $userid) && $coursework->has_multiple_markers()) {
                 if (!$coursework->sampling_enabled()) {
@@ -99,7 +99,7 @@ class outstanding_marking   {
         $sqlextra = "";
 
         if ($allocationenabled) {
-            //we only have to check for submissions allocated to this user
+            // we only have to check for submissions allocated to this user
             $sqltable = ", {coursework_allocation_pairs}  cap ";
 
             $sqlextra = "	
@@ -181,7 +181,7 @@ class outstanding_marking   {
         $sqlextra = '';
 
         if ($allocationenabled) {
-            //we only have to check for submissions allocated to this user
+            // we only have to check for submissions allocated to this user
             $sqltable = ", {coursework_allocation_pairs}  cap ";
 
             $sqlextra = "	
@@ -303,7 +303,7 @@ class outstanding_marking   {
 
         $coursework = new \mod_coursework\models\coursework($courseworkid);
 
-        //findout if the user can create an initial grade
+        // find out if the user can create an initial grade
         $user_has_initial_grade_capability = $this->has_initial_grade($coursework->get_course()->id, $userid);
 
         return  $user_has_initial_grade_capability;
@@ -318,7 +318,7 @@ class outstanding_marking   {
 
         $coursework = new \mod_coursework\models\coursework($courseworkid);
 
-        //findout if the user can create an initial grade
+        // find out if the user can create an initial grade
         $user_has_agreed_grade_capability = $this->has_agreed_grade($coursework->get_course()->id, $userid);
 
         return  $user_has_agreed_grade_capability;

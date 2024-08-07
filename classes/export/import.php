@@ -94,7 +94,7 @@ class import extends grading_sheet{
 
             $offset = 0;
 
-            //holds details on grades that have been successfully uploaded for the current line
+            // holds details on grades that have been successfully uploaded for the current line
             $uploadedgradecells = [];
 
             for ($z = 0; $z < count($line); $z++) {
@@ -109,29 +109,28 @@ class import extends grading_sheet{
 
                 $class = "mod_coursework\\export\\csv\\cells\\".$cells[$i]."_cell";
                 $cell = new $class($this->coursework);
-                //submission id field should always be first in the csv_cells array
-                //
+                // submission id field should always be first in the csv_cells array
                 if ($cells[$i] == 'submissionid') {
                     $submissionid = $value;
                 }
 
                 if (empty($submissionid)) $errors[$s][] = get_string('emptysubmissionid', 'coursework');
 
-                //offsets the position of that we extract the data from $line based on data that has been extracted before
+                // offsets the position of that we extract the data from $line based on data that has been extracted before
 
                 if (($cells[$i] == "singlegrade" || $cells[$i] == "assessorgrade" || $cells[$i] == "agreedgrade")
                     && $this->coursework->is_using_rubric() && !($cells[$i] == "agreedgrade" && $this->coursework->finalstagegrading == 1)) {
 
-                    //get the headers that would contain the rubric grade data
+                    // get the headers that would contain the rubric grade data
                     $rubricheaders = $cell->get_header(null);
 
-                    //find out the position of singlegrade
+                    // find out the position of singlegrade
                     $position = $i;
 
-                    //get all data from the position of the grade to the length of rubricheaders
+                    // get all data from the position of the grade to the length of rubricheaders
                     $rubriclinedata = array_slice($line, $position + $offset, count($rubricheaders), true);
 
-                    //pass the rubric data in
+                    // pass the rubric data in
                     $result = $cell->validate_cell($rubriclinedata, $submissionid, $stage_identifier, $uploadedgradecells);
 
                     $z = $z    +   count($rubricheaders)-1;
@@ -143,7 +142,7 @@ class import extends grading_sheet{
 
                if ($result !== true) {
                    $errors[$s] = $result;
-                   break; //go to next line on error
+                   break; // go to next line on error
                } else if ($cells[$i] == "singlegrade" || $cells[$i] == "assessorgrade" || $cells[$i] == "agreedgrade" && !empty($value)) {
 
                    $uploadedgradecells[] = $stage_identifier;
@@ -170,8 +169,8 @@ class import extends grading_sheet{
 
                 $typefound = false;
 
-                //$typepositions holds the places in the array of all vcolumns with headers that
-                //match the type e.g a column named singlegrade1 will match a singlegrade type
+                // $typepositions holds the places in the array of all vcolumns with headers that
+                // match the type e.g a column named singlegrade1 will match a singlegrade type
                 $typepositions = false;
                 $i = 0;
 
@@ -190,8 +189,8 @@ class import extends grading_sheet{
 
                 if (!empty($typefound)) {
 
-                    //this var is needed to provide an offset so the positions in the array we are looking for
-                    //are correct even after a splice and add is carried out
+                    // this var is needed to provide an offset so the positions in the array we are looking for
+                    // are correct even after a splice and add is carried out
                     $offset = 0;
 
                     foreach ($typepositions as $position) {
@@ -289,15 +288,15 @@ class import extends grading_sheet{
 
         while ($line = $csvreader->next()) {
 
-            //we will not process the content of any line that has been flagged up with an error
+            // we will not process the content of any line that has been flagged up with an error
             if ( is_array($processingresults) && array_key_exists($s, $processingresults) ) {
                 $s++;
                 continue;
             }
 
             $csv = $this->remove_other_assessors_grade($csv_cells, $line);
-            //gets the headers that should be being used in the uploaded csv
-            //$cells = $this->get_rubric_headers($csv);
+            // gets the headers that should be being used in the uploaded csv
+            // $cells = $this->get_rubric_headers($csv);
             $cells = $csv;
             $i = 0;
 
@@ -320,7 +319,7 @@ class import extends grading_sheet{
                     $idfound = true;
                 }
 
-                //save the value into the csvline with the relevant pointer
+                // save the value into the csvline with the relevant pointer
                 if (isset($cells[$i]))   $csvline[$cells[$i]] = $value;
 
                 $i++;
@@ -329,7 +328,7 @@ class import extends grading_sheet{
             $subdbrecord = $DB->get_record('coursework_submissions', array('id' => $submissionid));
             $submission = \mod_coursework\models\submission::find($subdbrecord);
 
-            //is this submission graded? if yes did this user grade it?
+            // is this submission graded? if yes did this user grade it?
 
             $coursework = $submission->get_coursework();
 
@@ -353,8 +352,8 @@ class import extends grading_sheet{
 
             $a = 1;
 
-            //defines the start offest to be used when searching for a rubric in a uploaded csv, if the format of upload
-            //csv is changed this will require changing
+            // defines the start offest to be used when searching for a rubric in a uploaded csv, if the format of upload
+            // csv is changed this will require changing
 
             $rubricoffset = $rubricoffsetstart = ($coursework->is_configured_to_have_group_submissions()) ?   4 : 5;
 
@@ -362,7 +361,7 @@ class import extends grading_sheet{
 
             foreach ($stages as $k => $stage) {
 
-                //when allocation is enabled
+                // when allocation is enabled
                 if (has_capability('mod/coursework:administergrades', $PAGE->context) && $coursework->allocation_enabled() && $stage != 'final_agreed_1' && $coursework->has_multiple_markers() == true) {
                     $rubricoffset   += 1;
                     if ($a == 1) $rubricoffsetstart  += 1;
@@ -393,13 +392,13 @@ class import extends grading_sheet{
                     }
                 }
 
-                //we need to carry out a further check to see if the coursework is using advanced grades.
-                //if yes then we may need to generate the grade for the grade pointer as
-                //they dont have grades
+                // we need to carry out a further check to see if the coursework is using advanced grades.
+                // if yes then we may need to generate the grade for the grade pointer as
+                // they dont have grades
 
                 if ($coursework->is_using_rubric() && !($stage == 'final_agreed_1' && $this->coursework->finalstagegrading == 1)) {
 
-                        //array that will hold the advanced grade data
+                        // array that will hold the advanced grade data
                         $criteriagradedata = [];
                         $criteriagradedata['criteria'] = [];
 
@@ -409,12 +408,12 @@ class import extends grading_sheet{
 
                         $numberofrubrics = count($criterias)  *   2;
 
-                    //if the stage is  final agrade we need to make sure the offset is set to the position of the
-                    //agreed grades in the csv, this is needed as some users will only have agreed grade capability
+                    // if the stage is  final agrade we need to make sure the offset is set to the position of the
+                    // agreed grades in the csv, this is needed as some users will only have agreed grade capability
                     if ($stage == 'final_agreed_1') {
                         $stagemultiplier = $numberofstages -1;
 
-                        //the calculation below finds the position of the agreed grades in the uploaded csv
+                        // the calculation below finds the position of the agreed grades in the uploaded csv
 
                         $rubricoffset = $rubricoffsetstart + $stagemultiplier + ($numberofrubrics * $stagemultiplier);
 
@@ -443,11 +442,11 @@ class import extends grading_sheet{
                             //for ( $critidx < $numberofrubrics; ) {
                             $critidx = 0;
                             
-                            //this assumes that the data in the csv is in the correct criteria order.....it should be
+                            // this assumes that the data in the csv is in the correct criteria order.....it should be
                             foreach ($criterias as $c) {
                                 $criteriagrade = [];
 
-                                //we need to get the levelid for the value that the criteria has been given
+                                // we need to get the levelid for the value that the criteria has been given
 
                                 $levelid = $this->get_value_rubric_levelid($c, $rubricdata[$critidx]);
 
@@ -463,12 +462,12 @@ class import extends grading_sheet{
                             $criteriagradedata = false;
                         }
 
-                        //need to decide where the grade instance submit and get grade should be put as in order
+                        // need to decide where the grade instance submit and get grade should be put as in order
 
-                        //pass the criteria  data into the csvline position for the grade data so we can generate a grade
+                        // pass the criteria  data into the csvline position for the grade data so we can generate a grade
                         $csvline[$gradepointer] = $criteriagradedata;
 
-                        //in case there is another rubric to be extracted from the csv set the new value of the rubric offset
+                        // in case there is another rubric to be extracted from the csv set the new value of the rubric offset
 
                     } else  if ($coursework->is_using_rubric() && ($stage == 'final_agreed_1' && $this->coursework->finalstagegrading == 1)) {
 
@@ -482,7 +481,7 @@ class import extends grading_sheet{
 
                         $stagemultiplier = $numberofstages -1;
 
-                        //the calculation below finds the position of the agreed grades in the uploaded csv
+                        // the calculation below finds the position of the agreed grades in the uploaded csv
 
                         $rubricoffset = $rubricoffsetstart + $stagemultiplier + ($numberofrubrics * $stagemultiplier);
 
@@ -586,9 +585,9 @@ class import extends grading_sheet{
         $add_grade->timecreated = time();
         $add_grade->timemodified = time();
 
-        //we cant save the grade if this coursework uses rubrics as the grade has not been generated and the grade var contains
-        //criteria that will be used to genenrate the grade. We need the feedback id to do this so we need to make the feedback
-        //first
+        // we cant save the grade if this coursework uses rubrics as the grade has not been generated and the grade var contains
+        // criteria that will be used to genenrate the grade. We need the feedback id to do this so we need to make the feedback
+        // first
         $add_grade->grade = (!$uses_rubric) ? $grade :  null;
         $add_grade->feedbackcomment = $feedback;
         $add_grade->lasteditedbyuser = $USER->id;
@@ -600,7 +599,7 @@ class import extends grading_sheet{
 
         if  ($uses_rubric) {
             $controller = $this->coursework->get_advanced_grading_active_controller();
-            //find out how many criteria there are
+            // find out how many criteria there are
             $gradinginstance = $controller->get_or_create_instance(0, $USER->id, $feedbackid);
             $rubricgrade = $gradinginstance->submit_and_get_grade($grade, $feedbackid);
 
@@ -647,7 +646,7 @@ class import extends grading_sheet{
             $grade = $gradejudge->get_grade($grade);
         }   else    {
             $controller = $this->coursework->get_advanced_grading_active_controller();
-            //find out how many criteria there are
+            // find out how many criteria there are
             $gradinginstance = $controller->get_or_create_instance(0, $USER->id, $cwfeedbackid);
             $rubricgrade = $gradinginstance->submit_and_get_grade($grade, $cwfeedbackid);
             $grade = $rubricgrade;
@@ -700,7 +699,7 @@ class import extends grading_sheet{
         // single marked - singlegrade - allocated/notallocated
         $stage_identifier = 'assessor_1';
 
-        //double marked - singlegrade - allocated
+        // double marked - singlegrade - allocated
         if ($this->coursework->get_max_markers()>1 && ($cell_identifier == 'singlegrade' || $cell_identifier == 'feedbackcomments')
             && $this->coursework->allocation_enabled()) {
 
@@ -713,7 +712,7 @@ class import extends grading_sheet{
             $stage_identifier = $dbrecord->stage_identifier;
         }
 
-        //double marked - singlegrade - notallocated
+        // double marked - singlegrade - notallocated
         if ($this->coursework->get_max_markers()>1 && ($cell_identifier == 'singlegrade' || $cell_identifier == 'feedbackcomments')
             && !$this->coursework->allocation_enabled()) {
 
@@ -726,7 +725,7 @@ class import extends grading_sheet{
             $record = $DB->get_record_sql($sql);
             if (!empty($record)) {
                 $stage_identifier = $record->stage_identifier;
-            }else if (!$this->coursework->sampling_enabled()) { //samplings disabled
+            } else if (!$this->coursework->sampling_enabled()) { //samplings disabled
                 // workout if any stage is still available
                 $sql = "SELECT count(*) as graded FROM {coursework_feedbacks}
                         WHERE submissionid = $submissionid

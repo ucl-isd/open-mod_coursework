@@ -50,7 +50,7 @@ class group_cell extends cell_base implements allocatable_cell {
 
         if ($this->coursework->blindmarking_enabled() && !has_capability('mod/coursework:viewanonymous', $this->coursework->get_context()) && !$row_object->is_published()) {
             $content .= '<option class="expand_members" selected="selected">'.get_string('membershidden', 'coursework').'</option>';
-        } else{
+        } else {
             $content .= '<option class="expand_members" selected="selected">'.get_string('viewmembers', 'coursework').'</option>';
         }
 
@@ -72,8 +72,8 @@ class group_cell extends cell_base implements allocatable_cell {
      */
     public function get_table_header($options = []) {
 
-        //adding this line so that the sortable heading function will make a sortable link unique to the table
-        //if tablename is set
+        // adding this line so that the sortable heading function will make a sortable link unique to the table
+        // if tablename is set
         $tablename = (isset($options['tablename'])) ? $options['tablename'] : '';
 
         return $this->helper_sortable_heading(get_string('tableheadgroups', 'coursework'),

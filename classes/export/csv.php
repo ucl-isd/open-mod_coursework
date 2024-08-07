@@ -124,7 +124,7 @@ class csv {
                 $cell = $cell->get_cell($submission, $student, false);
                if (is_array($cell)) {
                    $row = array_merge($row, $cell);
-               } else{
+               } else {
                    $row[] = $cell;
                }
             } else {
@@ -154,7 +154,7 @@ class csv {
                     $head = $cell->get_header($stage);
                     if (is_array($head)) {
                         $headers = array_merge($headers, $head);
-                    } else{
+                    } else {
                         $headers[$header.$stage] = $head;
                     }
 
@@ -162,7 +162,7 @@ class csv {
                      $head = $cell->get_header(false);
                     if (is_array($head)) {
                         $headers = array_merge($headers, $head);
-                    } else{
+                    } else {
                         $headers[$header] = $head;
                     }
                 } else {
@@ -251,7 +251,7 @@ class csv {
         $cells = 0;
         if ($this->coursework->is_using_rubric()) {
             $criterias = $this->coursework->get_rubric_criteria();
-            //we will increment by the number of criterias plus 1 for feedback
+            // we will increment by the number of criterias plus 1 for feedback
             $increment = (count($criterias) * 2) +1;
 
         } else {

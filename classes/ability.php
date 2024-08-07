@@ -146,7 +146,7 @@ class ability extends \mod_coursework\framework\ability {
         $this->allow_edit_moderation_if_user_is_allocated_to_moderate();
         $this->allow_edit_moderation_if_user_can_administer_grades();
 
-        //show moderation
+        // show moderation
         $this->allow_show_moderation_if_user_can_view_grades_at_all_times();
 
         // Feedback rules

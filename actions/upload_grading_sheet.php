@@ -61,7 +61,7 @@ if ($gradinguploadform->is_cancelled()) {
 
 if ($data = $gradinguploadform->get_data()) {
 
-    //perform checks on data
+    // perform checks on data
 
     $content = $gradinguploadform->get_file_content('gradingdata');
 
@@ -69,11 +69,11 @@ if ($data = $gradinguploadform->get_data()) {
 
     $csvimport = new \mod_coursework\export\import($coursework, false, false);
 
-   // $csv_cells = $csvimport->csv_columns(); //all columns from spreadsheet
+   // $csv_cells = $csvimport->csv_columns(); // all columns from spreadsheet
 
     $procsessingresults = $csvimport->validate_csv($content, $data->encoding, $data->delimiter_name, $csv_cells);
 
-    //process
+    // process
 
     //if (!empty($procsessingresults)) {
     $csvimport->process_csv($content, $data->encoding, $data->delimiter_name, $csv_cells, $procsessingresults);

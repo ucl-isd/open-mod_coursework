@@ -165,22 +165,22 @@ class total_sample_type extends \mod_coursework\sample_set_rule\sample_base {
 
             $total_to_return = ceil(($rule->upperlimit/100) * $number_of_alloctables);
 
-            //we include the manual sample set in the count
+            // we include the manual sample set in the count
             // TODO: should we do this?
             $total_to_return -= count($manual_sample_set);
 
-            //if the resultant number isnt greater than 0 then no automatic sample allocatables will be used
+            // if the resultant number isnt greater than 0 then no automatic sample allocatables will be used
             if ($total_to_return > 0) {
 
-                //use array chunk to split auto sample set into chunks we will only use the first chunk
+                // use array chunk to split auto sample set into chunks we will only use the first chunk
                 if ($chunked_array = array_chunk($auto_sample_set, $total_to_return, true)) $auto_sample_set = $chunked_array[0];
 
-                //if the number in the sample set is less than the total to return
+                // if the number in the sample set is less than the total to return
                 if (count($auto_sample_set) < $total_to_return) {
 
-                    //we need to top up the sample set with other allocatables
+                    // we need to top up the sample set with other allocatables
 
-                    //graded at the previous stage take precedence
+                    // graded at the previous stage take precedence
 
                     $previous_stage_number = $stage_number - 1;
 
@@ -199,26 +199,26 @@ class total_sample_type extends \mod_coursework\sample_set_rule\sample_base {
                     }
                 }
 
-                //if this is not enough select anyone (which should == the ungraded as all graded should have been added)
+                // if this is not enough select anyone (which should == the ungraded as all graded should have been added)
                 if (count($auto_sample_set) < $total_to_return) {
 
-                        //remove allocatables with published submissions
+                        // remove allocatables with published submissions
                         $allocatable_sample_set = array_diff_ukey($allocatables, $published, array("mod_coursework\\sample_set_rule\\total_sample_type", "compare_key"));
 
-                    //remove allocatables with finalised submissions
+                    // remove allocatables with finalised submissions
                     $allocatable_sample_set = array_diff_ukey($allocatable_sample_set, $finalised, array("mod_coursework\\sample_set_rule\\total_sample_type", "compare_key"));
 
-                    //remove allocatables who have been manually selected
+                    // remove allocatables who have been manually selected
                     $allocatable_sample_set = array_diff_ukey($allocatable_sample_set, $manual_sample_set, array("mod_coursework\\sample_set_rule\\total_sample_type", "compare_key"));
 
-                    //remove allocatables already in the sample set
+                    // remove allocatables already in the sample set
                     $allocatable_sample_set = array_diff_ukey($allocatable_sample_set, $auto_sample_set, array("mod_coursework\\sample_set_rule\\total_sample_type", "compare_key"));
 
                         $array_keys = array_rand($allocatable_sample_set, $total_to_return - count($auto_sample_set));
 
                         if (!is_array($array_keys)) $array_keys = array($array_keys);
 
-                        //use the allocatables array to get other ungraded allocatables
+                        // use the allocatables array to get other ungraded allocatables
                         foreach ($array_keys as $id) {
 
                             if (!isset($published[$id]) && !isset($finalised[$id])

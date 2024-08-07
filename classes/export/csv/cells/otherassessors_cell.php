@@ -92,7 +92,7 @@ class otherassessors_cell extends cell_base{
                         $gradedata['assessor' . $stage_identifier . '_' . $criteria['id']] = get_string('grade_hidden_manager', 'mod_coursework');
                         $gradedata['assessor' . $stage_identifier . '_' . $criteria['id'] . 'comment'] = '';
                     }
-                }else {
+                } else {
                     $gradedata[] = '';
                 }
                 $gradedata[] = '';
