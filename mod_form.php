@@ -244,6 +244,46 @@ class mod_coursework_mod_form extends moodleform_mod {
     }
 
     /**
+     * This function is public static so that it can be called from outside of this plugin by another plugin.
+     * The other plugin wants a more limited version of this form but cannot inherit from it.
+     * This covers only the fields that the other plugin is interested in.  Rest are covered in validation().
+     * @param array $data
+     * @param array $files
+     * @return array
+     *@see self::add_availability_fields() which adds the related form fields.
+     */
+    public static function validate_availability_section_data(array $data, array $files): array {
+        $errors = [];
+        if ($data['startdate'] != 0 && !empty($data['deadline']) && $data['startdate'] > $data['deadline']) {
+            $errors['startdate'] = get_string('must_be_before_dealdine', 'mod_coursework');
+        }
+        if (isset($data['initialmarkingdeadline']) && $data['initialmarkingdeadline'] != 0 && !empty($data['deadline'])) {
+            if ($data['initialmarkingdeadline'] < $data['deadline']) {
+                $errors['initialmarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
+            }
+            if ($data['deadline'] && $data['initialmarkingdeadline'] < $data['deadline']) {
+                $errors['initialmarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
+            }
+        }
+
+        if (isset($data['agreedgrademarkingdeadline']) && $data['agreedgrademarkingdeadline'] != 0) {
+            if (!empty($data['deadline']) && $data['agreedgrademarkingdeadline'] < $data['deadline']) {
+                $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
+            }
+            if ($data['agreedgrademarkingdeadline'] < $data['initialmarkingdeadline']) {
+                $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_initial_grade_dealdine', 'mod_coursework');
+            }
+            if (!empty($data['deadline']) && $data['agreedgrademarkingdeadline'] < $data['deadline']) {
+                $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
+            }
+            if ($data['agreedgrademarkingdeadline'] < $data['initialmarkingdeadline']) {
+                $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_initial_grade_dealdine', 'mod_coursework');
+            }
+        }
+        return $errors;
+    }
+
+    /**
      * We can't do this with $mform->addRule() because the compare function works with the raw form values, which is
      * an array of date components. Here, Moodle's internals have processed those values into a Unix timestamp, so the
      * comparison works.
@@ -254,49 +294,18 @@ class mod_coursework_mod_form extends moodleform_mod {
      */
     public function validation($data, $files) {
 
-        $errors = array();
-
-       if ($data['startdate'] != 0 && !empty($data['deadline']) && $data['startdate'] > $data['deadline']){
-           $errors['startdate'] = get_string('must_be_before_dealdine', 'mod_coursework');
-       }
+        $errors = self::validate_availability_section_data($data, $files);
 
        if ($data['individualfeedback'] != 0 && !empty($data['deadline']) && $data['individualfeedback'] < $data['deadline']) {
             $errors['individualfeedback'] = get_string('must_be_after_dealdine', 'mod_coursework');
         }
-
         if ($data['generalfeedback'] != 0 && !empty($data['deadline']) && $data['generalfeedback'] < $data['deadline']) {
             $errors['generalfeedback'] = get_string('must_be_after_dealdine', 'mod_coursework');
         }
-
-        if (isset($data['initialmarkingdeadline']) && $data['initialmarkingdeadline'] != 0 && !empty($data['deadline']) && $data['initialmarkingdeadline'] < $data['deadline']){
-            $errors['initialmarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
-        }
-
-        if (isset($data['agreedgrademarkingdeadline']) && $data['agreedgrademarkingdeadline'] != 0 && !empty($data['deadline']) && $data['agreedgrademarkingdeadline'] < $data['deadline']){
-            $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
-        }
-
-        if (isset($data['agreedgrademarkingdeadline']) && $data['agreedgrademarkingdeadline'] != 0 &&  $data['agreedgrademarkingdeadline'] < $data['initialmarkingdeadline'] ){
-            $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_initial_grade_dealdine', 'mod_coursework');
-        }
-
-        if (isset($data['initialmarkingdeadline']) && $data['initialmarkingdeadline'] != 0 && !empty($data['deadline']) && $data['deadline'] && $data['initialmarkingdeadline'] < $data['deadline']){
-            $errors['initialmarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
-        }
-
-        if (isset($data['agreedgrademarkingdeadline']) && $data['agreedgrademarkingdeadline'] != 0 && !empty($data['deadline']) && $data['agreedgrademarkingdeadline'] < $data['deadline']){
-            $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_dealdine', 'mod_coursework');
-        }
-
-        if (isset($data['agreedgrademarkingdeadline']) && $data['agreedgrademarkingdeadline'] != 0 &&  $data['agreedgrademarkingdeadline'] < $data['initialmarkingdeadline'] ){
-            $errors['agreedgrademarkingdeadline'] = get_string('must_be_after_initial_grade_dealdine', 'mod_coursework');
-        }
-
         if (isset($data['relativeagreedmarkingdeadline'])  && $data['relativeagreedmarkingdeadline'] != 0 && $data['relativeagreedmarkingdeadline'] < $data['relativeinitialmarkingdeadline'] ) {
             $errors['relativeagreedmarkingdeadline'] = get_string('must_be_after_or_equal_to_relative_initial_grade_dealdine', 'mod_coursework');
 
         }
-
 
         $courseworkid = self::get_coursework_id();
         if ($courseworkid) {
