@@ -15,14 +15,14 @@ class moderationagreement_cell extends cell_base {
      * @param $stage_identifier
      * @return array
      */
-    public function get_cell($submission, $student, $stage_identifier){
+    public function get_cell($submission, $student, $stage_identifier) {
         global $DB;
 
         $data = [];
         $moderation_agreement = '';
         $moderation = '';
 
-        if($this->coursework->allocation_enabled()) {
+        if ($this->coursework->allocation_enabled()) {
             $allocation = $submission->get_assessor_allocation_by_stage('moderator');
             if ($allocation) {
                 $data[] = $this->get_assessor_name($allocation->assessorid);
@@ -56,10 +56,10 @@ class moderationagreement_cell extends cell_base {
      * @return array
      * @throws \coding_exception
      */
-    public function get_header($stage){
+    public function get_header($stage) {
 
         $fields = [];
-        if($this->coursework->allocation_enabled()){
+        if ($this->coursework->allocation_enabled()) {
             $fields['allocatedmoderatorname'] = 'Allocated moderator name';
             $fields['allocatedmoderatorusername'] = 'Allocated moderator username';
         }

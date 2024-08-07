@@ -60,7 +60,7 @@ class time_submitted_cell extends cell_base {
             if ($submission->is_late() && (!$submission->has_extension() || !$submission->submitted_within_extension())) {
 
                 // check if submission has personal deadline
-                if ($coursework->personaldeadlineenabled ){
+                if ($coursework->personaldeadlineenabled ) {
                     $deadline = $submission->submission_personal_deadline();
                 } else { // if not, use coursework default deadline
                     $deadline = $coursework->deadline;
@@ -114,10 +114,10 @@ class time_submitted_cell extends cell_base {
             $displayeddeadline = $extension->extended_deadline;
         }
 
-        if($extension->id) {
+        if ($extension->id) {
             $new_extension_params['id'] = $extension->id;
         }
-        if($submission) {
+        if ($submission) {
             $new_extension_params['submissionid'] = $submission->id;
         }
 
@@ -179,7 +179,7 @@ class time_submitted_cell extends cell_base {
 
         //adding this line so that the sortable heading function will make a sortable link unique to the table
         //if tablename is set
-        $tablename = (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (!empty($options['tablename']))  ? $options['tablename']  : '';
 
         return $this->helper_sortable_heading(get_string('tableheadsubmissiondate', 'coursework'),
             'timesubmitted',
@@ -191,7 +191,7 @@ class time_submitted_cell extends cell_base {
     /**
      * @return string
      */
-    public function get_table_header_class(){
+    public function get_table_header_class() {
         return 'tableheaddate';
     }
 
