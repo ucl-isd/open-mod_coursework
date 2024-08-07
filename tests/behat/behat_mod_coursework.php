@@ -64,7 +64,7 @@ class behat_mod_coursework extends behat_base {
 
         if (file_exists($file_path)) {
             require_once($file_path);
-            $class_name = 'mod_coursework_behat_' . $page_name ;
+            $class_name = 'mod_coursework_behat_' . $page_name;
             return new $class_name($this);
         }
 
@@ -912,7 +912,7 @@ class behat_mod_coursework extends behat_base {
         $negate = $select == 'deselect';
 
         $page = $this->get_page('allocations page');
-        if ($negate){
+        if ($negate) {
             $page->deselect_for_sample($this->$student, 'assessor_2');
         } else {
             $page->select_for_sample($this->$student, 'assessor_2');
@@ -2122,7 +2122,7 @@ class behat_mod_coursework extends behat_base {
      * @throws Behat\Mink\Exception\ElementException
      * @throws Behat\Mink\Exception\ElementNotFoundException
      */
-    public function iGradeTheSubmissionUsingTheSimpleForm($grade = 56, $withoutcomments=false) {
+    public function iGradeTheSubmissionUsingTheSimpleForm($grade = 56, $withoutcomments = false) {
         $nodeElement = $this->getSession()->getPage()->findById('feedback_grade');
         if ($nodeElement) {
             $nodeElement->selectOption($grade);

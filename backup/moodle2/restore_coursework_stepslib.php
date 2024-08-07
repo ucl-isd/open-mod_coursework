@@ -25,11 +25,9 @@ defined('MOODLE_INTERNAL') || die();
 class restore_coursework_activity_structure_step extends restore_activity_structure_step
 {
     // Just a handy way to spit out debugging info while in the bowels of restore
-    static function cheaplog($thing, $append=true)
-    {
-        if($append)
-        {
-            $append=FILE_APPEND;
+    static function cheaplog($thing, $append=true) {
+        if ($append) {
+            $append = FILE_APPEND;
         }
 
         file_put_contents('/tmp/cheap.log',print_r($thing,true)."\n---------------\n", $append);
@@ -50,7 +48,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
         // To know if we are including userinfo.
         $userinfo = $this->get_setting_value('userinfo');
 
-        if($userinfo)
+        if ($userinfo)
         {
             // Define each element separated.
             // Note: when I started the code I didn't realise that the names were arbitrary
@@ -70,7 +68,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
                         'mod_agreement' => 'coursework_submissions/coursework_submission/coursework_feedbacks/coursework_feedback/coursework_mod_agreements',
                         'plagiarism_flag' => 'coursework_submissions/coursework_submission/coursework_plagiarism_flags');
 
-            foreach ($bits as $bit=> $bitpath)
+            foreach ($bits as $bit =>  $bitpath)
             {
                 $p = new restore_path_element("coursework_$bit","/activity/coursework/{$bitpath}/coursework_$bit");
                 $paths[] = $p;
@@ -82,7 +80,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function fixallocatable(&$data)
     {
-        if(!empty($data->allocatableuser))
+        if (!empty($data->allocatableuser))
         {
             $data->allocatableid = $this->get_mappingid('user', $data->allocatableuser);
             $data->allocatabletype='user';
@@ -97,7 +95,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
     protected function process_coursework_submission($data)
     {
         global $DB;
-        $data=(object)$data;
+        $data = (object)$data;
         $oldid = $data->id;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
@@ -113,12 +111,12 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
                                 'firstpublished',
                                 'lastpublished',), $data);
 
-        $now=time();
+        $now = time();
         $this->set_defaults(array('timecreated' => $now,
                                   'timemodified' => $now,
-                                  'firstpublished' =>null,
-                                  'lastpublished' =>null,
-                                  'timesubmitted' =>null,
+                                  'firstpublished' => null,
+                                  'lastpublished' => null,
+                                  'timesubmitted' => null,
                                   'finalised' => 0,
                                   'manualsrscode' => ''),
                             $data);
@@ -138,7 +136,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
     {
         global $DB;
 
-        $data=(object)$data;
+        $data = (object)$data;
         $oldid = $data->id;
 
         $data->submissionid = $this->get_mappingid('coursework_submission', $data->submissionid);
@@ -153,7 +151,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
         $this->check_grade('grade', $data);
         $this->check_grade('cappedgrade', $data);
 
-        $now=time();
+        $now = time();
         $this->set_defaults(array('assessorid' => 0,
                                   'timecreated' => $now,
                                   'timemodified' => $now,
@@ -164,7 +162,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
                                   'lasteditedbyuser' => 0,
                                   'isfinalgrade' => 0,
                                   'ismoderation' => 0,
-                                  'feedbackcommentformat' =>FORMAT_HTML,
+                                  'feedbackcommentformat' => FORMAT_HTML,
                                   'entry_id' => 0,
                                   'markernumber' => 0,
                                   'stage_identifier' => '',
@@ -177,7 +175,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_reminder($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
         $oldid = $data->id;
 
         $data->coursework_id = $this->get_new_parentid('coursework');
@@ -191,7 +189,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_allocation_pair($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
         $oldid = $data->id;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
@@ -212,7 +210,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_mod_set_rule($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
         $oldid = $data->id;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
@@ -229,7 +227,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_sample_set_rule($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
         $oldid = $data->id;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
@@ -247,7 +245,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_allocation_config($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
         $oldid = $data->id;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
@@ -264,7 +262,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_mod_set_member($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
 
@@ -278,7 +276,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_sample_set_mbr($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
 
@@ -297,7 +295,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_extension($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
         $data->createdbyid = $this->get_mappingid('user', $data->createdbyid);
@@ -309,7 +307,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
         $this->set_defaults(array('extended_deadline' => 0,
                                   'pre_defined_reason' => '',
                                   'extra_information_text' => '',
-                                  'extra_information_format' =>FORMAT_HTML)
+                                  'extra_information_format' => FORMAT_HTML)
                             , $data);
 
         global $DB;
@@ -319,7 +317,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_person_deadline($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
 
         $data->courseworkid = $this->get_new_parentid('coursework');
         $data->createdbyid = $this->get_mappingid('user', $data->createdbyid);
@@ -331,7 +329,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
                                 'timecreated',
                                 'timemodified'), $data);
 
-        $now=time();
+        $now = time();
         $this->set_defaults(array('personal_deadline' => 0,
                                   'timecreated' => $now,
                                   'timemodified' => 0,
@@ -343,7 +341,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_mod_agreement($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
 
         $data->feedbackid = $this->get_new_parentid('coursework_feedback');
         $data->moderatorid = $this->get_mappingid('user', $data->moderatorid);
@@ -354,7 +352,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
         $this->updatedate(array('timecreated',
                                 'timemodified'), $data);
 
-        $now=time();
+        $now = time();
         $this->set_defaults(array('timecreated' => $now,
                                   'timemodified' => $now,
                                   'lasteditedby' => 0,
@@ -367,7 +365,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     protected function process_coursework_plagiarism_flag($data)
     {
-        $data=(object)$data;
+        $data = (object)$data;
 
         $data->submissionid = $this->get_new_parentid('coursework_submission');
         $data->createdby = $this->get_mappingid('user', $data->createdby);
@@ -378,7 +376,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
         $this->updatedate(array('timecreated',
                                 'timemodified'), $data);
 
-        $now=time();
+        $now = time();
         $this->set_defaults(array('timecreated' => $now,
                                   'timemodified' => $now,
                                   'lastmodifieddby' => 0,
@@ -409,13 +407,13 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
                                 'generalfeedbacktimepublished',
                                 'deadline'), $data);
 
-        $now=time();
+        $now = time();
         //Taken from install.xml
         $this->set_defaults(array('formid' => 0,
                                   'course' => 0,
                                   'name' => '',
                                   'intro' => '',
-                                  'introformat' =>FORMAT_HTML,
+                                  'introformat' => FORMAT_HTML,
                                   'timecreated' => $now,
                                   'timemodified' => $now,
                                   'grade' => 0,
@@ -427,7 +425,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
                                   'generalfeedback' => 0,
                                   'individualfeedback' => 0,
                                   'feedbackcomment' => '',
-                                  'feedbackcommentformat' =>FORMAT_HTML,
+                                  'feedbackcommentformat' => FORMAT_HTML,
                                   'generalfeedbacktimepublished' => 0,
                                   'courseworktype' => 0,
                                   'assessorallocationstrategy' => 'equal',
@@ -488,7 +486,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
     }
 
-    protected function check_grade($field,&$data)
+    protected function check_grade($field, &$data)
     {
         if ($data->$field < 0) // Scale found, get mapping.
         {
@@ -496,18 +494,18 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
         }
     }
 
-    protected function set_defaults($fields,&$data)
+    protected function set_defaults($fields, &$data)
     {
-        foreach ($fields as $name=> $default)
+        foreach ($fields as $name => $default)
         {
-            if(!isset($data->$name))
+            if (!isset($data->$name))
             {
                 $data->$name = $default;
             }
         }
     }
 
-    protected function updatedate($fields,&$data)
+    protected function updatedate($fields, &$data)
     {
         foreach ($fields as $field)
         {
@@ -529,7 +527,7 @@ class restore_coursework_activity_structure_step extends restore_activity_struct
 
         foreach ($files as $file)
         {
-            if(!$file->is_directory())
+            if (!$file->is_directory())
             {
                 $itemid = $file->get_itemid();
 

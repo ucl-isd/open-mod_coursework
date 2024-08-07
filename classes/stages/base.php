@@ -76,7 +76,7 @@ abstract class base {
             return;
         }
 
-        if ($this->get_coursework()->assessorallocationstrategy == 'group_assessor' &&  $this->identifier() == 'assessor_1' ){
+        if ($this->get_coursework()->assessorallocationstrategy == 'group_assessor' &&  $this->identifier() == 'assessor_1' ) {
             // get teacher form the group
             $teacher = $this->get_assessor_from_moodle_course_group($allocatable);
             //$teacher = user::find(12);
@@ -118,7 +118,7 @@ abstract class base {
      */
     public function assessor_already_allocated_for_this_submission($allocatable, $assessor) {
 
-        if(!empty($assessor)) {
+        if (!empty($assessor)) {
             $coursework_id = $this->get_coursework_id();
             allocation::fill_pool_coursework($coursework_id);
             $record = allocation::get_object(
@@ -214,7 +214,7 @@ abstract class base {
     private function get_next_teacher($allocatable) {
 
         // for percentage allocation use only those teachers that have percentage allocated
-        if ($this->coursework->assessorallocationstrategy == 'percentages'){
+        if ($this->coursework->assessorallocationstrategy == 'percentages') {
             $teachers = $this->get_percentage_allocated_teachers();
         } else {
             $teachers = $this->get_teachers();
@@ -227,7 +227,7 @@ abstract class base {
      * Get ids of teachers who have percentage allocated to them
      * @return array
      */
-    private function get_percentage_allocated_teachers(){
+    private function get_percentage_allocated_teachers() {
         global $DB;
 
         return $DB->get_records('coursework_allocation_config', array('courseworkid' => $this->get_coursework_id()), '', 'assessorid as id');
@@ -368,7 +368,7 @@ abstract class base {
      * @param $submission
      * @return feedback|bool
      */
-    public function get_single_feedback($submission){
+    public function get_single_feedback($submission) {
         feedback::fill_pool_coursework($submission->courseworkid);
         $result = feedback::get_object($submission->courseworkid, 'submissionid-stage_identifier', [$submission->id, 'assessor_1']);
 
@@ -396,7 +396,7 @@ abstract class base {
      *
      * @return bool
      */
-    public function stage_has_allocation(){
+    public function stage_has_allocation() {
         $coursework_id = $this->get_coursework_id();
         allocation::fill_pool_coursework($coursework_id);
         $record = allocation::get_object($coursework_id, 'stage_identifier', [$this->stage_identifier]);
@@ -490,7 +490,7 @@ abstract class base {
             return true;
         }
 
-        if ($this->stage_identifier == 'final_agreed_1'){
+        if ($this->stage_identifier == 'final_agreed_1') {
             return true;
         }
 
@@ -564,7 +564,7 @@ abstract class base {
      * @param allocatable $allocatable
      * @return bool
      */
-    public function assessor_has_allocation($allocatable){
+    public function assessor_has_allocation($allocatable) {
         global $USER;
         allocation::fill_pool_coursework($this->coursework->id);
         $allocation = allocation::get_object(
@@ -638,7 +638,7 @@ abstract class base {
                 $submission = submission::get_object($coursework_id, 'allocatableid-allocatabletype', [$allocatable->id(), $allocatable->type()]);
 
                 if (count($submission->get_assessor_feedbacks()) >= $submission->max_number_of_feedbacks()
-                    && $submission->sampled_feedback_exists()){
+                    && $submission->sampled_feedback_exists()) {
                     break;
                 }
             }
@@ -920,11 +920,11 @@ abstract class base {
 
     }
 
-    public function get_assessor_from_moodle_course_group($allocatable){
+    public function get_assessor_from_moodle_course_group($allocatable) {
 
         $assessor = '';
         // get allocatables group
-        if ($this->coursework->is_configured_to_have_group_submissions()){
+        if ($this->coursework->is_configured_to_have_group_submissions()) {
             $groupid = $allocatable->id;
         } else {
             $user = user::get_object($allocatable->id);
@@ -932,7 +932,7 @@ abstract class base {
             $groupid = ($group)? $group->id: 0;
         }
 
-        if($groupid) {
+        if ($groupid) {
             // find 1st assessor in the group
             $first_group_assessor = get_enrolled_users($this->coursework->get_context(), $this->assessor_capability(),
                 $groupid, 'u.*', 'id ASC', 0, 1);

@@ -18,12 +18,12 @@ class singlegrade_cell extends cell_base{
      * @param $stage_identifier
      * @return array|mixed|null|string
      */
-    public function get_cell($submission, $student, $stage_identifier){
+    public function get_cell($submission, $student, $stage_identifier) {
 
         $stage_identifier = ($this->coursework->get_max_markers() == 1) ? "assessor_1" : $this->get_stage_identifier_for_assessor($submission, $student);
 
         $grade = $submission->get_assessor_feedback_by_stage($stage_identifier);
-        if($this->coursework->is_using_rubric()){
+        if ($this->coursework->is_using_rubric()) {
             $gradedata = [];
             $this->get_rubric_scores_gradedata($grade, $gradedata); // multiple parts are handled here
         } else {
@@ -38,14 +38,14 @@ class singlegrade_cell extends cell_base{
      * @return array|mixed|string
      * @throws \coding_exception
      */
-    public function get_header($stage){
+    public function get_header($stage) {
 
         if ($this->coursework->is_using_rubric()) {
             $strings = [];
             $criterias = $this->coursework->get_rubric_criteria();
             foreach ($criterias as $criteria) { // rubrics can have multiple parts, so let's create header for each of it
                 $strings['singlegrade'.$criteria['id']] = $criteria['description'];
-                $strings['singlegrade'.$criteria['id'].'comment'] = 'Comment for: '.$criteria['description'] ;
+                $strings['singlegrade'.$criteria['id'].'comment'] = 'Comment for: '.$criteria['description'];
             }
         } else {
             $strings = get_string('grade', 'coursework');
@@ -64,7 +64,7 @@ class singlegrade_cell extends cell_base{
 
             if (!empty($value) && !$this->coursework->is_using_rubric()) {
                 $gradejudge = new grade_judge($this->coursework);
-                if (!$gradejudge->grade_in_scale($value)){
+                if (!$gradejudge->grade_in_scale($value)) {
                     $errormsg = get_string('valuenotincourseworkscale', 'coursework');
                     if (is_numeric($value)) {
                         // if scale is numeric get max allowed scale

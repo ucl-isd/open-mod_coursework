@@ -18,7 +18,7 @@ class agreedfeedback_cell extends cell_base{
      * @return string
      */
 
-    public function get_cell($submission, $student, $stage_identifier){
+    public function get_cell($submission, $student, $stage_identifier) {
         return  $gradedata[] = $submission->get_agreed_grade() == false ? '' : strip_tags($submission->get_agreed_grade()->feedbackcomment);
     }
 
@@ -27,7 +27,7 @@ class agreedfeedback_cell extends cell_base{
      * @return string
      * @throws \coding_exception
      */
-    public function get_header($stage){
+    public function get_header($stage) {
         return  get_string('agreedgradefeedback', 'coursework');
     }
 

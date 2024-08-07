@@ -46,7 +46,7 @@ class multiple_agreed_grade_cell extends cell_base {
         global $USER, $OUTPUT;
 
         //if coursework uses sampling check if any enabled for this submission, otherwise there is no agreed grade
-        if($rowobject->get_coursework()->sampling_enabled() && $rowobject->get_submission() && !$rowobject->get_submission()->sampled_feedback_exists()){
+        if ($rowobject->get_coursework()->sampling_enabled() && $rowobject->get_submission() && !$rowobject->get_submission()->sampled_feedback_exists()) {
             $content = get_string('singlemarker', 'coursework');
             return $content;
         }
@@ -132,7 +132,7 @@ class multiple_agreed_grade_cell extends cell_base {
             $content .= html_writer::empty_tag('br');
              if ((!$this->coursework->sampling_enabled() || $rowobject->get_submission()->sampled_feedback_exists()) && ($finalfeedback->get_feedbacks_assessorid() == 0
                  && $finalfeedback->timecreated == $finalfeedback->timemodified)
-                 || $finalfeedback->lasteditedbyuser == 0){ // if the grade was automatically agreed
+                 || $finalfeedback->lasteditedbyuser == 0) { // if the grade was automatically agreed
                  $content .= "(".get_string('automaticagreement', 'coursework').")";
              } else {
                  $content .= ' by: ' . $finalfeedback->get_assesor_username();
@@ -150,7 +150,7 @@ class multiple_agreed_grade_cell extends cell_base {
 
         //adding this line so that the sortable heading function will make a sortable link unique to the table
         //if tablename is set
-        $tablename = (isset($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (isset($options['tablename']))  ? $options['tablename']  : '';
 
         $column_name = get_string('agreedgrade', 'coursework');
         return $this->helper_sortable_heading($column_name, 'finalgrade', $options['sorthow'], $options['sortby'], $tablename);
@@ -159,7 +159,7 @@ class multiple_agreed_grade_cell extends cell_base {
     /**
      * @return string
      */
-    public function get_table_header_class(){
+    public function get_table_header_class() {
         return 'agreedgrade';
     }
 

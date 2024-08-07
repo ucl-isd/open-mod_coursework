@@ -147,7 +147,7 @@ class deadline_extensions_controller extends controller_base {
         $this->deadline_extension = deadline_extension::build($params);
         // Default to current deadline
         // check for personal deadline first o
-        if ($this->coursework->personaldeadlineenabled){
+        if ($this->coursework->personaldeadlineenabled) {
             $personal_deadline = $DB->get_record('coursework_person_deadlines', $params);
             if ($personal_deadline) {
                 $this->coursework->deadline = $personal_deadline->personal_deadline;
@@ -202,7 +202,7 @@ class deadline_extensions_controller extends controller_base {
         }
     }
 
-    public function validation($data){
+    public function validation($data) {
         global $CFG;
         $max_deadline = $CFG->coursework_max_extension_deadline;
 
@@ -219,7 +219,7 @@ class deadline_extensions_controller extends controller_base {
         return false;
     }
 
-    public function submission_exists($data){
+    public function submission_exists($data) {
         global $DB;
 
         return  $DB->record_exists('coursework_submissions', array(
@@ -229,7 +229,7 @@ class deadline_extensions_controller extends controller_base {
         ));
     }
 
-    public function personal_deadline(){
+    public function personal_deadline() {
         global $DB;
 
         $extensionid = optional_param('id', 0,  PARAM_INT);
@@ -282,7 +282,7 @@ class deadline_extensions_controller extends controller_base {
                     $time = date('d-m-Y H:i', $this->coursework->deadline);
                 }
 
-                if(!empty($deadline_extension->extended_deadline) && $deadline_extension->extended_deadline > 0) {
+                if (!empty($deadline_extension->extended_deadline) && $deadline_extension->extended_deadline > 0) {
                     $time = date('d-m-Y H:i', $deadline_extension->extended_deadline);
                 }
 
@@ -310,7 +310,7 @@ class deadline_extensions_controller extends controller_base {
         echo json_encode($response);
     }
 
-    public function ajax_new_mitigation($data_params){
+    public function ajax_new_mitigation($data_params) {
         global $USER, $DB;
         $response = [];
         $this->coursework = coursework::find(['id' => $this->params['courseworkid']]);
@@ -327,7 +327,7 @@ class deadline_extensions_controller extends controller_base {
         $ability->require_can('new', $deadline_extension);
         $time_content = '';
         $time = '';
-        if ($this->coursework->deadline){
+        if ($this->coursework->deadline) {
             $personal_deadline = $DB->get_record('coursework_person_deadlines', $params);
             if ($personal_deadline) {
                 $time_content = 'Personal deadline: ' . userdate($personal_deadline->personal_deadline);

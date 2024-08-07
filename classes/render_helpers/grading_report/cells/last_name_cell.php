@@ -37,7 +37,7 @@ class last_name_cell extends cell_base implements allocatable_cell {
     /**
      * @return string
      */
-    public function get_table_header_class(){
+    public function get_table_header_class() {
         return 'lastname_cell';
     }
 

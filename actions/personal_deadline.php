@@ -33,7 +33,7 @@ $multipleuserdeadlines = optional_param('multipleuserdeadlines', 0, PARAM_INT);
 $selectedtype = optional_param('selectedtype', 'date', PARAM_RAW);
 $personal_deadline_time = optional_param('personal_deadline_time',null,PARAM_RAW);
 
-$allocatableid = (!empty($allocatableid_arr))    ?   $allocatableid_arr  : $allocatableid  ;
+$allocatableid = (!empty($allocatableid_arr))  ? $allocatableid_arr  : $allocatableid;
 
 $coursework_db = $DB->get_record('coursework', array('id' => $courseworkid));
 
@@ -52,7 +52,7 @@ $params = array(
 if ($selectedtype != 'unfinalise') {
     $controller = new mod_coursework\controllers\personal_deadlines_controller($params);
 
-    if(!empty($personal_deadline_time)) {
+    if (!empty($personal_deadline_time)) {
         $result = $controller->insert_update($personal_deadline_time);
         echo json_encode($result);
     } else {

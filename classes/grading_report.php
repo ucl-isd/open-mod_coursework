@@ -335,7 +335,7 @@ class grading_report {
      *
      * @return grading_table_row_base[] row objects
      */
-    public function get_table_rows_for_page($rowcount=false) {
+    public function get_table_rows_for_page($rowcount = false) {
 
         global $USER;
 
@@ -354,11 +354,11 @@ class grading_report {
             foreach ($participants as $key => $participant) {
 
                 // handle 'Group mode' - unset groups/individuals thaat are not in the chosen group
-                if(!empty($options['group']) && $options['group'] != -1){
-                    if ($this->coursework->is_configured_to_have_group_submissions()){
-                        if($options['group'] != $participant->id) continue;
+                if (!empty($options['group']) && $options['group'] != -1) {
+                    if ($this->coursework->is_configured_to_have_group_submissions()) {
+                        if ($options['group'] != $participant->id) continue;
                     } else {
-                        if(!$this->coursework->student_in_group($participant->id, $options['group']))continue;
+                        if (!$this->coursework->student_in_group($participant->id, $options['group']))continue;
                     }
                 }
 

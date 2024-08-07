@@ -32,14 +32,14 @@ class personal_deadline_cell extends cell_base {
         );
 
         $personal_deadline = personal_deadline::find_or_build($new_personal_deadline_params);
-        if ($personal_deadline->personal_deadline){
+        if ($personal_deadline->personal_deadline) {
             $deadline = $personal_deadline->personal_deadline;
         }
         $date = userdate($deadline, '%a, %d %b %Y, %H:%M');
         $content .= '<div class="content_personal_deadline">'.$date.'</div>';
         $ability = new ability(user::find($USER, false), $row_object->get_coursework());
         $class = 'edit_personal_deadline';
-        if(!$ability->can('edit', $personal_deadline)) {
+        if (!$ability->can('edit', $personal_deadline)) {
             $class .= ' display-none';
         }
 
@@ -63,7 +63,7 @@ class personal_deadline_cell extends cell_base {
      */
     public function get_table_header($options = []) {
 
-        $tablename = (!empty($options['tablename']))  ? $options['tablename']  : ''  ;
+        $tablename = (!empty($options['tablename']))  ? $options['tablename']  : '';
 
         return $this->helper_sortable_heading(get_string('tableheadpersonaldeadline', 'coursework'),
             'personaldeadline',
@@ -75,7 +75,7 @@ class personal_deadline_cell extends cell_base {
     /**
      * @return string
      */
-    public function get_table_header_class(){
+    public function get_table_header_class() {
         return 'tableheadpersonaldeadline';
     }
 

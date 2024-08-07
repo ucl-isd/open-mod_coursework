@@ -53,7 +53,7 @@ class upload_feedback_form extends moodleform {
             if (has_any_capability($capability, $this->coursework->get_context()) && !has_capability('mod/coursework:administergrades', $this->coursework->get_context())) {
                 $options['initialassessor'] = get_string('initialassessor', 'coursework');
 
-            } else if (has_capability('mod/coursework:administergrades', $this->coursework->get_context())){
+            } else if (has_capability('mod/coursework:administergrades', $this->coursework->get_context())) {
                 $options['assessor_1'] = get_string('assessorupload', 'coursework', '1');
                 if ($this->coursework->get_max_markers() >= 2) $options['assessor_2'] = get_string('assessorupload', 'coursework', '2');
                 if ($this->coursework->get_max_markers() >= 3) $options['assessor_3'] = get_string('assessorupload', 'coursework', '3');
@@ -69,11 +69,11 @@ class upload_feedback_form extends moodleform {
         }
 
         // Disable overwrite current feedback files checkbox if user doesn't have edit capability
-        if(!has_capability('mod/coursework:editinitialgrade', $this->coursework->get_context())) {
+        if (!has_capability('mod/coursework:editinitialgrade', $this->coursework->get_context())) {
             $mform->disabledIf('overwrite', 'feedbackstage', 'eq', 'initialassessor');
         }
 
-        if(!has_capability('mod/coursework:editagreedgrade', $this->coursework->get_context()) && !has_capability('mod/coursework:administergrades', $this->coursework->get_context()) ) {
+        if (!has_capability('mod/coursework:editagreedgrade', $this->coursework->get_context()) && !has_capability('mod/coursework:administergrades', $this->coursework->get_context()) ) {
             $mform->disabledIf('overwrite', 'feedbackstage', 'eq', 'final_agreed_1');
         }
 

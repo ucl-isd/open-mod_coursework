@@ -138,15 +138,15 @@ abstract class sample_base {
 
     abstract public function add_form_elements_js($assessor_number);
 
-    abstract public function save_form_data($assessor_number=0,&$order=0);
+    abstract public function save_form_data($assessor_number=0, &$order=0);
 
-    abstract public function adjust_sample_set($rule_id,&$manual_sample_set,&$allocatables,&$auto_sample_set);
+    abstract public function adjust_sample_set($rule_id, &$manual_sample_set, &$allocatables, &$auto_sample_set);
 
     /**
      *
      * @return array
      */
-    protected function finalised_submissions(){
+    protected function finalised_submissions() {
         global $DB;
 
         $sql = "SELECT  allocatableid
@@ -163,7 +163,7 @@ abstract class sample_base {
      *
      * @return array
      */
-    protected function released_submissions(){
+    protected function released_submissions() {
         global $DB;
 
         $sql = "SELECT  allocatableid
